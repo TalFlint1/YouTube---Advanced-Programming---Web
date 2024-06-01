@@ -1,7 +1,8 @@
-// src/components/Register.js
-
 import React, { useState } from 'react';
+import { ReactComponent as ErrorSign } from '../assets/exclamation_point.svg';
 import './Register.css';
+import youtubeLogo from '../assets/youtubelogo.png';
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,12 +13,37 @@ const Register = () => {
     picture: null,
   });
 
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordValidated, setPasswordValidated] = useState(false);
+
+  const validatePassword = (password) => {
+    // Updated regular expression to include special characters !@#$%^&*
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,16}$/;
+    if (!passwordRegex.test(password)) {
+      return 'Password must be between 8-16 characters and combine letters and numbers.'
+    }
+    return null; // Password is valid
+  };
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    if (name === 'password') {
+      const error = validatePassword(value);
+      setPasswordError(error);
+      setPasswordValidated(true);
+    }
+
     setFormData({
       ...formData,
       [name]: files ? files[0] : value,
     });
+  };
+
+  const handlePasswordBlur = () => {
+    const error = validatePassword(formData.password);
+    setPasswordError(error);
+    setPasswordValidated(true);
   };
 
   const handleSubmit = (e) => {
@@ -28,8 +54,11 @@ const Register = () => {
 
   return (
     <div className="register-container">
+      <div className="logo-container">
+      <img src={youtubeLogo} alt="YouTube Logo" className="youtube-logo" />
+      </div>
       <form className="register-form" onSubmit={handleSubmit}>
-        <h2>Create an Account</h2>
+        <h2>Sign up</h2>
         <label>Username:</label>
         <input
           type="text"
@@ -44,8 +73,15 @@ const Register = () => {
           name="password"
           value={formData.password}
           onChange={handleChange}
+          onBlur={handlePasswordBlur}
           required
         />
+        {passwordValidated && passwordError && (
+          <div className="error-message">
+            <ErrorSign className="error-icon" />
+            {passwordError}
+          </div>
+        )}
         <label>Confirm Password:</label>
         <input
           type="password"
