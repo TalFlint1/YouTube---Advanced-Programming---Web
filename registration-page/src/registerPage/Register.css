@@ -1,107 +1,104 @@
 /* src/components/Register.css */
 
 .register-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f9f9f9;
-  }
-  
-  .register-form {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-  }
-  
-  .register-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .register-form label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .register-form input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .register-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff0000;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .register-form button:hover {
-    background-color: #cc0000;
-  }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.register-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  height: 480px;
+  text-align: center;
+  padding-right: 35px; /* Adjust the padding as needed */
+}
+
+.register-form h2 {
+  margin-bottom: 20px;
+}
+
+.register-form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.73rem; /* Adjust the font size as needed */
+}
+
+.register-form input {
+  width: 300px;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: -33px;
+}
+
+.register-form button {
+  width: 140px;
+  padding: 10px;
+  background-color: #ff0000;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  background-color: #cc0000;
+}
 
 .error-message {
-    color: red;
-    font-size: 0.8rem;
-    margin-top: 0; /* Remove default margin */
-    position: relative; /* Allows for top and left adjustments */
-    top: -8px; /* Adjust this value to move the message and icon up */
-    left: 5px; /* Adjust this value to move the message and icon left */
-    display: flex; /* Use flexbox */
-    align-items: flex-start; /* Align items at the start of the container */
-  }
-  
-  .error-icon {
-    width: 24px; /* Adjust the width if needed */
-    height: 24px; /* Adjust the height if needed */
-    margin-right: 5px;
-    position: relative; /* Allows for top adjustments */
-    top: -6px; /* Adjust this value to move the icon up */
-  }
-  
-  label {
-    font-size: 0.73rem; /* Adjust the font size as needed */
-  }
+  color: red;
+  width: 280px;
+  font-size: 0.75rem;
+  margin-top: 0; /* Remove default margin */
+  position: relative; /* Allows for top and left adjustments */
+  top: -8px; /* Adjust this value to move the message and icon up */
+  left: 5px; /* Adjust this value to move the message and icon left */
+  display: flex; /* Use flexbox */
+  align-items: flex-start; /* Align items at the start of the container */
+}
 
-  .register-form {
-    padding-right: 35px; /* Adjust the padding as needed */
-  }
+.error-icon-container {
+  flex-shrink: 0; /* Prevent the icon from shrinking */
+  margin-right: 5px; /* Add space between icon and text */
+}
 
-  .register-container {
-    position: relative; /* Ensure position context for absolute positioning */
-  }
-  
-/* Register.css */
+.error-icon {
+  width: 18px; /* Adjust the width if needed */
+  height: 18px; /* Adjust the height if needed */
+  position: relative; /* Allows for top adjustments */
+  top: -2px; /* Adjust this value to move the icon up */
+}
+
+.pass-error-text-container {
+  flex-grow: 1; /* Allow the text to take up remaining space */
+  margin-left: -0.5px; /* Add space between the icon and the text */
+}
+
+.conf-pass-error-text-container {
+  flex-grow: 1; /* Allow the text to take up remaining space */
+  margin-left: -53px; /* Add space between the icon and the text */
+}
 
 .youtube-logo {
-    width: 83px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    position: absolute; /* Position the logo absolutely */
-    top: 15px; /* Align the top edge of the logo with the top edge of the container */
-    left: -163px; /* Align the left edge of the logo with the left edge of the container */
-  }
-  
-  .youtube-text {
-    font-weight: bold;
-    font-size: 20px; /* Adjust the font size as needed */
-    position: absolute; /* Position the text absolutely */
-    top: 20px; /* Adjust the top position to move the text lower */
-    left: -130px; /* Adjust the left position to move the text further right */
-  }
-  
-  .logo-container {
-    position: relative; /* Ensure relative positioning for the container */
-  }
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  position: absolute; /* Position the logo absolutely */
+  top: 15px; /* Align the top edge of the logo with the top edge of the container */
+  left: -183px; /* Align the left edge of the logo with the left edge of the container */
+}
+
+.logo-container {
+  position: relative; /* Ensure relative positioning for the container */
+}
