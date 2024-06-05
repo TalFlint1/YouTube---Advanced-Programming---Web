@@ -1,37 +1,6 @@
 import React from 'react';
 
-const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type}) => {
-  const videoDisplayStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: isDarkMode ? '#black' : '#black',
-    color: isDarkMode ? '#black' : '#black',
-    padding: '20px',
-    borderRadius: '10px',
-    marginBottom: '20px',
-  };
-
-  const videoContentStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    maxWidth: '600px',
-    width: '100%',
-  };
-
-  const videoPlayerStyle = {
-    maxWidth: '100%',
-  };
-
-  const videoInfoStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    fontSize: '14px',
-  };
-
+const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration ,isDarkMode }) => {
   return (
     <div style={videoDisplayStyle}>
       <div style={videoContentStyle}>
