@@ -14,8 +14,7 @@ const Menu = ({ toggleMenu }) => {
       </div>
       <ul>
         <li><a href="/home">Home</a></li>
-        <li><a href="/shorts">Shorts</a></li>
-        <li><a href="/subscriptions">Subscriptions</a></li>
+        <li><a href="/my-videos">My videos</a></li>
         {/* Add more menu items as needed */}
       </ul>
     </div>
