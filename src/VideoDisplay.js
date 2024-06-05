@@ -20,41 +20,6 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
     width: '100%',
   };
 
-  const videoThumbnailStyle = {
-    position: 'relative',
-    marginBottom: '20px',
-  };
-
-  const thumbnailImageStyle = {
-    maxWidth: '100%',
-    borderRadius: '10px',
-  };
-
-  const videoDurationStyle = {
-    position: 'absolute',
-    bottom: '10px',
-    right: '10px',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: '#fff',
-    padding: '5px',
-    borderRadius: '5px',
-  };
-
-  const videoDetailsStyle = {
-    textAlign: 'center',
-    marginBottom: '20px',
-  };
-
-  const videoTitleStyle = {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-  };
-
-  const videoDescriptionStyle = {
-    fontSize: '16px',
-    lineHeight: '1.5',
-  };
 
   const videoPlayerStyle = {
     maxWidth: '100%',
