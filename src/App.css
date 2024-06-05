@@ -76,6 +76,8 @@
 
 .menu-icons {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   justify-content: center; /* Center the icons horizontally */
   align-items: center;
 }
