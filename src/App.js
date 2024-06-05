@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Header from './Header/Header';
-import Menu from './Menu/Menu';
-import VideoDisplay from './VideoDisplay';
+import Header from './components/Header/Header';
+import Menu from './components/Menu/Menu';
+import VideoDisplay from './components/VideoDisplay/VideoDisplay';
 import './App.css';
 import videoData from './videoData.json';
 
