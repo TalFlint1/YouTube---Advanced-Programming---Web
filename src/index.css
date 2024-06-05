@@ -19,13 +19,15 @@ main{
 }
 .icon-display {
   display: flex;
-  flex: 1 1 calc(1% - 10px); /* Four items in a row */
+  width: 23%; /* Adjust width to leave some space for margins */
   box-sizing: border-box;
 }
 
 .video-display {
+  flex-wrap: wrap;
+  justify-content: flex-start;
   display: flex;
-  flex: 1 1 calc(25% - 10px); /* Four items in a row */
+  width: 23%; /* Adjust width to leave some space for margins */
   box-sizing: border-box;
 }
 
@@ -46,7 +48,6 @@ main{
 }
 
 .video-display {
-  flex: 1 1 25%; /* This means flex-grow: 1, flex-shrink: 1, and flex-basis: 25% */
   box-sizing: border-box; /* Ensures padding and border are included in the width */
   padding: 10px; /* Optional padding for spacing */
 }

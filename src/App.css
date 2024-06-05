@@ -1,5 +1,4 @@
 
-
 .App-header {
   display: flex;
   justify-content: space-between;
@@ -77,6 +76,20 @@
 
 .menu-icons {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   justify-content: center; /* Center the icons horizontally */
   align-items: center;
+}
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.App.dark-mode {
+  background-color: black;
+  color: #ffffff;
+}
+.title{
+  font-weight: bold !important;
 }
