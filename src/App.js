@@ -9,6 +9,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(videoData);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,12 +27,19 @@ const App = () => {
     setFilteredData(filtered);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle('dark-mode');
+  };
+
   return (
-    <div className="App">
+    <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
       <Header
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         toggleMenu={toggleMenu}
+        toggleDarkMode={toggleDarkMode}
+        isDarkMode={isDarkMode} // Pass isDarkMode as a prop
       />
       {isMenuOpen && <Menu toggleMenu={toggleMenu} />}
       <main>
@@ -42,6 +50,7 @@ const App = () => {
             title={video.title}
             description={video.description}
             videoUrl={video.videoUrl}
+            isDarkMode={isDarkMode} // Pass isDarkMode as a prop
           />
         ))}
       </main>

@@ -1,5 +1,4 @@
 
-
 .App-header {
   display: flex;
   justify-content: space-between;
@@ -79,4 +78,13 @@
   display: flex;
   justify-content: center; /* Center the icons horizontally */
   align-items: center;
+}
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.App.dark-mode {
+  background-color: black;
+  color: #ffffff;
 }

@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration }) => {
+const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration ,isDarkMode }) => {
   return (
-    <div className="video-display">
+    <div  className={`video-display ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="video-thumbnail">
         <img src={thumbnailUrl} alt={title} />
         <span className="video-duration">{duration}</span>
