@@ -1,6 +1,73 @@
 import React from 'react';
 
-const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration ,isDarkMode }) => {
+const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type}) => {
+  const videoDisplayStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: isDarkMode ? '#black' : '#black',
+    color: isDarkMode ? '#black' : '#black',
+    padding: '20px',
+    borderRadius: '10px',
+    marginBottom: '20px',
+  };
+
+  const videoContentStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    maxWidth: '600px',
+    width: '100%',
+  };
+
+  const videoThumbnailStyle = {
+    position: 'relative',
+    marginBottom: '20px',
+  };
+
+  const thumbnailImageStyle = {
+    maxWidth: '100%',
+    borderRadius: '10px',
+  };
+
+  const videoDurationStyle = {
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: '#fff',
+    padding: '5px',
+    borderRadius: '5px',
+  };
+
+  const videoDetailsStyle = {
+    textAlign: 'center',
+    marginBottom: '20px',
+  };
+
+  const videoTitleStyle = {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  };
+
+  const videoDescriptionStyle = {
+    fontSize: '16px',
+    lineHeight: '1.5',
+  };
+
+  const videoPlayerStyle = {
+    maxWidth: '100%',
+  };
+
+  const videoInfoStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    fontSize: '14px',
+  };
+
   return (
     <div style={videoDisplayStyle}>
       <div style={videoContentStyle}>

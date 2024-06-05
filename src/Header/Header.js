@@ -8,15 +8,22 @@ const Header = ({ searchQuery, onSearchChange, toggleMenu, toggleDarkMode, isDar
   return (
     <header className={`App-header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="left-buttons">
-        <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
+
+      <div title="dark mode">
+      <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
           <FontAwesomeIcon icon={faMoon} />
         </button>
+      </div>
+
+      <div title="add video">
         <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`}>
-          <FontAwesomeIcon icon={faPlus} />
+          <FontAwesomeIcon icon={faPlus} title='add video' />
         </button>
+        </div>
+
       </div>
       <Search searchQuery={searchQuery} onSearchChange={onSearchChange} />
-      <div className="icon-container">
+      <div className="icon-container"  title="דף הבית של YOUTUBE">
         <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" className="youtube-icon">
           <img src="/youtube_logo_icon.png" alt="YouTube" className="youtube-img" />
         </a>
