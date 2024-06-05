@@ -23,4 +23,6 @@ Default styles for the video container
 .video-display.dark-mode .video-element {
   background-color: white; /* Change video background to white in dark mode */
 }
-
+.title{
+  font-weight: bold !important;
+}

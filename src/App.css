@@ -90,3 +90,6 @@ body.dark-mode {
   background-color: black;
   color: #ffffff;
 }
+.title{
+  font-weight: bold !important;
+}
