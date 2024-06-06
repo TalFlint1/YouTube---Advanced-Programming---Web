@@ -1,6 +1,8 @@
 import React from 'react';
 
-const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type}) => {
+const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type,
+  isMyVideosView,
+  toggleVideoSelection,}) => {
   const videoDisplayStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -35,6 +37,13 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
 
   return (
     <div style={videoDisplayStyle}>
+         {isMyVideosView && (
+        <input
+          type="checkbox"
+          onChange={() => toggleVideoSelection(videoUrl)}
+          className="video-checkbox"
+        />
+      )}
       <div style={videoContentStyle}>
     
         <div style={videoPlayerStyle}>
@@ -64,3 +73,4 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
 };
 
 export default VideoDisplay;
+
