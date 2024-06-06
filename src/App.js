@@ -39,22 +39,22 @@ const App = () => {
         onSearchChange={handleSearchChange}
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
-        isDarkMode={isDarkMode} // Pass isDarkMode as a prop
+        isDarkMode={isDarkMode}
       />
       {isMenuOpen && <Menu toggleMenu={toggleMenu} />}
       <main>
         {filteredData.map((video, index) => (
           <VideoDisplay
-            className="flex-item"
             key={index}
+            index={index} // Pass the index here
             title={video.title}
             description={video.description}
             videoUrl={video.videoUrl}
-            isDarkMode={isDarkMode} 
+            isDarkMode={isDarkMode}
             owner={video.owner}
             views={video.views}
             time_publish={video.time_publish}
-            time_type= {video.time_type}
+            time_type={video.time_type}
           />
         ))}
       </main>
