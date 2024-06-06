@@ -18,44 +18,43 @@ const Register = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
 
-
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,16}$/;
     if (!passwordRegex.test(password)) {
       return 'Password must be between 8-16 characters and combine a-Z letters and numbers.';
     }
-    return null; // Password is valid
+    return null;
   };
 
   const validateConfirmPassword = (confirmPassword) => {
     if (confirmPassword !== formData.password) {
       return "The passwords don't match. Try again.";
     }
-    return null; // Passwords match
+    return null;
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-  
+
     if (name === 'password') {
       const error = validatePassword(value);
       setPasswordError(error);
     }
-  
+
     if (name === 'confirmPassword') {
       const error = validateConfirmPassword(value);
       setConfirmPasswordError(error);
     }
-  
+
     if (name === 'picture') {
-      previewImage(files[0]); // Call the function to preview the image
+      previewImage(files[0]);
     }
-  
+
     setFormData({
       ...formData,
       [name]: files ? files[0] : value,
     });
-  
+
     if (value.trim() !== '') {
       setFieldErrors({
         ...fieldErrors,
@@ -63,7 +62,7 @@ const Register = () => {
       });
     }
   };
-  
+
   const previewImage = (file) => {
     if (file) {
       const reader = new FileReader();
@@ -75,7 +74,6 @@ const Register = () => {
       setImagePreview(null);
     }
   };
-  
 
   const handlePasswordBlur = () => {
     const error = validatePassword(formData.password);
@@ -89,10 +87,10 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newFieldErrors = {};
     let hasErrors = false;
-
+  
     // Check if all required fields are filled
     Object.keys(formData).forEach((key) => {
       if (formData[key] === '' || formData[key] === null) {
@@ -100,21 +98,35 @@ const Register = () => {
         hasErrors = true;
       }
     });
-
+  
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       newFieldErrors.confirmPassword = "The passwords don't match. Try again.";
       hasErrors = true;
     }
-
+  
     if (hasErrors) {
       setFieldErrors(newFieldErrors);
       return;
     }
-
-    // Handle form submission
-    console.log(formData);
+  
+    // Initialize users array if it doesn't exist in localStorage
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+  
+    // Add new user to users array
+    const newUser = {
+      username: formData.username,
+      password: formData.password,
+      name: formData.name,
+      picture: formData.picture ? URL.createObjectURL(formData.picture) : null,
+    };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+  
+    // Handle successful registration (e.g., redirect to login page)
+    alert('Registration completed!');
   };
+  
 
   const toggleTooltip = () => {
     setTooltipVisible(!tooltipVisible);
@@ -216,6 +228,7 @@ const Register = () => {
             type="file"
             name="picture"
             onChange={handleChange}
+            accept="image/*"
             className={fieldErrors.picture ? 'error-input' : ''}
             required
           />
