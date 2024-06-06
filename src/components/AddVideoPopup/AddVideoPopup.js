@@ -11,13 +11,16 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
   const time_type = 'hours';
   const time_publish = '0';
   const views = '0';
+  //TODO change this data to the user that connected data
+  const owner = ' חמי';
+  const user_icon = "https://yt3.ggpht.com/mdK1Wn2nadJ4WvVbr_BmVtzFJZ4FtYDqfO1L5yCPNokDDn2wnJiHbtDz32CvRoz87OqsICnvVQ=s68-c-k-c0x00ffffff-no-rj";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-    addVideo({ title, description, videoUrl, videoFile ,views,time_type,time_publish});
+    addVideo({ title, description, videoUrl, videoFile ,views,time_type,time_publish,owner,user_icon});
     closePopup();
   };
 

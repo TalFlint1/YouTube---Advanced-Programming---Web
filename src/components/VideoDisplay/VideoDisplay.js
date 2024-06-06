@@ -2,7 +2,7 @@ import React from 'react';
 
 const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type,
   isMyVideosView,
-  toggleVideoSelection,}) => {
+  toggleVideoSelection,user_icon,}) => {
   const videoDisplayStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -55,8 +55,9 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
           <div  class="title">
           <span > {title}</span>
           </div>
-        <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src="https://yt3.ggpht.com/mdK1Wn2nadJ4WvVbr_BmVtzFJZ4FtYDqfO1L5yCPNokDDn2wnJiHbtDz32CvRoz87OqsICnvVQ=s68-c-k-c0x00ffffff-no-rj"
-        ></img></span>
+        <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src={user_icon}
+        ></img> 
+        </span>
         </div>
         <div style={videoInfoStyle}>
         <span> </span>

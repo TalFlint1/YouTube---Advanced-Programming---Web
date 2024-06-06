@@ -121,7 +121,9 @@ const App = () => {
             time_publish={video.time_publish}
             time_type={video.time_type}
             isMyVideosView={isMyVideosView}
-            toggleVideoSelection={() => toggleVideoSelection(video.id)}
+            toggleVideoSelection={() => toggleVideoSelection(video.id)
+             }
+             user_icon={video.user_icon}
           />
         ))}
       </main>
