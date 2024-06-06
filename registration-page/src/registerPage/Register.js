@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../assets/exclamation_point.svg';
 import './Register.css';
-import youtubeLogo from '../assets/youtubelogo.png';
+import { ReactComponent as YoutubeLogo } from '../assets/youtube_logo.svg'; // Updated import
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -135,10 +135,10 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="logo-container">
-        <img src={youtubeLogo} alt="YouTube Logo" className="youtube-logo" />
+        <YoutubeLogo className="youtube-logo" />
       </div>
       <form className="register-form" onSubmit={handleSubmit} noValidate>
-        <h2>Sign up</h2>
+        <h1>Sign up</h1>
         <label>Username:</label>
         <input
           type="text"

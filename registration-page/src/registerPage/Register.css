@@ -13,7 +13,7 @@
 .register-form {
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 320px;
   height: 580px;
@@ -93,11 +93,11 @@
 }
 
 .youtube-logo {
-  width: 100px; /* Adjust the width as needed */
+  width: 50px; /* Adjust the width as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute; /* Position the logo absolutely */
   top: 15px; /* Align the top edge of the logo with the top edge of the container */
-  left: -173px; /* Align the left edge of the logo with the left edge of the container */
+  left: -163px; /* Align the left edge of the logo with the left edge of the container */
 }
 
 .logo-container {
