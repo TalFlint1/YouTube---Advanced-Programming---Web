@@ -46,15 +46,19 @@ const App = () => {
         {filteredData.map((video, index) => (
           <VideoDisplay
             key={index}
-            index={index} // Pass the index here
+            index={index}
             title={video.title}
             description={video.description}
             videoUrl={video.videoUrl}
-            isDarkMode={isDarkMode}
+            thumbnailUrl={video.thumbnailUrl}
+            duration={video.duration}
             owner={video.owner}
+            isDarkMode={isDarkMode}
             views={video.views}
             time_publish={video.time_publish}
             time_type={video.time_type}
+            likes={video.likes}
+            comments={video.comments}
           />
         ))}
       </main>
