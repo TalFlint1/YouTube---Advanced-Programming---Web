@@ -21,9 +21,23 @@
     line-height: 1.5;
   }
   
-  .like-button, .comment-section button {
+  .comment-section button {
     padding: 10px 20px;
     margin-top: 10px;
+  }
+
+  .like-button, .dislike-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  .like-button.active, .dislike-button.active {
+    background-color: black;
+    color: white;
   }
   
   .comment-section {

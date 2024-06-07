@@ -6,13 +6,32 @@ import './VideoPage.css';
 const VideoPage = () => {
   const { id } = useParams();
   const video = videoData[id];
-
+  
   const [likes, setLikes] = useState(video.likes);
+  // indicator if like button is pressed
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+
   const [comments, setComments] = useState(video.comments);
 
   const handleLike = () => {
-    setLikes(likes + 1);
-    video.likes = likes + 1; // Update JSON data
+    if (liked) {
+      setLikes(likes - 1);
+    } else {
+      setLikes(likes + 1);
+    }
+    setLiked(!liked);
+    if (disliked) {
+      setDisliked(false);
+    }
+  };
+
+  const handleDislike = () => {
+    if (liked) {
+      setLiked(false);
+      setLikes(likes - 1);
+    }
+    setDisliked(!disliked);
   };
 
   const handleComment = (newComment) => {
@@ -30,7 +49,8 @@ const VideoPage = () => {
       <p>{video.owner}</p>
       <p>{video.views} views</p>
       <p>Published {video.time_publish} {video.time_type} ago</p>
-      <button onClick={handleLike} className="like-button">Like ({likes})</button>
+      <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>Like ({likes})</button>
+      <button onClick={handleDislike} className={disliked ? "dislike-button active" : "dislike-button"}>Dislike</button>
       <CommentSection comments={comments} handleComment={handleComment} />
     </div>
   );
