@@ -5,8 +5,8 @@ import VideoDisplay from './components/VideoDisplay/VideoDisplay';
 import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup'; // Import the popup component
 import './App.css';
 import videoData from './videoData.json';
-import Register from './registerPage/Register';
-import Login from './loginPage/Login'; // Import the Login component
+import Register from './pages/registerPage/Register';
+import Login from './pages/loginPage/Login'; // Import the Login component
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ReactComponent as ErrorSign } from '../assets/exclamation_point.svg';
+import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Login.css';
-import { ReactComponent as YoutubeLogo } from '../assets/youtube_logo.svg'; // Updated import
+import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg'; // Updated import
 
 const Login = () => {
   const [formData, setFormData] = useState({
