@@ -1,9 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './Menu.css'; // Add CSS specific to Menu component
 
-const Menu = ({ toggleMenu }) => {
+const Menu = ({ toggleMenu, showMyVideos, isMyVideosView, deleteSelectedVideos }) => {
   return (
     <div className="side-menu">
       <div className="icon-container">
@@ -13,8 +13,15 @@ const Menu = ({ toggleMenu }) => {
         <FontAwesomeIcon icon={faBars} className="menu-icon" onClick={toggleMenu} />
       </div>
       <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/my-videos">My videos</a></li>
+        <li><a href="#" onClick={showMyVideos}>Home</a></li>
+        <li><a href="#" onClick={showMyVideos}>My Videos</a></li>
+        {isMyVideosView && (
+          <li>
+            <button onClick={deleteSelectedVideos} className="delete-button">
+              <FontAwesomeIcon icon={faTrash} /> Delete Selected
+            </button>
+          </li>
+        )}
         {/* Add more menu items as needed */}
       </ul>
     </div>
