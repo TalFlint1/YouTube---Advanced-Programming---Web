@@ -1,0 +1,28 @@
+Default styles for the video container
+.video-container {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f0f0f0; /* Default light background */
+  color: #000; /* Default text color */
+}
+
+/* Styles for the video element */
+.video-element {
+  width: 100%;
+  height: auto;
+  background-color: black; /* Default video background color */
+}
+
+/* Dark mode styles */
+.video-container.dark-mode {
+  background-color: #1e1e1e; /* Dark background color */
+  color: #fff; /* Light text color */
+}
+
+.video-display.dark-mode .video-element {
+  background-color: white; /* Change video background to white in dark mode */
+}
+.title{
+  font-weight: bold !important;
+}

@@ -1,0 +1,82 @@
+
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  
+  
+}
+.youtube-icon {
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: center;
+  margin-right: 20px; /* Space between the icons */
+
+}
+.search-icon
+{
+  text-decoration: none;
+  margin-right: 20px; /* Space between the icons */
+
+}
+.youtube-img {
+  height: 40px; /* Adjust the height as needed */
+  width: auto;  /* Maintain aspect ratio */
+}
+
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+  color: black;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.side-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.side-menu ul li {
+  margin-bottom: 10px;
+}
+
+.side-menu ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+
+
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  margin-right: 10px;
+}
+
+.menu-icons {
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: center;
+}
