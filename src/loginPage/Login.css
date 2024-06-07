@@ -1,0 +1,103 @@
+/* src/components/Login.css */
+
+.login-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+  }
+  
+  .login-form-container {
+    width: 400px; /* Adjust the width as needed */
+  }
+  
+  .login-form {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    height: 380px;
+    text-align: center;
+  }
+  
+  .login-form h2 {
+    margin-bottom: 20px;
+  }
+  
+  .login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.73rem; /* Adjust the font size as needed */
+  }
+  
+  .login-form input {
+    width: 300px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .login-form button {
+    width: 140px;
+    padding: 10px;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .login-form button:hover {
+    background-color: #cc0000;
+  }
+  
+  .error-message {
+    color: red;
+    width: 280px;
+    font-size: 0.75rem;
+    margin-top: 0; /* Remove default margin */
+    position: relative; /* Allows for top and left adjustments */
+    top: -8px; /* Adjust this value to move the message and icon up */
+    left: 10px; /* Adjust this value to move the message and icon left */
+    display: flex; /* Use flexbox */
+    align-items: flex-start; /* Align items at the start of the container */
+  }
+  
+  .error-icon-container {
+    flex-shrink: 0; /* Prevent the icon from shrinking */
+    margin-right: 5px; /* Add space between icon and text */
+  }
+  
+  .error-icon {
+    width: 18px; /* Adjust the width if needed */
+    height: 18px; /* Adjust the height if needed */
+    position: relative; /* Allows for top adjustments */
+    top: -2px; /* Adjust this value to move the icon up */
+  }
+  
+  .error-input {
+    border-color: red !important; /* Set border color to red */
+    border-width: 2px; /* Increase border width */
+    border-radius: 4px; /* Add border radius for rounded edges */
+  }
+  
+  
+  .youtube-logo-login {
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    position: absolute; /* Position the logo absolutely */
+    top: 15px; /* Align the top edge of the logo with the top edge of the container */
+    left: -163px; /* Align the left edge of the logo with the left edge of the container */
+  }
+
+  .logo-container {
+    position: relative; /* Ensure relative positioning for the container */
+  }
