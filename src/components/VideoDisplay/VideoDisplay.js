@@ -1,14 +1,17 @@
+// src/components/VideoDisplay/VideoDisplay.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './VideoDisplay.css';
 
-const VideoDisplay = ({ index, title, description, videoUrl, thumbnailUrl, duration, owner, isDarkMode, views, time_publish, time_type }) => {
+const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type,
+  isMyVideosView,
+  toggleVideoSelection, user_icon,
+  id }) => {
   const videoDisplayStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: isDarkMode ? '#1e1e1e' : '#f0f0f0',
-    color: isDarkMode ? '#fff' : '#000',
+    backgroundColor: isDarkMode ? '#black' : '#black',
+    color: isDarkMode ? '#black' : '#black',
     padding: '20px',
     borderRadius: '10px',
     marginBottom: '20px',
@@ -36,7 +39,14 @@ const VideoDisplay = ({ index, title, description, videoUrl, thumbnailUrl, durat
 
   return (
     <div style={videoDisplayStyle}>
-      <Link to={`/video/${index}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      {isMyVideosView && (
+        <input
+          type="checkbox"
+          onChange={() => toggleVideoSelection(videoUrl)}
+          className="video-checkbox"
+        />
+      )}
+      <Link to={`/video/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div style={videoContentStyle}>
           <div style={videoPlayerStyle}>
             <video controls style={videoPlayerStyle}>
@@ -44,26 +54,21 @@ const VideoDisplay = ({ index, title, description, videoUrl, thumbnailUrl, durat
             </video>
           </div>
           <div style={videoInfoStyle}>
-            <div className="title">
+            <div  class="title">
               <span>{title}</span>
             </div>
-            <span>
-              <img
-                id="img"
-                draggable="false"
-                className="style-scope yt-img-shadow"
-                alt=""
-                width="28"
-                src="https://yt3.ggpht.com/mdK1Wn2nadJ4WvVbr_BmVtzFJZ4FtYDqfO1L5yCPNokDDn2wnJiHbtDz32CvRoz87OqsICnvVQ=s68-c-k-c0x00ffffff-no-rj"
-              />
+            <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src={user_icon}
+              ></img>
             </span>
           </div>
           <div style={videoInfoStyle}>
+            <span> </span>
             <span>{owner}</span>
           </div>
           <div style={videoInfoStyle}>
-            <span>Published {time_publish} {time_type} ago</span>
-            <span>{views} views</span>
+          <span>Published {time_publish} {time_type} ago</span>
+            <span>
+              {views} views</span>
           </div>
         </div>
       </Link>
