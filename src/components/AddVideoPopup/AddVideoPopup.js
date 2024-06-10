@@ -1,4 +1,3 @@
-// src/components/AddVideoPopup/AddVideoPopup.js
 import React, { useState } from 'react';
 import './AddVideoPopup.css'; // Create this CSS file for styling the popup
 import { faUpload} from '@fortawesome/free-solid-svg-icons';

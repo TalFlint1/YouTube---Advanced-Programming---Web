@@ -26,8 +26,8 @@ const Login = () => {
 
     if (user) {
       // Authentication successful
-      // Redirect to the video display
-      navigate('/');
+      localStorage.setItem('currentUser', JSON.stringify(user)); // Store the logged-in user in localStorage
+      navigate('/'); // Redirect to the video display
     } else {
       // Authentication failed
       setError('Username or password are not correct. Please try again.');
@@ -72,7 +72,7 @@ const Login = () => {
         )}
         <button type="submit">Login</button>
       </form>
-      <p> Don't have an account? <Link to="/register">Register here </Link></p>
+      <p>Don't have an account? <Link to="/register">Register here</Link></p>
     </div>
   );
 };

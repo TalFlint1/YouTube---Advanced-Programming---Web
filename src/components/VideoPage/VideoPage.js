@@ -1,8 +1,8 @@
-// src/components/VideoPage/VideoPage.js
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import videoData from '../../videoData.json';
 import './VideoPage.css';
+import { isUserLoggedIn } from '../../authCheck';
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -12,6 +12,7 @@ const VideoPage = () => {
   const [liked, setLiked] = useState(null); // null for no action, 'like' for like, 'dis' for dislike
   const [disliked, setDisliked] = useState(null); // null for no action
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
@@ -51,6 +52,12 @@ const VideoPage = () => {
   }, [likes, comments, liked, disliked, video, id]);
 
   const handleLike = () => {
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
+
     if (liked) {
       setLikes(likes - 1);
     } else {
@@ -63,6 +70,12 @@ const VideoPage = () => {
   };
 
   const handleDislike = () => {
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
+
     if (liked) {
       setLiked(false);
       setLikes(likes - 1);
@@ -71,6 +84,12 @@ const VideoPage = () => {
   };
 
   const handleComment = (newComment) => {
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
+
     const updatedComments = [...comments, newComment];
     setComments(updatedComments);
     if (video) {

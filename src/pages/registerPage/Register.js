@@ -124,7 +124,8 @@ const Register = () => {
     };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
-  
+    // save the registered user's information in localStorage 'currentUser'
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
     // Handle successful registration (e.g., redirect to login page)
     navigate('/');
   };
