@@ -1,18 +1,54 @@
-import React, { useState } from 'react';
+// src/components/VideoPage/VideoPage.js
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import videoData from '../../videoData.json';
 import './VideoPage.css';
 
 const VideoPage = () => {
   const { id } = useParams();
-  const video = videoData[id];
-  
-  const [likes, setLikes] = useState(video.likes);
-  // indicator if like button is pressed
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+  const [video, setVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(null); // null for no action, 'like' for like, 'dis' for dislike
+  const [disliked, setDisliked] = useState(null); // null for no action
+  const [comments, setComments] = useState([]);
 
-  const [comments, setComments] = useState(video.comments);
+  useEffect(() => {
+    const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+    const storedVideo = storedVideos.find((v) => v.id === parseInt(id));
+
+    let initialVideo;
+
+    if (storedVideo) {
+      initialVideo = storedVideo;
+    } else {
+      initialVideo = videoData.find((v) => v.id === parseInt(id));
+      if (initialVideo) {
+        // Save the video to localStorage only if it is not already present
+        storedVideos.push(initialVideo);
+        localStorage.setItem('videos', JSON.stringify(storedVideos));
+      }
+    }
+
+    if (initialVideo) {
+      setVideo(initialVideo);
+      setLikes(initialVideo.likes || 0);
+      setComments(initialVideo.comments || []);
+      setLiked(initialVideo.liked || null);
+      setDisliked(initialVideo.disliked || null);
+    }
+
+    setLoading(false);
+  }, [id]);
+
+  useEffect(() => {
+    if (video) {
+      const updatedVideo = { ...video, likes, comments, liked, disliked };
+      const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+      const updatedVideos = storedVideos.map(v => (v.id === parseInt(id) ? updatedVideo : v));
+      localStorage.setItem('videos', JSON.stringify(updatedVideos));
+    }
+  }, [likes, comments, liked, disliked, video, id]);
 
   const handleLike = () => {
     if (liked) {
@@ -35,9 +71,20 @@ const VideoPage = () => {
   };
 
   const handleComment = (newComment) => {
-    setComments([...comments, newComment]);
-    video.comments = [...comments, newComment]; // Update JSON data
+    const updatedComments = [...comments, newComment];
+    setComments(updatedComments);
+    if (video) {
+      video.comments = updatedComments;
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!video) {
+    return <div>Video not found</div>;
+  }
 
   return (
     <div className="video-page">
@@ -51,16 +98,16 @@ const VideoPage = () => {
       <p>Published {video.time_publish} {video.time_type} ago</p>
       <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>Like ({likes})</button>
       <button onClick={handleDislike} className={disliked ? "dislike-button active" : "dislike-button"}>Dislike</button>
-      <CommentSection comments={comments} handleComment={handleComment} />
+      <CommentSection comments={comments} handleComment={handleComment} videoId={video.id} />
     </div>
   );
 };
 
-const CommentSection = ({ comments, handleComment }) => {
+const CommentSection = ({ comments, handleComment, videoId }) => {
   const [newComment, setNewComment] = useState('');
 
   const submitComment = () => {
-    handleComment({ text: newComment, likes: 0, replies: [] });
+    handleComment({ text: newComment, likes: 0, replies: [], videoId });
     setNewComment('');
   };
 
@@ -68,7 +115,7 @@ const CommentSection = ({ comments, handleComment }) => {
     <div className="comment-section">
       <h2>Comments</h2>
       {comments.map((comment, index) => (
-        <Comment key={index} comment={comment} />
+        <Comment key={index} comment={comment} videoId={videoId} />
       ))}
       <input
         type="text"
@@ -81,24 +128,48 @@ const CommentSection = ({ comments, handleComment }) => {
   );
 };
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, videoId }) => {
   const [likes, setLikes] = useState(comment.likes);
-  const [replies, setReplies] = useState(comment.replies);
+  const [replies, setReplies] = useState(comment.replies || []);
   const [newReply, setNewReply] = useState('');
 
   const handleLike = () => {
-    setLikes(likes + 1);
-    comment.likes = likes + 1; // Update JSON data
+    const updatedLikes = likes + 1;
+    setLikes(updatedLikes);
+    comment.likes = updatedLikes; // Update JSON data
+    updateLocalStorage();
   };
 
   const handleReply = (newReply) => {
-    setReplies([...replies, newReply]);
-    comment.replies = [...replies, newReply]; // Update JSON data
+    const updatedReplies = [...replies, newReply];
+    setReplies(updatedReplies);
+    comment.replies = updatedReplies; // Update JSON data
+    updateLocalStorage();
   };
 
   const submitReply = () => {
-    handleReply({ text: newReply, likes: 0, replies: [] });
+    handleReply({ text: newReply, likes: 0, replies: [], videoId });
     setNewReply('');
+  };
+
+  const updateLocalStorage = () => {
+    const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+    const video = storedVideos.find(v => v.id === videoId);
+    if (video) {
+      video.comments = updateComments(video.comments, comment);
+      localStorage.setItem('videos', JSON.stringify(storedVideos));
+    }
+  };
+
+  const updateComments = (comments, updatedComment) => {
+    return comments.map(c => {
+      if (c.text === updatedComment.text) {
+        return updatedComment;
+      } else if (c.replies) {
+        return { ...c, replies: updateComments(c.replies, updatedComment) };
+      }
+      return c;
+    });
   };
 
   return (
@@ -107,7 +178,7 @@ const Comment = ({ comment }) => {
       <button onClick={handleLike}>Like ({likes})</button>
       <div className="replies">
         {replies.map((reply, index) => (
-          <Comment key={index} comment={reply} />
+          <Comment key={index} comment={reply} videoId={videoId} />
         ))}
       </div>
       <input

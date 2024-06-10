@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
+import { useNavigate } from 'react-router-dom'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const Register = () => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,16}$/;
@@ -124,7 +126,7 @@ const Register = () => {
     localStorage.setItem('users', JSON.stringify(users));
   
     // Handle successful registration (e.g., redirect to login page)
-    alert('Registration completed!');
+    navigate('/');
   };
   
 

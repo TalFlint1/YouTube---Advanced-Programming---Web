@@ -3,6 +3,7 @@ import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg'
 import './Login.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg'; // Updated import
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Updated import
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,8 +26,8 @@ const Login = () => {
 
     if (user) {
       // Authentication successful
-      // Redirect to the dashboard or perform other actions
-      alert('Login successful!');
+      // Redirect to the video display
+      navigate('/');
     } else {
       // Authentication failed
       setError('Username or password are not correct. Please try again.');

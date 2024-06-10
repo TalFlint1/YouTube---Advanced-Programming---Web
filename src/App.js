@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
@@ -13,19 +13,26 @@ import VideoPage from './components/VideoPage/VideoPage';
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [allVideos, setAllVideos] = useState(videoData);
-  const [filteredData, setFilteredData] = useState(videoData);
+  const [allVideos, setAllVideos] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
 
+  useEffect(() => {
+    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    const combinedVideos = [...videoData, ...storedUploads];
+    setAllVideos(combinedVideos);
+    setFilteredData(combinedVideos);
+  }, []);
+
   const toggleMenu = () => {
     if (isMenuOpen && isMyVideosView) 
-      {
-        showMyVideos();
-      }
+    {
+      showMyVideos();
+    }
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -51,11 +58,15 @@ const App = () => {
   };
 
   const addVideo = (newVideo) => {
-    const maxId = Math.max(...allVideos.map(video => video.id));
+    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    const maxId = Math.max(...allVideos.map(video => video.id), 0);
     const newId = maxId + 1;
     const videoWithId = { ...newVideo, id: newId };
 
     const updatedVideos = [...allVideos, videoWithId];
+    const updatedUploads = [...storedUploads, videoWithId];
+
+    localStorage.setItem('uploads', JSON.stringify(updatedUploads));
     setAllVideos(updatedVideos);
     setUserVideos([...userVideos, videoWithId]);
     filterData(searchQuery, updatedVideos);
@@ -86,6 +97,11 @@ const App = () => {
     const updatedAllVideos = allVideos.filter(
       (video) => !selectedVideos.includes(video.id)
     );
+    const updatedUploads = updatedAllVideos.filter(
+      (video) => video.id > videoData.length // Assuming that only uploaded videos have IDs greater than the length of videoData
+    );
+
+    localStorage.setItem('uploads', JSON.stringify(updatedUploads));
     setUserVideos(updatedUserVideos);
     setAllVideos(updatedAllVideos);
     setSelectedVideos([]);
@@ -123,14 +139,15 @@ const App = () => {
                     title={video.title}
                     description={video.description}
                     videoUrl={video.videoUrl}
-                    isDarkMode={isDarkMode}
+                    thumbnailUrl={video.thumbnailUrl}
+                    duration={video.duration}
                     owner={video.owner}
+                    isDarkMode={isDarkMode}
                     views={video.views}
                     time_publish={video.time_publish}
                     time_type={video.time_type}
                     isMyVideosView={isMyVideosView}
-                    toggleVideoSelection={() => toggleVideoSelection(video.id)
-                    }
+                    toggleVideoSelection={() => toggleVideoSelection(video.id)}
                     user_icon={video.user_icon}
                     id={video.id} // Pass the video id
                   />
