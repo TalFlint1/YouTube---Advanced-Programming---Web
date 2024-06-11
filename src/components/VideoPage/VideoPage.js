@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import videoData from '../../videoData.json';
 import './VideoPage.css';
 import { isUserLoggedIn } from '../../authCheck';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -115,8 +117,13 @@ const VideoPage = () => {
       <p>{video.owner}</p>
       <p>{video.views} views</p>
       <p>Published {video.time_publish} {video.time_type} ago</p>
-      <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>Like ({likes})</button>
-      <button onClick={handleDislike} className={disliked ? "dislike-button active" : "dislike-button"}>Dislike</button>
+      <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>
+      <span>{likes}</span>
+      <FontAwesomeIcon icon={faThumbsUp} />
+      </button>
+      <button className={disliked ? "dislike-button active" : "dislike-button"} onClick={handleDislike}>
+      <FontAwesomeIcon icon={faThumbsDown} />
+      </button>
       <CommentSection comments={comments} handleComment={handleComment} videoId={video.id} />
     </div>
   );
@@ -155,14 +162,14 @@ const Comment = ({ comment, videoId }) => {
   const handleLike = () => {
     const updatedLikes = likes + 1;
     setLikes(updatedLikes);
-    comment.likes = updatedLikes; // Update JSON data
+    comment.likes = updatedLikes;
     updateLocalStorage();
   };
 
   const handleReply = (newReply) => {
     const updatedReplies = [...replies, newReply];
     setReplies(updatedReplies);
-    comment.replies = updatedReplies; // Update JSON data
+    comment.replies = updatedReplies; 
     updateLocalStorage();
   };
 
