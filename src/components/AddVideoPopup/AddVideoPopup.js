@@ -10,15 +10,22 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
   const time_type = 'hours';
   const time_publish = '0';
   const views = '0';
-  const owner = ' חמי';
-  const user_icon = "https://yt3.ggpht.com/mdK1Wn2nadJ4WvVbr_BmVtzFJZ4FtYDqfO1L5yCPNokDDn2wnJiHbtDz32CvRoz87OqsICnvVQ=s68-c-k-c0x00ffffff-no-rj";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-   addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const owner = currentUser ? currentUser.name : null;
+    const user_icon =currentUser ? currentUser.picture : null;
+
+    // Check if username is available
+        // Call the addVideo function with the required parameters
+        addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
+      
+     
+        // Close the popup   addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, username, user_icon });
     closePopup();
   };
 
