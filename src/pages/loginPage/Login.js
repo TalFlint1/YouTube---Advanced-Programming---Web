@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Login.css';
-import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg'; // Updated import
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; // Updated import
+import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ closePopup }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = formData;
 
-    // Retrieve registered users from localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Check if the entered username and password match any registered user
     const user = users.find((user) => user.username === username && user.password === password);
 
     if (user) {
-      // Authentication successful
-      localStorage.setItem('currentUser', JSON.stringify(user)); // Store the logged-in user in localStorage
-      navigate('/'); // Redirect to the video display
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      closePopup(); // Close the popup on successful login
+      navigate('/');
     } else {
-      // Authentication failed
       setError('Username or password are not correct. Please try again.');
     }
   };
@@ -39,8 +34,8 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  return (
-    <div className="login-container">
+  return (   
+    <div className="login-form-container">
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo-login" />
       </div>
@@ -72,7 +67,7 @@ const Login = () => {
         )}
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <Link to="/register">Register here</Link></p>
+      <p>Don't have an account? <a href="/register">Register here</a></p>
     </div>
   );
 };
