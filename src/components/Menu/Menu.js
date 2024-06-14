@@ -2,9 +2,12 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './Menu.css'; // Add CSS specific to Menu component
+import { useLocation } from 'react-router-dom';
 
 const Menu = ({ toggleMenu, showMyVideos, isMyVideosView, deleteSelectedVideos, isDarkMode }) => {
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+  const location = useLocation();
+  const isBaseUrl = location.pathname === '/';
 
   return (
     <div className={`side-menu ${modeClass}`}>
@@ -16,8 +19,8 @@ const Menu = ({ toggleMenu, showMyVideos, isMyVideosView, deleteSelectedVideos, 
       </div>
       <ul>
         <li><a href="/" onClick={showMyVideos}>Home</a></li>
-        <li><a onClick={showMyVideos}>My Videos</a></li>
-        {isMyVideosView && (
+        {isBaseUrl && (    <li><a onClick={showMyVideos}>My Videos</a></li>)}
+        {(isMyVideosView && isBaseUrl) && (
           <li>
             <button onClick={deleteSelectedVideos} className="delete-button">
               <FontAwesomeIcon icon={faTrash} /> Delete Selected
