@@ -79,11 +79,19 @@ const App = () => {
   const showMyVideos = () => {
     if (isMyVideosView) {
       setIsMyVideosView(false);
+      const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      setFilteredData(storedUploads);
+
       filterData(searchQuery, allVideos);
     } else {
       setIsMyVideosView(true);
       filterData(searchQuery, userVideos);
-    }
+
+      // const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      // const combinedVideos = [...videoData, ...storedUploads];
+      // setAllVideos(combinedVideos);
+      // setFilteredData(combinedVideos);
+        }
   };
 
   const toggleVideoSelection = (videoId) => {

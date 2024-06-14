@@ -18,7 +18,7 @@ const Menu = ({ toggleMenu, showMyVideos, isMyVideosView, deleteSelectedVideos, 
         <FontAwesomeIcon icon={faBars} className="menu-icon" onClick={toggleMenu} />
       </div>
       <ul>
-        <li><a href="/" onClick={showMyVideos}>Home</a></li>
+        <li><a href="/" >Home</a></li>
         {isBaseUrl && (    <li><a onClick={showMyVideos}>My Videos</a></li>)}
         {(isMyVideosView && isBaseUrl) && (
           <li>
