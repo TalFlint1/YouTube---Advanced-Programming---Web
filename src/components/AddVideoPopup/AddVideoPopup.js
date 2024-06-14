@@ -11,7 +11,7 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
   const time_type = 'hours';
   const time_publish = '0';
   const views = '0';
-  //TODO change this data to the user that connected data
+   //TODO change this data to the user that connected data
   const owner = ' חמי';
   const user_icon = "https://yt3.ggpht.com/mdK1Wn2nadJ4WvVbr_BmVtzFJZ4FtYDqfO1L5yCPNokDDn2wnJiHbtDz32CvRoz87OqsICnvVQ=s68-c-k-c0x00ffffff-no-rj";
 
@@ -20,12 +20,22 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-    addVideo({ title, description, videoUrl, videoFile ,views,time_type,time_publish,owner,user_icon});
+    const newVideo = { title, description, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon };
+    addVideo(newVideo);
+    saveVideoToLocalStorage(newVideo);
     closePopup();
   };
 
   const handleFileChange = (e) => {
     setVideoFile(e.target.files[0]);
+  };
+
+  const saveVideoToLocalStorage = (video) => {
+    const storedVideos = JSON.parse(localStorage.getItem('uploads')) || [];
+    const newVideoId = storedVideos.length ? Math.max(storedVideos.map(v => v.id)) + 1 : 1;
+    video.id = newVideoId;
+    storedVideos.push(video);
+    localStorage.setItem('videos', JSON.stringify(storedVideos));
   };
 
   return (
@@ -38,13 +48,16 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
             Title:
             <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </label>
-          
+          <label>
+            Description:
+            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+          </label>
           <label>
             Video URL:
             <input type="url" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} required />
           </label>
           <label>
-          <FontAwesomeIcon icon={faUpload} />
+            <FontAwesomeIcon icon={faUpload} /> 
               Or Upload Video:
             <input type="file" accept="video/*" onChange={handleFileChange} />
           </label>
@@ -57,3 +70,4 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
 };
 
 export default AddVideoPopup;
+
