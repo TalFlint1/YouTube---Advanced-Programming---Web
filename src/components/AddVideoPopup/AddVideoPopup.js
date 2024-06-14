@@ -27,6 +27,14 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
     setVideoFile(e.target.files[0]);
   };
 
+  const saveVideoToLocalStorage = (video) => {
+    const storedVideos = JSON.parse(localStorage.getItem('uploads')) || [];
+    const newVideoId = storedVideos.length ? Math.max(storedVideos.map(v => v.id)) + 1 : 1;
+    video.id = newVideoId;
+    storedVideos.push(video);
+    localStorage.setItem('videos', JSON.stringify(storedVideos));
+  };
+
   return (
     <div className="popup-overlay">
       <div className="popup-content">
@@ -63,3 +71,4 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
 };
 
 export default AddVideoPopup;
+
