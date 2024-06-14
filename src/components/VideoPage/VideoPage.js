@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import videoData from '../../videoData.json';
 import './VideoPage.css';
+import VideoDisplay from '../VideoDisplay/VideoDisplay';
 import { isUserLoggedIn } from '../../authCheck';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -27,7 +28,6 @@ const VideoPage = () => {
     } else {
       initialVideo = videoData.find((v) => v.id === parseInt(id));
       if (initialVideo) {
-        // Save the video to localStorage only if it is not already present
         storedVideos.push(initialVideo);
         localStorage.setItem('videos', JSON.stringify(storedVideos));
       }
@@ -109,22 +109,48 @@ const VideoPage = () => {
 
   return (
     <div className="video-page">
-      <h1>{video.title}</h1>
-      <video controls>
-        <source src={video.videoUrl} type="video/mp4" />
-      </video>
-      <p>{video.description}</p>
-      <p>{video.owner}</p>
-      <p>{video.views} views</p>
-      <p>Published {video.time_publish} {video.time_type} ago</p>
-      <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>
-      <span>{likes}</span>
-      <FontAwesomeIcon icon={faThumbsUp} />
-      </button>
-      <button className={disliked ? "dislike-button active" : "dislike-button"} onClick={handleDislike}>
-      <FontAwesomeIcon icon={faThumbsDown} />
-      </button>
-      <CommentSection comments={comments} handleComment={handleComment} videoId={video.id} />
+      <div className="video-main">
+        <h1>{video.title}</h1>
+        <video controls>
+          <source src={video.videoUrl} type="video/mp4" />
+        </video>
+        <div className="video-details">
+          <div className="video-info">
+            <p>{video.description}</p>
+            <p>{video.owner}</p>
+            <p>{video.views} views</p>
+            <p>Published {video.time_publish} {video.time_type} ago</p>
+          </div>
+          <div className="like-dislike-buttons">
+            <button onClick={handleLike} className={liked ? "like-button active" : "like-button"}>
+              <span>{likes}</span>
+              <FontAwesomeIcon icon={faThumbsUp} />
+            </button>
+            <button className={disliked ? "dislike-button active" : "dislike-button"} onClick={handleDislike}>
+              <FontAwesomeIcon icon={faThumbsDown} />
+            </button>
+          </div>
+        </div>
+        <CommentSection comments={comments} handleComment={handleComment} videoId={video.id} />
+      </div>
+      <div className="suggested-videos">
+        {videoData.map((video, index) => (
+          <VideoDisplay
+            key={index}
+            title={video.title}
+            description={video.description}
+            videoUrl={video.videoUrl}
+            thumbnailUrl={video.thumbnailUrl}
+            duration={video.duration}
+            owner={video.owner}
+            views={video.views}
+            time_publish={video.time_publish}
+            time_type={video.time_type}
+            user_icon={video.user_icon}
+            id={video.id}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -147,7 +173,7 @@ const CommentSection = ({ comments, handleComment, videoId }) => {
         type="text"
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Add a comment"
+        placeholder="Add a new comment"
       />
       <button onClick={submitComment}>Submit</button>
     </div>
