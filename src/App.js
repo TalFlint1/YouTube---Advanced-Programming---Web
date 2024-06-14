@@ -18,7 +18,24 @@ const App = () => {
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
-  const [isLoginOpen, setIsLoginOpen] = useState(false); // State to manage Login modal
+  const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
+  const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
+
+  const openLoginPopup = () => {
+    setIsLoginPopupVisible(true);
+    setIsRegisterPopupVisible(false);
+  };
+
+  const closeLoginPopup = () => {
+    setIsLoginPopupVisible(false);
+  };
+  const openRegisterPopup = () => {
+    setIsRegisterPopupVisible(true);
+  };
+
+  const closeRegisterPopup = () => {
+    setIsRegisterPopupVisible(false);
+  };
 
   const toggleMenu = () => {
     if (isMenuOpen && isMyVideosView) 
@@ -101,7 +118,8 @@ const App = () => {
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
         togglePopup={togglePopup} // Pass togglePopup as a prop
-        openLoginModal={() => setIsLoginOpen(true)} // Example prop to open Login modal
+        openLoginPopup={openLoginPopup}
+        openRegisterPopup={openRegisterPopup}
       />
       {isMenuOpen && (
         <Menu
@@ -132,8 +150,15 @@ const App = () => {
         ))}
       </main>
       {isPopupOpen && <AddVideoPopup closePopup={togglePopup} addVideo={addVideo} />}
-      <Register />
-      <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} /> {/* Render Login component */}
+      <Register 
+        isVisible={isRegisterPopupVisible}
+        closeRegisterPopup={closeRegisterPopup}
+      />
+      <Login 
+        isVisible={isLoginPopupVisible}
+        closeLoginPopup={closeLoginPopup}
+        openRegisterPopup={openRegisterPopup}
+      />
     </div>
   );
 };

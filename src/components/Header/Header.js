@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPlus, faMoon, faCircleUser  , faVideo} from '@fortawesome/free-solid-svg-icons';
 import './Header.css';
 import Search from '../Search/Search';
+import Login, { openForm } from '../../pages/loginPage/Login';
 
-const Header = ({ searchQuery, onSearchChange, toggleMenu, toggleDarkMode, isDarkMode, togglePopup }) => {
+const Header = ({ searchQuery, onSearchChange, toggleMenu, toggleDarkMode, isDarkMode, togglePopup}) => {
   return (
     <header className={`App-header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="left-buttons">
         <div title="log in">
-          <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`}>
+        <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={openForm}>
             <FontAwesomeIcon icon={faCircleUser} />
           </button>
         </div>

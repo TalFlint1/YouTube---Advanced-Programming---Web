@@ -3,7 +3,7 @@ import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg'
 import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 
-const Register = () => {
+const Register = ({ isVisible, closeRegisterPopup }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -120,11 +120,15 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
+    <div className="form-popup" id="myForm" style={{ display: isVisible ? 'block' : 'none' }}>      
+      
+      <form className="register-form" onSubmit={handleSubmit} noValidate>
+      <div>
+        <button type="button" id="btn-cancel" onClick={closeRegForm}>X</button>
+      </div>
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo" />
       </div>
-      <form className="register-form" onSubmit={handleSubmit} noValidate>
         <h1>Sign up</h1>
         <label>Username:</label>
         <input
@@ -233,5 +237,15 @@ const Register = () => {
     </div>
   );
 };
+
+const openRegForm = () => {
+  document.getElementById("myForm").style.display = "block";
+};
+
+const closeRegForm = () => {
+  document.getElementById("myForm").style.display = "none";
+}
+
+export { openRegForm };
 
 export default Register;
