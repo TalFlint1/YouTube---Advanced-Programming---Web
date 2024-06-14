@@ -3,9 +3,8 @@ import './AddVideoPopup.css'; // Create this CSS file for styling the popup
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AddVideoPopup = ({ closePopup, addVideo }) => {
+const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const time_type = 'hours';
@@ -19,7 +18,7 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-    addVideo({ title, description, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
+    addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
     closePopup();
   };
 
@@ -27,16 +26,10 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
     setVideoFile(e.target.files[0]);
   };
 
-  const saveVideoToLocalStorage = (video) => {
-    const storedVideos = JSON.parse(localStorage.getItem('uploads')) || [];
-    const newVideoId = storedVideos.length ? Math.max(storedVideos.map(v => v.id)) + 1 : 1;
-    video.id = newVideoId;
-    storedVideos.push(video);
-    localStorage.setItem('videos', JSON.stringify(storedVideos));
-  };
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 
   return (
-    <div className="popup-overlay">
+    <div className={`popup-overlay ${modeClass}`}>
       <div className="popup-content">
         <button className="close-button" onClick={closePopup}>×</button>
         <h2>Add a New Video</h2>
@@ -71,4 +64,3 @@ const AddVideoPopup = ({ closePopup, addVideo }) => {
 };
 
 export default AddVideoPopup;
-

@@ -56,7 +56,6 @@
 
 .side-menu ul li a {
   text-decoration: none;
-  color: #333;
 }
 
 
@@ -79,4 +78,16 @@
   display: flex;
   justify-content: center; /* Center the icons horizontally */
   align-items: center;
+}
+.dark-mode .side-menu {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode ul li a {
+  color: white;
+}
+
+.dark-mode .delete-button {
+  background-color: #ff4d4d;
 }

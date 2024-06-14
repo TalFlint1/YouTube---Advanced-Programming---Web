@@ -1,11 +1,10 @@
-// Register.js
 import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({ isDarkMode }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -135,8 +134,10 @@ const Register = () => {
     setTooltipVisible(!tooltipVisible);
   };
 
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+
   return (
-    <div className="register-container">
+    <div className={`register-container ${modeClass}`}>
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo" />
       </div>

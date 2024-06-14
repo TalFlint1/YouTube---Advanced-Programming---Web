@@ -158,3 +158,21 @@
   width: 100px; /* Adjust the width as needed */
   height: auto; /* Maintain aspect ratio */
 }
+.dark-mode .register-container {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .register-form {
+  background-color: #444;
+  color: white;
+}
+
+.dark-mode input {
+  background-color: #555;
+  color: white;
+}
+
+.dark-mode .error-message {
+  color: #ff4d4d;
+}

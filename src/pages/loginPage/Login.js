@@ -3,8 +3,9 @@ import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg'
 import './Login.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import the Link component
 
-const Login = ({ closePopup }) => {
+const Login = ({ closePopup, toggleRegister, isDarkMode }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -34,8 +35,10 @@ const Login = ({ closePopup }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  return (   
-    <div className="login-form-container">
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+
+  return (
+    <div className={`login-form-container ${modeClass}`}>
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo-login" />
       </div>
@@ -67,7 +70,7 @@ const Login = ({ closePopup }) => {
         )}
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <a href="/register">Register here</a></p>
+      <p>Don't have an account? <Link to="/register">Register here</Link></p>
     </div>
   );
 };

@@ -78,3 +78,15 @@
   padding: 3px;
   font-size: 0.9rem;
 }
+
+/* Dark mode styles */
+.dark-mode .popup-content {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .add-video-form input,
+.dark-mode .add-video-form button {
+  background-color: #555;
+  color: white;
+}

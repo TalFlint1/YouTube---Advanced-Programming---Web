@@ -17,7 +17,7 @@ const App = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
-  const [isPopupAddVideoOpen, setIsPopupAddVideoOpen] = useState(false);
+  const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
@@ -55,11 +55,12 @@ const App = () => {
   };
 
   const togglePopupAddVideo = () => {
-    setIsPopupAddVideoOpen(!isPopupAddVideoOpen);
+    setIsPopupVideoOpen(!isPopupVideoOpen);
   };
   const togglePopupLogin = () => {
     setIsPopupLoginOpen(!isPopupLoginOpen);
   };
+
   const addVideo = (newVideo) => {
     const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
     const maxId = Math.max(...allVideos.map(video => video.id), 0);
@@ -119,12 +120,12 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
-        togglePopupAddVideo={togglePopupAddVideo}
-        togglePopupLogin={togglePopupLogin}
-         // Pass togglePopup as a prop
+        togglePopupAddVideo={togglePopupAddVideo} // Pass togglePopup as a prop
+        togglePopupLogin={togglePopupLogin} // Pass togglePopup as a prop
       />
       {isMenuOpen && (
         <Menu
+        isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
           showMyVideos={showMyVideos}
           isMyVideosView={isMyVideosView}
@@ -161,12 +162,12 @@ const App = () => {
             } 
           />
           <Route path="/video/:id" element={<VideoPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/video/:id" element={<VideoPage allVideos={allVideos} setAllVideos={setAllVideos} />} /> */}
+          <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
+          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} />
         </Routes>
       </main>
-      {isPopupLoginOpen && <Login closePopup={togglePopupLogin} />}
-      {isPopupAddVideoOpen && <AddVideoPopup closePopup={togglePopupAddVideo} addVideo={addVideo} />}
+      {isPopupVideoOpen && <AddVideoPopup  isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
     </div>
   );
 };
