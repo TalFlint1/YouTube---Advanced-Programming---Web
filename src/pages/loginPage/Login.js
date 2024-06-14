@@ -3,6 +3,8 @@ import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg'
 import './Login.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg'; // Updated import
 import Register from '../registerPage/Register';
+import { openFormReg } from '../registerPage/Register';
+
 
 const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
   const [formData, setFormData] = useState({
@@ -14,7 +16,8 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
   const [showRegistration, setShowRegistration] = useState(false); // State to toggle between login and register forms
 
   const toggleRegisterForm = () => {
-    setShowRegistration(!showRegistration); // Corrected state variable name
+    closeFormLogin();
+    openFormReg();
   };
 
   const handleSubmit = async (e) => {
@@ -34,6 +37,7 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
       if (user) {
         // Authentication successful
         alert('Login successful!'); // Replace with redirect or other action
+        closeFormLogin();
       } else {
         // Authentication failed
         setError('Username or password are not correct. Please try again.');
@@ -50,11 +54,11 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
   };
 
   return (
-    <div className="form-popup" id="myForm" style={{ display: isVisible ? 'block' : 'none' }}>
+    <div className="form-popup" id="myFormLogin" style={{ display: isVisible ? 'block' : 'none' }}>
       {!showRegistration ? (
         <form className="login-form" onSubmit={handleSubmit} noValidate>
           <div>
-            <button type="button" id="btn-cancel" onClick={closeLoginPopup}>X</button>
+            <button type="button" id="btn-cancel" onClick={closeFormLogin}>X</button>
           </div>
           <div>
             <YoutubeLogo className="youtube-logo-login" />
@@ -92,19 +96,19 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
           </div>
         </form>
       ) : (
-        <Register isVisible={true} closeRegisterPopup={toggleRegisterForm} /> // Render Register component when showRegistration is true
+        <Register isVisible={true} closeRegisterPopup={toggleRegisterForm} />
       )}
     </div>
   );
 };
 
-const openForm = () => {
-  document.getElementById("myForm").style.display = "block";
+const openFormLogin = () => {
+  document.getElementById("myFormLogin").style.display = "block";
 };
 
-const closeForm = () => {
-  document.getElementById("myForm").style.display = "none";
+const closeFormLogin = () => {
+  document.getElementById("myFormLogin").style.display = "none";
 }
 
-export { openForm };
+export { openFormLogin };
 export default Login;

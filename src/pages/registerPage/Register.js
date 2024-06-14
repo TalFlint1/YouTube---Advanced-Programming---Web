@@ -112,6 +112,7 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
     
     // Handle successful registration (e.g., redirect to login page)
     alert('Registration completed!');
+    closeFormReg();
   };
   
 
@@ -120,11 +121,11 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
   };
 
   return (
-    <div className="form-popup" id="myForm" style={{ display: isVisible ? 'block' : 'none' }}>      
+    <div className="form-popup" id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>      
       
       <form className="register-form" onSubmit={handleSubmit} noValidate>
       <div>
-        <button type="button" id="btn-cancel" onClick={closeRegForm}>X</button>
+      <button type="button" id="btn-cancel" onClick={closeFormReg}>X</button>
       </div>
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo" />
@@ -238,14 +239,14 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
   );
 };
 
-const openRegForm = () => {
-  document.getElementById("myForm").style.display = "block";
+const openFormReg = () => {
+  document.getElementById("myFormReg").style.display = "block";
 };
 
-const closeRegForm = () => {
-  document.getElementById("myForm").style.display = "none";
+const closeFormReg = () => {
+  document.getElementById("myFormReg").style.display = "none";
 }
 
-export { openRegForm };
+export { openFormReg };
 
 export default Register;

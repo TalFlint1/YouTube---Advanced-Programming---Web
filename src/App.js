@@ -23,7 +23,7 @@ const App = () => {
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
-    setIsRegisterPopupVisible(false);
+    // setIsRegisterPopupVisible(false);
   };
 
   const closeLoginPopup = () => {
@@ -31,10 +31,12 @@ const App = () => {
   };
   const openRegisterPopup = () => {
     setIsRegisterPopupVisible(true);
+    // setIsLoginPopupVisible(false);
   };
 
   const closeRegisterPopup = () => {
     setIsRegisterPopupVisible(false);
+    // setIsLoginPopupVisible(false);
   };
 
   const toggleMenu = () => {
@@ -157,7 +159,7 @@ const App = () => {
       <Login 
         isVisible={isLoginPopupVisible}
         closeLoginPopup={closeLoginPopup}
-        openRegisterPopup={openRegisterPopup}
+        openLoginPopup={openRegisterPopup}
       />
     </div>
   );
