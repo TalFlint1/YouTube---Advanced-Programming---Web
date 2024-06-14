@@ -10,18 +10,30 @@
   background-color: #f9f9f9;
 }
 
-.register-form {
-  background: white;
-  padding: 20px;
-  border-radius: 30px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  height: 580px;
-  text-align: center;
-  padding-right: 35px; /* Adjust the padding as needed */
+.logo-container {
+  position: relative;
 }
 
-.register-form h2 {
+.youtube-logo {
+  width: 50px;
+  height: auto;
+  position: absolute;
+  top: 15px;
+  left: -163px;
+}
+
+.register-form {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  height: 600px;
+  text-align: center;
+  justify-content: center; /* Center content horizontally */
+}
+
+.register-form h1 {
   margin-bottom: 20px;
 }
 
@@ -30,7 +42,7 @@
   text-align: left;
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 0.73rem; /* Adjust the font size as needed */
+  font-size: 0.73rem;
   margin-left: 10px;
 }
 
@@ -43,79 +55,61 @@
   margin-left: 8px;
 }
 
-.register-form button {
-  width: 140px;
-  padding: 10px;
+
+#regibutton {
   background-color: #ff0000;
-  border: none;
-  border-radius: 4px;
+  width: 100px;
   color: white;
-  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  margin-top: -10px;
   cursor: pointer;
+  border-radius: 20px;
 }
 
-.register-form button:hover {
+#regibutton:hover {
   background-color: #cc0000;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .error-message {
   color: red;
   width: 280px;
   font-size: 0.75rem;
-  margin-top: 0; /* Remove default margin */
-  position: relative; /* Allows for top and left adjustments */
-  top: -8px; /* Adjust this value to move the message and icon up */
-  left: 10px; /* Adjust this value to move the message and icon left */
-  display: flex; /* Use flexbox */
-  align-items: flex-start; /* Align items at the start of the container */
-}
-
-.error-icon-container {
-  flex-shrink: 0; /* Prevent the icon from shrinking */
-  margin-right: 5px; /* Add space between icon and text */
+  margin-top: 0;
+  position: relative;
+  top: -8px;
+  left: 10px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .error-icon {
-  width: 18px; /* Adjust the width if needed */
-  height: 18px; /* Adjust the height if needed */
-  position: relative; /* Allows for top adjustments */
-  top: -2px; /* Adjust this value to move the icon up */
-}
-
-.pass-error-text-container {
-  flex-grow: 1; /* Allow the text to take up remaining space */
-  margin-left: -1px; /* Add space between the icon and the text */
-}
-
-.conf-pass-error-text-container {
-  flex-grow: 1; /* Allow the text to take up remaining space */
-  margin-left: -53px; /* Add space between the icon and the text */
-}
-
-.youtube-logo {
-  width: 50px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-  position: absolute; /* Position the logo absolutely */
-  top: 15px; /* Align the top edge of the logo with the top edge of the container */
-  left: -163px; /* Align the left edge of the logo with the left edge of the container */
-}
-
-.logo-container {
-  position: relative; /* Ensure relative positioning for the container */
+  width: 18px;
+  height: 18px;
+  position: relative;
+  top: -2px;
 }
 
 .error-input {
   border-color: red !important;
   border-width: 2px;
+  border-radius: 4px;
 }
 
 .password-container {
   position: relative;
 }
+
 .tooltip-icon {
   position: absolute;
   right: 5px;
-  top: 16px;
+  top: 20px;
   transform: translateY(-50%);
   cursor: pointer;
   background-color: rgb(212, 209, 236);
@@ -128,6 +122,7 @@
   font-weight: bold;
   font-size: 0.75rem;
 }
+
 .tooltip-text {
   display: none;
   background-color: #f9f9f9;
@@ -146,6 +141,7 @@
   border-color: rgba(56, 47, 47, 0.644) !important;
   border-width: 1px;
 }
+
 .tooltip-text.show {
   display: block;
 }
@@ -155,6 +151,6 @@
 }
 
 .preview-image {
-  width: 100px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
+  width: 100px;
+  height: auto;
 }

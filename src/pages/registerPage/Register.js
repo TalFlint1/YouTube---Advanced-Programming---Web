@@ -109,20 +109,7 @@ const Register = () => {
       setFieldErrors(newFieldErrors);
       return;
     }
-  
-    // Initialize users array if it doesn't exist in localStorage
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-  
-    // Add new user to users array
-    const newUser = {
-      username: formData.username,
-      password: formData.password,
-      name: formData.name,
-      picture: formData.picture ? URL.createObjectURL(formData.picture) : null,
-    };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-  
+    
     // Handle successful registration (e.g., redirect to login page)
     alert('Registration completed!');
   };
@@ -239,7 +226,9 @@ const Register = () => {
             <span>{fieldErrors.picture}</span>
           </div>
         )}
-        <button type="submit">Register</button>
+        <div className="button-container">
+          <button type="submit" id="regibutton">Register</button>
+        </div>
       </form>
     </div>
   );
