@@ -18,7 +18,7 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-    addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
+   addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
     closePopup();
   };
 
