@@ -18,7 +18,12 @@ const VideoPage = () => {
 
   useEffect(() => {
     const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
-    const storedVideo = storedVideos.find((v) => v.id === parseInt(id));
+    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    console.log(storedVideos)
+
+    // Combine the two arrays into one list
+    const combinedList = [...storedVideos, ...storedUploads];
+    const storedVideo = combinedList.find((v) => v.id === parseInt(id));
 
     let initialVideo;
 
@@ -46,7 +51,11 @@ const VideoPage = () => {
     if (video) {
       const updatedVideo = { ...video, likes, comments, liked };
       const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
-      const updatedVideos = storedVideos.map(v => (v.id === parseInt(id) ? updatedVideo : v));
+      const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      
+      // Combine the two arrays into one list
+      const combinedList = [...storedVideos, ...storedUploads];
+            const updatedVideos = combinedList.map(v => (v.id === parseInt(id) ? updatedVideo : v));
       localStorage.setItem('videos', JSON.stringify(updatedVideos));
     }
   }, [likes, comments, liked, video, id]);
