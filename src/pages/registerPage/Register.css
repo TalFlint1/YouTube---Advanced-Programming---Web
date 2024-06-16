@@ -1,28 +1,33 @@
 /* src/components/Register.css */
 
-.register-container {
+.logo-container {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f9f9f9;
+}
+
+.youtube-logo {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+  margin-top: -40px;
 }
 
 .register-form {
   background: white;
-  padding: 20px;
-  border-radius: 30px;
+  padding: 30px;
+  border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  height: 580px;
-  text-align: center;
-  padding-right: 35px; /* Adjust the padding as needed */
+  width: 400px;
+  max-width: 90%;
+  height: 640px;
+  position: fixed; /* Position fixed to keep it centered */
+  top: 50%; /* Move the form down by 50% of the viewport height */
+  left: 50%; /* Move the form right by 50% of the viewport width */
+  transform: translate(-50%, -50%); /* Center the form both vertically and horizontally */
 }
 
-.register-form h2 {
-  margin-bottom: 20px;
+.register-form h1 {
+  margin-bottom: 10px;
+  margin-left: 140px;
 }
 
 .register-form label {
@@ -30,8 +35,8 @@
   text-align: left;
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 0.73rem; /* Adjust the font size as needed */
-  margin-left: 10px;
+  font-size: 0.73rem;
+  margin-left: 40px;
 }
 
 .register-form input {
@@ -40,81 +45,64 @@
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-left: 8px;
+  margin: 0 auto;
 }
 
-.register-form button {
-  width: 140px;
-  padding: 10px;
+
+#regibutton {
   background-color: #ff0000;
-  border: none;
-  border-radius: 4px;
+  width: 100px;
   color: white;
-  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  margin-top: -5px;
   cursor: pointer;
+  border-radius: 20px;
 }
 
-.register-form button:hover {
+#regibutton:hover {
   background-color: #cc0000;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .error-message {
   color: red;
   width: 280px;
   font-size: 0.75rem;
-  margin-top: 0; /* Remove default margin */
-  position: relative; /* Allows for top and left adjustments */
-  top: -8px; /* Adjust this value to move the message and icon up */
-  left: 10px; /* Adjust this value to move the message and icon left */
-  display: flex; /* Use flexbox */
-  align-items: flex-start; /* Align items at the start of the container */
-}
-
-.error-icon-container {
-  flex-shrink: 0; /* Prevent the icon from shrinking */
-  margin-right: 5px; /* Add space between icon and text */
+  margin-top: 12px;
+  position: relative;
+  top: -8px;
+  margin-left: 40px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .error-icon {
-  width: 18px; /* Adjust the width if needed */
-  height: 18px; /* Adjust the height if needed */
-  position: relative; /* Allows for top adjustments */
-  top: -2px; /* Adjust this value to move the icon up */
-}
-
-.pass-error-text-container {
-  flex-grow: 1; /* Allow the text to take up remaining space */
-  margin-left: -1px; /* Add space between the icon and the text */
-}
-
-.conf-pass-error-text-container {
-  flex-grow: 1; /* Allow the text to take up remaining space */
-  margin-left: -53px; /* Add space between the icon and the text */
-}
-
-.youtube-logo {
-  width: 50px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-  position: absolute; /* Position the logo absolutely */
-  top: 15px; /* Align the top edge of the logo with the top edge of the container */
-  left: -163px; /* Align the left edge of the logo with the left edge of the container */
-}
-
-.logo-container {
-  position: relative; /* Ensure relative positioning for the container */
+  width: 18px;
+  height: 18px;
+  position: relative;
+  top: -2px;
 }
 
 .error-input {
   border-color: red !important;
   border-width: 2px;
+  border-radius: 4px;
 }
 
 .password-container {
   position: relative;
+  margin: 0 auto;
 }
+
 .tooltip-icon {
   position: absolute;
-  right: 5px;
+  right: 7px;
   top: 16px;
   transform: translateY(-50%);
   cursor: pointer;
@@ -128,6 +116,7 @@
   font-weight: bold;
   font-size: 0.75rem;
 }
+
 .tooltip-text {
   display: none;
   background-color: #f9f9f9;
@@ -146,18 +135,47 @@
   border-color: rgba(56, 47, 47, 0.644) !important;
   border-width: 1px;
 }
+
 .tooltip-text.show {
   display: block;
 }
 
 .image-preview-container {
   margin-bottom: 20px;
+  margin-left: 40px;
 }
 
 .preview-image {
-  width: 100px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
+  width: 120px;
+  height: auto;
+  margin-left: 100px;
 }
+
+#btn-cancel {
+  background-color: #ffffff;
+  width: 10px;
+  font-size: 1.2rem;
+  color: black;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: -10px;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-left: 330px;
+}
+
+.form-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .dark-mode .register-container {
   background-color: #333;
   color: white;

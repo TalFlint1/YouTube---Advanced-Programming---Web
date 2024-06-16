@@ -21,6 +21,26 @@ const App = () => {
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
+  const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
+  const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
+
+  const openLoginPopup = () => {
+    setIsLoginPopupVisible(true);
+    // setIsRegisterPopupVisible(false);
+  };
+
+  const closeLoginPopup = () => {
+    setIsLoginPopupVisible(false);
+  };
+  const openRegisterPopup = () => {
+    setIsRegisterPopupVisible(true);
+    // setIsLoginPopupVisible(false);
+  };
+
+  const closeRegisterPopup = () => {
+    setIsRegisterPopupVisible(false);
+    // setIsLoginPopupVisible(false);
+  };
 
   useEffect(() => {
     const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
@@ -128,6 +148,8 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
+        openLoginPopup={openLoginPopup}
+        openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo} // Pass togglePopup as a prop
         togglePopupLogin={togglePopupLogin} // Pass togglePopup as a prop
       />
@@ -171,11 +193,20 @@ const App = () => {
           />
           <Route path="/video/:id" element={<VideoPage />} />
           {/* <Route path="/video/:id" element={<VideoPage allVideos={allVideos} setAllVideos={setAllVideos} />} /> */}
-          <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
-          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} />
+          {/* <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
+          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} /> */}
         </Routes>
       </main>
       {isPopupVideoOpen && <AddVideoPopup  isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
+      <Register    isDarkMode={isDarkMode}
+        isVisible={isRegisterPopupVisible}
+        closeRegisterPopup={closeRegisterPopup}
+      />
+      <Login   isDarkMode={isDarkMode}
+        isVisible={isLoginPopupVisible}
+        closeLoginPopup={closeLoginPopup}
+        openLoginPopup={openRegisterPopup}
+      />
     </div>
   );
 };

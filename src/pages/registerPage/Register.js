@@ -4,7 +4,7 @@ import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-const Register = ({ isDarkMode }) => {
+const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -111,8 +111,6 @@ const Register = ({ isDarkMode }) => {
       setFieldErrors(newFieldErrors);
       return;
     }
-
-    // Initialize users array if it doesn't exist in localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
 
     // Add new user to users array
@@ -127,7 +125,9 @@ const Register = ({ isDarkMode }) => {
     // save the registered user's information in localStorage 'currentUser'
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     // Handle successful registration (e.g., redirect to login page)
-    navigate('/');
+    
+    alert('Registration completed!');
+    closeFormReg();
   };
 
   const toggleTooltip = () => {
@@ -137,11 +137,15 @@ const Register = ({ isDarkMode }) => {
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 
   return (
-    <div className={`register-container ${modeClass}`}>
+    <div className={`popup ${modeClass}`} id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>      
+      
+      <form className="register-form" onSubmit={handleSubmit} noValidate>
+      <div>
+      <button type="button" id="btn-cancel" onClick={closeFormReg}>X</button>
+      </div>
       <div className="logo-container">
         <YoutubeLogo className="youtube-logo" />
       </div>
-      <form className="register-form" onSubmit={handleSubmit} noValidate>
         <h1>Sign up</h1>
         <label>Username:</label>
         <input
@@ -253,10 +257,22 @@ const Register = ({ isDarkMode }) => {
             <span>{fieldErrors.picture}</span>
           </div>
         )}
-        <button type="submit">Register</button>
+        <div className="button-container">
+          <button type="submit" id="regibutton">Register</button>
+        </div>
       </form>
     </div>
   );
 };
+
+const openFormReg = () => {
+  document.getElementById("myFormReg").style.display = "block";
+};
+
+const closeFormReg = () => {
+  document.getElementById("myFormReg").style.display = "none";
+}
+
+export { openFormReg };
 
 export default Register;
