@@ -7,7 +7,7 @@ import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'; // Import the Link component
 
-const Login = ({ closePopup, toggleRegister, isDarkModeתisVisible, closeLoginPopup, openRegisterPopup  }) => {
+const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPopup, openRegisterPopup  }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',

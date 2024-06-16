@@ -148,7 +148,6 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
-        togglePopup={togglePopup} // Pass togglePopup as a prop
         openLoginPopup={openLoginPopup}
         openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo} // Pass togglePopup as a prop
@@ -198,7 +197,7 @@ const App = () => {
           <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} /> */}
         </Routes>
       </main>
-      {isPopupOpen && <AddVideoPopup closePopup={togglePopup} addVideo={addVideo}  isDarkMode={isDarkMode} />}
+      {isPopupVideoOpen && <AddVideoPopup  isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
       <Register    isDarkMode={isDarkMode}
         isVisible={isRegisterPopupVisible}
         closeRegisterPopup={closeRegisterPopup}
