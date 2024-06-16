@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Login.css';
-import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg'; // Updated import
 import Register from '../registerPage/Register';
 import { openFormReg } from '../registerPage/Register';
+import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import the Link component
 
-
-const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
+const Login = ({ closePopup, toggleRegister, isDarkModeתisVisible, closeLoginPopup, openRegisterPopup  }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -14,6 +15,7 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
 
   const [error, setError] = useState('');
   const [showRegistration, setShowRegistration] = useState(false); // State to toggle between login and register forms
+  const navigate = useNavigate();
 
   const toggleRegisterForm = () => {
     closeFormLogin();
@@ -24,27 +26,15 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
     e.preventDefault();
     const { username, password } = formData;
 
-    try {
-      const response = await fetch('/users.json'); // Fetch users.json from public directory
-      if (!response.ok) {
-        throw new Error('Failed to fetch users data');
-      }
-      const users = await response.json(); // Parse JSON data
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find((user) => user.username === username && user.password === password);
 
-      // Check if the entered username and password match any user in users array
-      const user = users.find((user) => user.username === username && user.password === password);
-
-      if (user) {
-        // Authentication successful
-        alert('Login successful!'); // Replace with redirect or other action
-        closeFormLogin();
-      } else {
-        // Authentication failed
-        setError('Username or password are not correct. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error fetching or parsing users data:', error);
-      setError('Failed to authenticate. Please try again later.'); // Generic error message
+    if (user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      closeFormLogin();
+      navigate('/');
+    } else {
+      setError('Username or password are not correct. Please try again.');
     }
   };
 
@@ -53,8 +43,10 @@ const Login = ({ isVisible, closeLoginPopup, openRegisterPopup }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+
   return (
-    <div className="form-popup" id="myFormLogin" style={{ display: isVisible ? 'block' : 'none' }}>
+    <div className= {`form-popup ${modeClass}`} id="myFormLogin" style={{ display: isVisible ? 'block' : 'none' }}>
       {!showRegistration ? (
         <form className="login-form" onSubmit={handleSubmit} noValidate>
           <div>

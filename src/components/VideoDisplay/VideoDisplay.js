@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type,
   isMyVideosView,
-  toggleVideoSelection,user_icon,}) => {
+  toggleVideoSelection, user_icon,
+  id }) => {
   const videoDisplayStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -22,7 +24,6 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
     width: '100%',
   };
 
-
   const videoPlayerStyle = {
     maxWidth: '100%',
   };
@@ -37,41 +38,41 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
 
   return (
     <div style={videoDisplayStyle}>
-         {isMyVideosView && (
+      {isMyVideosView && (
         <input
           type="checkbox"
           onChange={() => toggleVideoSelection(videoUrl)}
           className="video-checkbox"
         />
       )}
-      <div style={videoContentStyle}>
-    
-        <div style={videoPlayerStyle}>
-          <video controls style={videoPlayerStyle}>
-            <source src={videoUrl} type="video/mp4" />
-          </video>
-        </div>
-        <div style={videoInfoStyle}>
-          <div  class="title">
-          <span > {title}</span>
+      <Link to={`/video/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div style={videoContentStyle}>
+          <div style={videoPlayerStyle}>
+            <video controls style={videoPlayerStyle}>
+              <source src={videoUrl} type="video/mp4" />
+            </video>
           </div>
-        <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src={user_icon}
-        ></img> 
-        </span>
+          <div style={videoInfoStyle}>
+            <div  class="title">
+              <span>{title}</span>
+            </div>
+            <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src={user_icon}
+              ></img>
+            </span>
+          </div>
+          <div style={videoInfoStyle}>
+            <span> </span>
+            <span>{owner}</span>
+          </div>
+          <div style={videoInfoStyle}>
+          <span>Published {time_publish} {time_type} ago</span>
+            <span>
+              {views} views</span>
+          </div>
         </div>
-        <div style={videoInfoStyle}>
-        <span> </span>
-        <span>{owner}</span>
-        </div>
-        <div style={videoInfoStyle}>
-        <span>Published {time_publish} {time_type} ago</span>
-          <span>
-            {views} views</span>
-        </div>
-      </div>
+      </Link>
     </div>
   );
 };
 
 export default VideoDisplay;
-

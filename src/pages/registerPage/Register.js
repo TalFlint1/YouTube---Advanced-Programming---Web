@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg';
 import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
+import { useNavigate } from 'react-router-dom';
 
-const Register = ({ isVisible, closeRegisterPopup }) => {
+const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -17,6 +18,7 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate();
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,16}$/;
@@ -87,10 +89,10 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const newFieldErrors = {};
     let hasErrors = false;
-  
+
     // Check if all required fields are filled
     Object.keys(formData).forEach((key) => {
       if (formData[key] === '' || formData[key] === null) {
@@ -98,30 +100,44 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
         hasErrors = true;
       }
     });
-  
+
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       newFieldErrors.confirmPassword = "The passwords don't match. Try again.";
       hasErrors = true;
     }
-  
+
     if (hasErrors) {
       setFieldErrors(newFieldErrors);
       return;
     }
-    
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Add new user to users array
+    const newUser = {
+      username: formData.username,
+      password: formData.password,
+      name: formData.name,
+      picture: formData.picture ? URL.createObjectURL(formData.picture) : null,
+    };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    // save the registered user's information in localStorage 'currentUser'
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
     // Handle successful registration (e.g., redirect to login page)
+    
     alert('Registration completed!');
     closeFormReg();
   };
-  
 
   const toggleTooltip = () => {
     setTooltipVisible(!tooltipVisible);
   };
 
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+
   return (
-    <div className="form-popup" id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>      
+    <div className={`popup ${modeClass}`} id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>      
       
       <form className="register-form" onSubmit={handleSubmit} noValidate>
       <div>
@@ -157,7 +173,9 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
             className={passwordError || fieldErrors.password ? 'error-input' : ''}
             required
           />
-          <span className="tooltip-icon" onClick={toggleTooltip}>?</span>
+          <span className="tooltip-icon" onClick={toggleTooltip}>
+            ?
+          </span>
           <div className={`tooltip-text ${tooltipVisible ? 'show' : ''}`}>
             Password must be between 8-16 characters and combine a-Z letters and numbers. It's also possible to use the characters '!@#$%^&*'.
           </div>
@@ -181,7 +199,11 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
           value={formData.confirmPassword}
           onChange={handleChange}
           onBlur={handleConfirmPasswordBlur}
-          className={confirmPasswordError || fieldErrors.confirmPassword ? 'error-input' : ''}
+          className={
+            confirmPasswordError || fieldErrors.confirmPassword
+              ? 'error-input'
+              : ''
+          }
           required
         />
         {confirmPasswordError && (
@@ -214,7 +236,11 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
         <label>Profile Picture:</label>
         <div className="image-preview-container">
           {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="preview-image" />
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="preview-image"
+            />
           )}
           <input
             type="file"
@@ -226,7 +252,7 @@ const Register = ({ isVisible, closeRegisterPopup }) => {
           />
         </div>
         {fieldErrors.picture && (
-           <div className="error-message">
+          <div className="error-message">
             <ErrorSign className="error-icon" />
             <span>{fieldErrors.picture}</span>
           </div>

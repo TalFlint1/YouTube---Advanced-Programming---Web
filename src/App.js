@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import VideoDisplay from './components/VideoDisplay/VideoDisplay';
-import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup'; // Import the popup component
+import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup';
 import './App.css';
 import videoData from './videoData.json';
 import Register from './pages/registerPage/Register';
-import Login from './pages/loginPage/Login'; // Import the Login component
+import Login from './pages/loginPage/Login';
+import VideoPage from './components/VideoPage/VideoPage';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [allVideos, setAllVideos] = useState(videoData);
-  const [filteredData, setFilteredData] = useState(videoData);
+  const [allVideos, setAllVideos] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
+  const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
@@ -39,13 +42,19 @@ const App = () => {
     // setIsLoginPopupVisible(false);
   };
 
+  useEffect(() => {
+    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    const combinedVideos = [...videoData, ...storedUploads];
+    setAllVideos(combinedVideos);
+    setFilteredData(combinedVideos);
+  }, []);
+
   const toggleMenu = () => {
     if (isMenuOpen && isMyVideosView) 
-      {
-        showMyVideos();
-      }
+    {
+      showMyVideos();
+    }
     setIsMenuOpen(!isMenuOpen);
-
   };
 
   const handleSearchChange = (query) => {
@@ -65,16 +74,23 @@ const App = () => {
     document.body.classList.toggle('dark-mode');
   };
 
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+  const togglePopupAddVideo = () => {
+    setIsPopupVideoOpen(!isPopupVideoOpen);
+  };
+  const togglePopupLogin = () => {
+    setIsPopupLoginOpen(!isPopupLoginOpen);
   };
 
   const addVideo = (newVideo) => {
-    const maxId = Math.max(...allVideos.map(video => video.id));
+    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+    const maxId = Math.max(...allVideos.map(video => video.id), 0);
     const newId = maxId + 1;
     const videoWithId = { ...newVideo, id: newId };
 
     const updatedVideos = [...allVideos, videoWithId];
+    const updatedUploads = [...storedUploads, videoWithId];
+
+    localStorage.setItem('uploads', JSON.stringify(updatedUploads));
     setAllVideos(updatedVideos);
     setUserVideos([...userVideos, videoWithId]);
     filterData(searchQuery, updatedVideos);
@@ -83,11 +99,19 @@ const App = () => {
   const showMyVideos = () => {
     if (isMyVideosView) {
       setIsMyVideosView(false);
+      const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      setFilteredData(storedUploads);
+
       filterData(searchQuery, allVideos);
     } else {
       setIsMyVideosView(true);
       filterData(searchQuery, userVideos);
-    }
+
+      // const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      // const combinedVideos = [...videoData, ...storedUploads];
+      // setAllVideos(combinedVideos);
+      // setFilteredData(combinedVideos);
+        }
   };
 
   const toggleVideoSelection = (videoId) => {
@@ -105,6 +129,11 @@ const App = () => {
     const updatedAllVideos = allVideos.filter(
       (video) => !selectedVideos.includes(video.id)
     );
+    const updatedUploads = updatedAllVideos.filter(
+      (video) => video.id > videoData.length // Assuming that only uploaded videos have IDs greater than the length of videoData
+    );
+
+    localStorage.setItem('uploads', JSON.stringify(updatedUploads));
     setUserVideos(updatedUserVideos);
     setAllVideos(updatedAllVideos);
     setSelectedVideos([]);
@@ -122,9 +151,12 @@ const App = () => {
         togglePopup={togglePopup} // Pass togglePopup as a prop
         openLoginPopup={openLoginPopup}
         openRegisterPopup={openRegisterPopup}
+        togglePopupAddVideo={togglePopupAddVideo} // Pass togglePopup as a prop
+        togglePopupLogin={togglePopupLogin} // Pass togglePopup as a prop
       />
       {isMenuOpen && (
         <Menu
+        isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
           showMyVideos={showMyVideos}
           isMyVideosView={isMyVideosView}
@@ -132,31 +164,46 @@ const App = () => {
         />
       )}
       <main>
-        {filteredData.map((video, index) => (
-          <VideoDisplay
-            className="flex-item"
-            key={index}
-            title={video.title}
-            description={video.description}
-            videoUrl={video.videoUrl}
-            isDarkMode={isDarkMode}
-            owner={video.owner}
-            views={video.views}
-            time_publish={video.time_publish}
-            time_type={video.time_type}
-            isMyVideosView={isMyVideosView}
-            toggleVideoSelection={() => toggleVideoSelection(video.id)
-             }
-             user_icon={video.user_icon}
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <div className="video-grid">
+                {filteredData.map((video, index) => (
+                  <VideoDisplay
+                    className="flex-item"
+                    key={index}
+                    title={video.title}
+                    description={video.description}
+                    videoUrl={video.videoUrl}
+                    thumbnailUrl={video.thumbnailUrl}
+                    duration={video.duration}
+                    owner={video.owner}
+                    isDarkMode={isDarkMode}
+                    views={video.views}
+                    time_publish={video.time_publish}
+                    time_type={video.time_type}
+                    isMyVideosView={isMyVideosView}
+                    toggleVideoSelection={() => toggleVideoSelection(video.id)}
+                    user_icon={video.user_icon}
+                    id={video.id} // Pass the video id
+                  />
+                ))}
+              </div>
+            } 
           />
-        ))}
+          <Route path="/video/:id" element={<VideoPage />} />
+          {/* <Route path="/video/:id" element={<VideoPage allVideos={allVideos} setAllVideos={setAllVideos} />} /> */}
+          {/* <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
+          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} /> */}
+        </Routes>
       </main>
-      {isPopupOpen && <AddVideoPopup closePopup={togglePopup} addVideo={addVideo} />}
-      <Register 
+      {isPopupOpen && <AddVideoPopup closePopup={togglePopup} addVideo={addVideo}  isDarkMode={isDarkMode} />}
+      <Register    isDarkMode={isDarkMode}
         isVisible={isRegisterPopupVisible}
         closeRegisterPopup={closeRegisterPopup}
       />
-      <Login 
+      <Login   isDarkMode={isDarkMode}
         isVisible={isLoginPopupVisible}
         closeLoginPopup={closeLoginPopup}
         openLoginPopup={openRegisterPopup}
