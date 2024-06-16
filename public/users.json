@@ -1,0 +1,27 @@
+[
+    {
+      "username": "user1",
+      "password": "password1",
+      "name": "name1",
+      "profile_picture": "/assets/pic1.png"
+    },
+    {
+      "username": "user2",
+      "password": "password2",
+      "name": "name2",
+      "profile_picture": "/assets/pic2.png"
+    },
+    {
+      "username": "user3",
+      "password": "password3",
+      "name": "name3",
+      "profile_picture": "/assets/pic3.png"
+    },
+    {
+        "username": "user4",
+        "password": "password4",
+        "name": "name4",
+        "profile_picture": "/assets/pic4.png"
+      }
+  ]
+  

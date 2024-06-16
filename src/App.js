@@ -16,7 +16,8 @@ const App = () => {
   const [allVideos, setAllVideos] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
+  const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
   const [userVideos, setUserVideos] = useState([]);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
@@ -53,8 +54,11 @@ const App = () => {
     document.body.classList.toggle('dark-mode');
   };
 
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+  const togglePopupAddVideo = () => {
+    setIsPopupVideoOpen(!isPopupVideoOpen);
+  };
+  const togglePopupLogin = () => {
+    setIsPopupLoginOpen(!isPopupLoginOpen);
   };
 
   const addVideo = (newVideo) => {
@@ -75,11 +79,19 @@ const App = () => {
   const showMyVideos = () => {
     if (isMyVideosView) {
       setIsMyVideosView(false);
+      const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      setFilteredData(storedUploads);
+
       filterData(searchQuery, allVideos);
     } else {
       setIsMyVideosView(true);
       filterData(searchQuery, userVideos);
-    }
+
+      // const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      // const combinedVideos = [...videoData, ...storedUploads];
+      // setAllVideos(combinedVideos);
+      // setFilteredData(combinedVideos);
+        }
   };
 
   const toggleVideoSelection = (videoId) => {
@@ -116,10 +128,12 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
-        togglePopup={togglePopup} // Pass togglePopup as a prop
+        togglePopupAddVideo={togglePopupAddVideo} // Pass togglePopup as a prop
+        togglePopupLogin={togglePopupLogin} // Pass togglePopup as a prop
       />
       {isMenuOpen && (
         <Menu
+        isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
           showMyVideos={showMyVideos}
           isMyVideosView={isMyVideosView}
@@ -156,11 +170,12 @@ const App = () => {
             } 
           />
           <Route path="/video/:id" element={<VideoPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/video/:id" element={<VideoPage allVideos={allVideos} setAllVideos={setAllVideos} />} /> */}
+          <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
+          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} />
         </Routes>
       </main>
-      {isPopupOpen && <AddVideoPopup closePopup={togglePopup} addVideo={addVideo} />}
+      {isPopupVideoOpen && <AddVideoPopup  isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
     </div>
   );
 };
