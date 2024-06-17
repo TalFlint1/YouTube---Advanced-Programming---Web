@@ -205,15 +205,42 @@ const Comment = ({ comment, videoId }) => {
     // Handle updating the comment's likes in the parent component (VideoPage)
   };
 
-  const handleReply = () => {
-    // Handle reply functionality
+  const handleReply = (newReply) => {
+    const updatedReplies = [...replies, newReply];
+    setReplies(updatedReplies);
+    comment.replies = updatedReplies; 
+    updateLocalStorage();
+  };
+
+  const submitReply = () => {
+    handleReply({ text: newReply, likes: 0, replies: [], videoId });
+    setNewReply('');
+  };
+
+  const updateLocalStorage = () => {
+    const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+    const video = storedVideos.find(v => v.id === videoId);
+    if (video) {
+      video.comments = updateComments(video.comments, comment);
+      localStorage.setItem('videos', JSON.stringify(storedVideos));
+    }
+  };
+
+  const updateComments = (comments, updatedComment) => {
+    return comments.map(c => {
+      if (c.text === updatedComment.text) {
+        return updatedComment;
+      } else if (c.replies) {
+        return { ...c, replies: updateComments(c.replies, updatedComment) };
+      }
+      return c;
+    });
   };
 
   return (
     <div className="comment">
       <p>{comment.text}</p>
-      <button onClick={handleLike}>
-        {isLiked ? 'Unlike' : 'Like'} ({likes})
+      <button onClick={handleLike}>        {isLiked ? 'Unlike' : 'Like'} ({likes})
       </button>
       <div className="replies">
         {replies.map((reply, index) => (
@@ -226,7 +253,7 @@ const Comment = ({ comment, videoId }) => {
         onChange={(e) => setNewReply(e.target.value)}
         placeholder="Reply to comment"
       />
-      <button onClick={handleReply}>Reply</button>
+      <button onClick={submitReply}>Reply</button>
     </div>
   );
 };
