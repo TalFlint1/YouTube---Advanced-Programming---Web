@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# YouTube Web Application - Advanced Programming
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project involves creating a web application inspired by YouTube JavaScript, CSS, and React. The application includes registration, login, video listing, video viewing, and adding new videos functionalities.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- *Registration Screen*: Sign up with a username, password, display name, and a profile picture.
+- *Login Screen*: Log in using username and password.
+- *Video List Screen*: Display a list of videos (similar to YouTube's homepage).
+- *Video View Screen*: Play the selected video.
+- *Add New Video Screen*: Allows users to add new videos.
+- *Dark/Light Mode Toggle*: Switch between dark and light themes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Running the Code
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. *Clone the Repository*
+   Open your terminal in Visual Studio (or any other IDE) 
+   Move to the desired directory in which you want to clone the project using cd command, then write:
+   git clone https://github.com/TalFlint1/YouTube---Advanced-Programming---Web.git
 
-### `npm test`
+2. *Install dependencies :*
+    npm install
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. *Start the app :*
+    npm start
+    this should open your browser with the app running, alternatively you can also open your browser and navigate to http://localhost:3000.
 
-### `npm run build`
+*Development Process*
+Task Management: Used Jira to plan and manage tasks, and assign tasks to divide the project between us.
+https://shiradeu-1716831762980.atlassian.net/jira/software/projects/YADW/boards/2
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Version Control: Used Git with feature branches and pull requests for code review.
+Component-Based Architecture: Used React components(useState).
+Routing: Implemented React Router for navigation.
+to connect our ex1 version yous hould connect main_ex1 branch that cocnludes all relevant features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This web application is our first step towards a fully functional YouTube platform.
