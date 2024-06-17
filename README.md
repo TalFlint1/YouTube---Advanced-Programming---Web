@@ -29,8 +29,11 @@ This project involves creating a web application inspired by YouTube JavaScript,
 
 *Development Process*
 Task Management: Used Jira to plan and manage tasks, and assign tasks to divide the project between us.
+https://shiradeu-1716831762980.atlassian.net/jira/software/projects/YADW/boards/2
+
 Version Control: Used Git with feature branches and pull requests for code review.
 Component-Based Architecture: Used React components(useState).
 Routing: Implemented React Router for navigation.
+to connect our ex1 version yous hould connect main_ex1 branch that cocnludes all relevant features
 
 This web application is our first step towards a fully functional YouTube platform.
