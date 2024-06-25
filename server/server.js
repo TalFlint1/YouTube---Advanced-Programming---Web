@@ -1,23 +1,24 @@
+// server.js
+
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-require('dotenv').config();
-
 const app = express();
+const { connectToMongoDB, client } = require('./db'); // Adjust the path as needed
 
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware and routes setup
+app.use(express.json()); // Example middleware for JSON parsing
 
-const PORT = process.env.PORT || 5000;
-const DB_URL = process.env.DB_URL || 'your_mongodb_connection_string';
+// Example route
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
 
-mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+const PORT = process.env.PORT || 3000;
 
-// Define routes
-app.use('/api/users', require('./routes/users'));
-app.use('/api/videos', require('./routes/videos'));
+async function startServer() {
+    await connectToMongoDB(); // Connect to MongoDB before starting the server
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+startServer();
