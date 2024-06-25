@@ -1,45 +1,34 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        let user = await User.findOne({ username });
-        if (user) {
-            return res.status(400).json({ msg: 'User already exists' });
-        }
-
-        user = new User({ username, password });
-
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-
-        await user.save();
-        res.status(201).json({ msg: 'User registered successfully' });
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user', error: err.message });
+  }
 };
 
-exports.login = async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
-        }
+const updateUser = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating user', error: err.message });
+  }
+};
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
-        }
+const deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting user', error: err.message });
+  }
+};
 
-        const payload = { userId: user.id };
-        const token = jwt.sign(payload, 'secret', { expiresIn: '1h' });
-
-        res.json({ token });
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+module.exports = {
+  getUserById,
+  updateUser,
+  deleteUser,
 };

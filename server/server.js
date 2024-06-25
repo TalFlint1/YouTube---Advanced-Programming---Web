@@ -1,24 +1,31 @@
-// server.js
-
 const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const { connectToMongoDB } = require('./db');
+const userRoutes = require('./routes/userRoutes');
+const videoRoutes = require('./routes/videoRoutes');
+
+dotenv.config();
+
 const app = express();
-const { connectToMongoDB, client } = require('./db'); // Adjust the path as needed
+const PORT = process.env.PORT || 3001;
 
-// Middleware and routes setup
-app.use(express.json()); // Example middleware for JSON parsing
+app.use(cors());
+app.use(express.json());
 
-// Example route
+// Connect to MongoDB
+connectToMongoDB();
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/videos', videoRoutes);
+
 app.get('/', (req, res) => {
-    res.send('Hello, World!');
+  res.send('Welcome to the YouTube clone API');
 });
 
-const PORT = process.env.PORT || 3000;
-
-async function startServer() {
-    await connectToMongoDB(); // Connect to MongoDB before starting the server
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    });
-}
-
-startServer();
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
