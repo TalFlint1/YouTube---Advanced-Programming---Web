@@ -7,7 +7,12 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQue
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch('/api/videos'); // Adjust URL as per your server setup
+        let url = '/api/videos';
+        if (isMyVideosView) {
+          url = '/api/videos/user/:shira/videos'; // Adjust URL to fetch user-specific videos
+       
+        }
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Failed to fetch videos');
         }
@@ -19,7 +24,7 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQue
     };
 
     fetchVideos();
-  }, []);
+  }, [isMyVideosView]);
 
   // Filter videos based on searchQuery
   const filteredVideos = videos.filter(video => {

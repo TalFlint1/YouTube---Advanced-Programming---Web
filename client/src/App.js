@@ -12,14 +12,14 @@ import VideoList from './components/VideoList';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State to manage search query
+  const [searchQuery, setSearchQuery] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
   const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
-  const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
+  const [isMyVideosView, setIsMyVideosView] = useState(false); // Initialize state for isMyVideosView
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -42,7 +42,7 @@ const App = () => {
   };
 
   const handleSearchChange = (query) => {
-    setSearchQuery(query); // Update searchQuery state based on input change
+    setSearchQuery(query);
   };
 
   const toggleDarkMode = () => {
@@ -85,6 +85,8 @@ const App = () => {
         <Menu
           isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
+          isMyVideosView={isMyVideosView} // Pass isMyVideosView as prop to Menu
+          setIsMyVideosView={setIsMyVideosView} // Pass setIsMyVideosView function to Menu
         />
       )}
       <main>
@@ -96,7 +98,7 @@ const App = () => {
                 isDarkMode={isDarkMode}
                 isMyVideosView={isMyVideosView}
                 toggleVideoSelection={toggleVideoSelection}
-                searchQuery={searchQuery} // Pass searchQuery as prop
+                searchQuery={searchQuery}
               />
             } 
           />

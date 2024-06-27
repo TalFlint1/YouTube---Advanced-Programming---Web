@@ -12,10 +12,15 @@ const getVideos = async (req, res) => {
 };
 
 const getUserVideos = async (req, res) => {
-  const userId = req.params.id;
+  const user_str = req.params.id;
   try {
+    console.log(user_str)
+    let user =user_str.substring(1)
+    console.log(user)
       // Assuming you have a Video model and you fetch videos based on userId
-      const userVideos = await Video.find({ userId }); // Example MongoDB query
+      const userVideos = await Video.find({ owner: user });
+      console.log(userVideos)
+
       res.json(userVideos);
   } catch (err) {
       console.error('Error fetching user videos:', err);
