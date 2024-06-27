@@ -11,7 +11,9 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   const { username, password, name } = req.body;
-  const picture = req.file ? req.file.path : null;
+  const profile_picture = req.file ? req.file.path : null; // Correctly assign profile_picture
+
+  console.log('Received data:', { username, password, name, profile_picture });
 
   try {
     // Check if username already exists
@@ -23,9 +25,9 @@ const createUser = async (req, res) => {
     // Create new user
     const newUser = new User({
       username,
-      password, // Make sure to hash the password before saving in production
+      password, // Ensure password hashing in production
       name,
-      profile_picture,
+      profile_picture, // Correctly reference profile_picture here
     });
 
     // Save user to database

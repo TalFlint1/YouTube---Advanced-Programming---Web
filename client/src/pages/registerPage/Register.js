@@ -128,9 +128,9 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert('test4!');
     
       alert('Registration successful!');
+      closeFormReg();
       // Handle redirection or any other logic here after successful registration
     } catch (error) {
       console.error('Registration failed:', error);

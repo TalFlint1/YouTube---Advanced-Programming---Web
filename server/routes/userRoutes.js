@@ -7,7 +7,7 @@ const { getUserById, createUser, updateUserById, deleteUser } = require('../cont
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Directory to save the uploaded files
+    cb(null, path.join(__dirname, '../../uploads')); // Directory to save the uploaded files
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);

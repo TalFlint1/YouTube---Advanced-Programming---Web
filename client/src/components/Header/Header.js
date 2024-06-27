@@ -6,6 +6,7 @@ import './Header.css';
 import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom'; // Updated import
 import { isUserLoggedIn } from '../../authCheck'; // Import the auth utility
+import { openFormLogin } from '../../pages/loginPage/Login'; 
 
 const Header = ({
   searchQuery,
@@ -38,7 +39,7 @@ const Header = ({
     <header className={`App-header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="left-buttons">
         <div title="log in">
-          <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={handleLoginClick}>
+          <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={openFormLogin}>
             <FontAwesomeIcon icon={faCircleUser} />
           </button>
         </div>
