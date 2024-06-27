@@ -1,16 +1,29 @@
+// src/components/VideoDisplay.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,owner ,isDarkMode ,views,time_publish ,time_type,
+const VideoDisplay = ({
+  title,
+  description,
+  videoUrl,
+  thumbnailUrl,
+  duration,
+  owner,
+  isDarkMode,
+  views,
+  time_publish,
+  time_type,
   isMyVideosView,
-  toggleVideoSelection, user_icon,
-  id }) => {
+  toggleVideoSelection,
+  user_icon,
+  id
+}) => {
   const videoDisplayStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: isDarkMode ? '#black' : '#black',
-    color: isDarkMode ? '#black' : '#black',
+    backgroundColor: isDarkMode ? '#000' : '#fff',
+    color: isDarkMode ? '#fff' : '#000',
     padding: '20px',
     borderRadius: '10px',
     marginBottom: '20px',
@@ -53,21 +66,19 @@ const VideoDisplay = ({ title, description, videoUrl, thumbnailUrl, duration,own
             </video>
           </div>
           <div style={videoInfoStyle}>
-            <div  class="title">
+            <div className="title">
               <span>{title}</span>
             </div>
-            <span> <img id="img" draggable="false" class="style-scope yt-img-shadow" alt="" width="28" src={user_icon}
-              ></img>
+            <span>
+              <img id="img" draggable="false" className="style-scope yt-img-shadow" alt="" width="28" src={user_icon} />
             </span>
           </div>
           <div style={videoInfoStyle}>
-            <span> </span>
             <span>{owner}</span>
           </div>
           <div style={videoInfoStyle}>
-          <span>Published {time_publish} {time_type} ago</span>
-            <span>
-              {views} views</span>
+            <span>Published {time_publish} {time_type} ago</span>
+            <span>{views} views</span>
           </div>
         </div>
       </Link>

@@ -1,54 +1,113 @@
 const Video = require('../models/Video');
 
+// Fetch all videos
 const getVideos = async (req, res) => {
+    try {
+      const videos = await Video.find(); // Fetch all videos from the database
+      res.json(videos); // Send JSON response containing videos array
+    } catch (err) {
+      console.error('Error fetching videos:', err);
+      res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
+    }
+};
+
+const getUserVideos = async (req, res) => {
+  const userId = req.params.id;
   try {
-    const videos = await Video.find().limit(20).sort({ $natural: -1 });
-    res.status(200).json(videos);
+      // Assuming you have a Video model and you fetch videos based on userId
+      const userVideos = await Video.find({ userId }); // Example MongoDB query
+      res.json(userVideos);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching videos', error: err.message });
+      console.error('Error fetching user videos:', err);
+      res.status(500).json({ message: 'Failed to fetch user videos' });
   }
 };
 
 const createVideo = async (req, res) => {
+  const userId = req.params.id;
+  const { pid } = req.params; // Optional, if you need to handle video id in URL
+  const { title, description, videoUrl, thumbnailUrl } = req.body;
+
   try {
-    const newVideo = await Video.create(req.body);
-    res.status(201).json({ message: 'Video created successfully', video: newVideo });
+      // Assuming you have a Video model to create a new video entry
+      const newVideo = await Video.create({
+          userId,
+          title,
+          description,
+          videoUrl,
+          thumbnailUrl
+      });
+
+      res.status(201).json(newVideo);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating video', error: err.message });
+      console.error('Error creating video:', err);
+      res.status(500).json({ message: 'Failed to create video' });
   }
 };
 
-const getVideoById = async (req, res) => {
+const getVideo = async (req, res) => {
+  const { id, pid } = req.params; // User id and video id
   try {
-    const video = await Video.findById(req.params.id);
-    res.status(200).json(video);
+      // Assuming Video model and fetching based on userId and videoId
+      const video = await Video.findOne({ userId: id, _id: pid }); // Example MongoDB query
+      if (!video) {
+          return res.status(404).json({ message: 'Video not found' });
+      }
+      res.json(video);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching video', error: err.message });
+      console.error('Error fetching video:', err);
+      res.status(500).json({ message: 'Failed to fetch video' });
   }
+};
+
+module.exports = {
+  getVideo,
+  // Other controller functions
 };
 
 const updateVideo = async (req, res) => {
+  const { id, pid } = req.params; // User id and video id
+  const { title, description, videoUrl, thumbnailUrl } = req.body;
+
   try {
-    await Video.findByIdAndUpdate(req.params.id, req.body);
-    res.status(200).json({ message: 'Video updated successfully' });
+      // Assuming Video model and updating based on userId and videoId
+      const updatedVideo = await Video.findOneAndUpdate(
+          { userId: id, _id: pid },
+          { title, description, videoUrl, thumbnailUrl },
+          { new: true } // Return updated video object
+      );
+
+      if (!updatedVideo) {
+          return res.status(404).json({ message: 'Video not found' });
+      }
+      res.json(updatedVideo);
   } catch (err) {
-    res.status(500).json({ message: 'Error updating video', error: err.message });
+      console.error('Error updating video:', err);
+      res.status(500).json({ message: 'Failed to update video' });
   }
 };
 
 const deleteVideo = async (req, res) => {
+  const { id, pid } = req.params; // User id and video id
   try {
-    await Video.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Video deleted successfully' });
+      // Assuming Video model and deleting based on userId and videoId
+      const deletedVideo = await Video.findOneAndDelete({ userId: id, _id: pid });
+
+      if (!deletedVideo) {
+          return res.status(404).json({ message: 'Video not found' });
+      }
+      res.json({ message: 'Video deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Error deleting video', error: err.message });
+      console.error('Error deleting video:', err);
+      res.status(500).json({ message: 'Failed to delete video' });
   }
 };
 
 module.exports = {
   getVideos,
+  getUserVideos,
   createVideo,
-  getVideoById,
+  getVideo,
   updateVideo,
   deleteVideo,
 };

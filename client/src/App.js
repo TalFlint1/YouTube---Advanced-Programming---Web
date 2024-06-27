@@ -5,10 +5,10 @@ import Menu from './components/Menu/Menu';
 import VideoDisplay from './components/VideoDisplay/VideoDisplay';
 import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup';
 import './App.css';
-import videoData from './videoData.json';
 import Register from './pages/registerPage/Register';
 import Login from './pages/loginPage/Login';
 import VideoPage from './components/VideoPage/VideoPage';
+import VideoList from './components/VideoList';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,32 +26,38 @@ const App = () => {
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
-    // setIsRegisterPopupVisible(false);
   };
 
   const closeLoginPopup = () => {
     setIsLoginPopupVisible(false);
   };
+
   const openRegisterPopup = () => {
     setIsRegisterPopupVisible(true);
-    // setIsLoginPopupVisible(false);
   };
 
   const closeRegisterPopup = () => {
     setIsRegisterPopupVisible(false);
-    // setIsLoginPopupVisible(false);
   };
 
   useEffect(() => {
-    const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
-    const combinedVideos = [...videoData, ...storedUploads];
-    setAllVideos(combinedVideos);
-    setFilteredData(combinedVideos);
+    // Fetch videos from the server instead of using static videoData.json
+    fetch('/api/videos')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Fetched videos:', data); // Log fetched data
+        setAllVideos(data);
+        setFilteredData(data);
+        console.log('All videos:', allVideos); // Log updated allVideos state
+        console.log('Filtered videos:', filteredData); // Log updated filteredData state
+      })
+      .catch(error => {
+        console.error('Error fetching videos:', error);
+      });
   }, []);
 
   const toggleMenu = () => {
-    if (isMenuOpen && isMyVideosView) 
-    {
+    if (isMenuOpen && isMyVideosView) {
       showMyVideos();
     }
     setIsMenuOpen(!isMenuOpen);
@@ -77,6 +83,7 @@ const App = () => {
   const togglePopupAddVideo = () => {
     setIsPopupVideoOpen(!isPopupVideoOpen);
   };
+
   const togglePopupLogin = () => {
     setIsPopupLoginOpen(!isPopupLoginOpen);
   };
@@ -106,12 +113,7 @@ const App = () => {
     } else {
       setIsMyVideosView(true);
       filterData(searchQuery, userVideos);
-
-      // const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
-      // const combinedVideos = [...videoData, ...storedUploads];
-      // setAllVideos(combinedVideos);
-      // setFilteredData(combinedVideos);
-        }
+    }
   };
 
   const toggleVideoSelection = (videoId) => {
@@ -129,9 +131,7 @@ const App = () => {
     const updatedAllVideos = allVideos.filter(
       (video) => !selectedVideos.includes(video.id)
     );
-    const updatedUploads = updatedAllVideos.filter(
-      (video) => video.id > videoData.length // Assuming that only uploaded videos have IDs greater than the length of videoData
-    );
+    const updatedUploads = updatedAllVideos; // No need for the videoData length check
 
     localStorage.setItem('uploads', JSON.stringify(updatedUploads));
     setUserVideos(updatedUserVideos);
@@ -155,7 +155,7 @@ const App = () => {
       />
       {isMenuOpen && (
         <Menu
-        isDarkMode={isDarkMode}
+          isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
           showMyVideos={showMyVideos}
           isMyVideosView={isMyVideosView}
@@ -192,17 +192,16 @@ const App = () => {
             } 
           />
           <Route path="/video/:id" element={<VideoPage />} />
-          {/* <Route path="/video/:id" element={<VideoPage allVideos={allVideos} setAllVideos={setAllVideos} />} /> */}
-          {/* <Route path="/register" element={<Register  isDarkMode={isDarkMode}/>} />
-          <Route path="/login" element={<Login  isDarkMode={isDarkMode}/>} /> */}
         </Routes>
       </main>
-      {isPopupVideoOpen && <AddVideoPopup  isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
-      <Register    isDarkMode={isDarkMode}
+      {isPopupVideoOpen && <AddVideoPopup isDarkMode={isDarkMode} closePopup={togglePopupAddVideo} addVideo={addVideo} />}
+      <Register
+        isDarkMode={isDarkMode}
         isVisible={isRegisterPopupVisible}
         closeRegisterPopup={closeRegisterPopup}
       />
-      <Login   isDarkMode={isDarkMode}
+      <Login
+        isDarkMode={isDarkMode}
         isVisible={isLoginPopupVisible}
         closeLoginPopup={closeLoginPopup}
         openLoginPopup={openRegisterPopup}

@@ -3,12 +3,13 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "start": "cd client && npm start",
-      "server": "cd server && npm start",
-      "dev": "concurrently \"npm run server\" \"npm run start --prefix client\""
+        "start": "cd client && npm start",
+        "server": "cd server && npm start",
+        "dev": "concurrently \"npm run server\" \"npm run start --prefix client\""
     },
     "dependencies": {
-      "concurrently": "^6.2.2"
+        "concurrently": "^6.2.2",
+        "mongoose": "^8.4.4",
+        "multer": "^1.4.5-lts.1"
     }
-  }
-  
+}

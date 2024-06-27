@@ -9,12 +9,21 @@ const getUserById = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserById = async (req, res) => {
+  const { id } = req.params; // Get user ID from parameters
+  const { username, name, profile_picture } = req.body; // Get updated data from request body
+
   try {
-    await User.findByIdAndUpdate(req.params.id, req.body);
-    res.status(200).json({ message: 'User updated successfully' });
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { username, name, profile_picture },
+      { new: true } // Return the updated user object
+    );
+
+    res.json(updatedUser); // Respond with updated user object
   } catch (err) {
-    res.status(500).json({ message: 'Error updating user', error: err.message });
+    console.error('Error updating user:', err);
+    res.status(500).json({ message: 'Failed to update user' });
   }
 };
 
@@ -29,6 +38,6 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getUserById,
-  updateUser,
+  updateUserById,
   deleteUser,
 };

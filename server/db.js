@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 
-const uri = process.env.MONGODB_URI;
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Error connecting to MongoDB', err));
+const connectToMongoDB = async () => {
+  try {
+    const mongoURI = 'mongodb://localhost:27017/youtube_db'; // Replace with your MongoDB URI
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1);
+  }
+};
 
-const db = mongoose.connection;
-
-module.exports = db;
+module.exports = { connectToMongoDB };
