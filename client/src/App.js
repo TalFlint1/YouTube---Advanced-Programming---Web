@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -15,10 +16,10 @@ const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
   const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
-  const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
+  const [isMyVideosView, setIsMyVideosView] = useState(false); // Initialize state for isMyVideosView
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -53,6 +54,10 @@ const App = () => {
     setIsPopupVideoOpen(!isPopupVideoOpen);
   };
 
+  const closeAddVideoPopup = () => {
+    setIsPopupVideoOpen(false);
+  };
+
   const togglePopupLogin = () => {
     setIsPopupLoginOpen(!isPopupLoginOpen);
   };
@@ -73,8 +78,6 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
-        openLoginPopup={openLoginPopup}
-        openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo}
         togglePopupLogin={togglePopupLogin}
       />
@@ -82,6 +85,8 @@ const App = () => {
         <Menu
           isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
+          isMyVideosView={isMyVideosView} // Pass isMyVideosView as prop to Menu
+          setIsMyVideosView={setIsMyVideosView} // Pass setIsMyVideosView function to Menu
         />
       )}
       <main>
@@ -93,14 +98,19 @@ const App = () => {
                 isDarkMode={isDarkMode}
                 isMyVideosView={isMyVideosView}
                 toggleVideoSelection={toggleVideoSelection}
-                searchQuery={searchQuery} // Pass searchQuery as prop
+                searchQuery={searchQuery}
               />
             } 
           />
           <Route path="/video/:id" element={<VideoPage />} />
         </Routes>
       </main>
-      {isPopupVideoOpen && <AddVideoPopup isDarkMode={isDarkMode} />}
+      {isPopupVideoOpen && (
+        <AddVideoPopup
+          closePopup={closeAddVideoPopup}
+          isDarkMode={isDarkMode}
+        />
+      )}
       <Register
         isDarkMode={isDarkMode}
         isVisible={isRegisterPopupVisible}
