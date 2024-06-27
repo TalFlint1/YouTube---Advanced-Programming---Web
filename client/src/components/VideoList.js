@@ -9,7 +9,7 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQue
       try {
         let url = '/api/videos';
         if (isMyVideosView) {
-          url = '/api/videos/user/:shira/videos'; // Adjust URL to fetch user-specific videos
+          url = '/api/videos/user/:Green Thumb/videos'; // Adjust URL to fetch user-specific videos
        
         }
         const response = await fetch(url);
