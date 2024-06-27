@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer'); // For file uploads
 const path = require('path');
-const { getUserById, updateUserById, deleteUser } = require('../controllers/userController');
+const { getUserById, createUser, updateUserById, deleteUser } = require('../controllers/userController');
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -17,6 +17,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Routes
+// Register a new user
+router.post('/register', upload.single('profile_picture'), createUser);
+
+// Create a new user
+router.post('/', upload.single('picture'), createUser);
+
 // Get user details by ID
 router.get('/:id', getUserById);
 

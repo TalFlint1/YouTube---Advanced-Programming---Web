@@ -9,6 +9,36 @@ const getUserById = async (req, res) => {
   }
 };
 
+const createUser = async (req, res) => {
+  const { username, password, name } = req.body;
+  const picture = req.file ? req.file.path : null;
+
+  try {
+    // Check if username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    // Create new user
+    const newUser = new User({
+      username,
+      password, // Make sure to hash the password before saving in production
+      name,
+      profile_picture,
+    });
+
+    // Save user to database
+    await newUser.save();
+
+    // Respond with success message
+    res.status(201).json({ message: 'User registered successfully', user: newUser });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ error: 'Registration failed. Please try again later.' });
+  }
+};
+
 const updateUserById = async (req, res) => {
   const { id } = req.params; // Get user ID from parameters
   const { username, name, profile_picture } = req.body; // Get updated data from request body
@@ -38,6 +68,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getUserById,
+  createUser,
   updateUserById,
   deleteUser,
 };
