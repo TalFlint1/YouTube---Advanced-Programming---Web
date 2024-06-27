@@ -60,11 +60,6 @@ const getVideo = async (req, res) => {
   }
 };
 
-module.exports = {
-  getVideo,
-  // Other controller functions
-};
-
 const updateVideo = async (req, res) => {
   const { id, pid } = req.params; // User id and video id
   const { title, description, videoUrl, thumbnailUrl } = req.body;
