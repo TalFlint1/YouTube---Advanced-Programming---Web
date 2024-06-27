@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VideoDisplay from './VideoDisplay/VideoDisplay';
 
-const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection }) => {
+const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQuery }) => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
@@ -21,11 +21,17 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection }) => {
     fetchVideos();
   }, []);
 
+  // Filter videos based on searchQuery
+  const filteredVideos = videos.filter(video => {
+    return (
+      video.title.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+  });
+
   return (
     <div>
-      <h2>Video List</h2>
       <div className="video-grid">
-        {videos.map(video => (
+        {filteredVideos.map(video => (
           <VideoDisplay
             key={video.id}
             title={video.title}

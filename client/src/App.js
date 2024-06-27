@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -11,7 +12,7 @@ import VideoList from './components/VideoList';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); // State to manage search query
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPopupLoginOpen, setIsPopupLoginOpen] = useState(false);
   const [isPopupVideoOpen, setIsPopupVideoOpen] = useState(false);
@@ -41,7 +42,7 @@ const App = () => {
   };
 
   const handleSearchChange = (query) => {
-    setSearchQuery(query);
+    setSearchQuery(query); // Update searchQuery state based on input change
   };
 
   const toggleDarkMode = () => {
@@ -51,6 +52,10 @@ const App = () => {
 
   const togglePopupAddVideo = () => {
     setIsPopupVideoOpen(!isPopupVideoOpen);
+  };
+
+  const closeAddVideoPopup = () => {
+    setIsPopupVideoOpen(false);
   };
 
   const togglePopupLogin = () => {
@@ -73,8 +78,6 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
-        openLoginPopup={openLoginPopup}
-        openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo}
         togglePopupLogin={togglePopupLogin}
       />
@@ -100,7 +103,12 @@ const App = () => {
           <Route path="/video/:id" element={<VideoPage />} />
         </Routes>
       </main>
-      {isPopupVideoOpen && <AddVideoPopup isDarkMode={isDarkMode} />}
+      {isPopupVideoOpen && (
+        <AddVideoPopup
+          closePopup={closeAddVideoPopup}
+          isDarkMode={isDarkMode}
+        />
+      )}
       <Register
         isDarkMode={isDarkMode}
         isVisible={isRegisterPopupVisible}
