@@ -3,14 +3,15 @@ import { ReactComponent as ErrorSign } from '../../assets/exclamation_point.svg'
 import './Register.css';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
+const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     confirmPassword: '',
     name: '',
-    picture: null,
+    profile_picture: null,
   });
 
   const [passwordError, setPasswordError] = useState('');
@@ -48,7 +49,7 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
       setConfirmPasswordError(error);
     }
 
-    if (name === 'picture') {
+    if (name === 'profile_picture') {
       previewImage(files[0]);
     }
 
@@ -87,12 +88,12 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
     setConfirmPasswordError(error);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const newFieldErrors = {};
     let hasErrors = false;
-
+  
     // Check if all required fields are filled
     Object.keys(formData).forEach((key) => {
       if (formData[key] === '' || formData[key] === null) {
@@ -100,34 +101,41 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
         hasErrors = true;
       }
     });
-
+  
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       newFieldErrors.confirmPassword = "The passwords don't match. Try again.";
       hasErrors = true;
     }
-
+  
     if (hasErrors) {
       setFieldErrors(newFieldErrors);
       return;
     }
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Add new user to users array
-    const newUser = {
-      username: formData.username,
-      password: formData.password,
-      name: formData.name,
-      picture: formData.picture ? URL.createObjectURL(formData.picture) : null,
-    };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    // save the registered user's information in localStorage 'currentUser'
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    // Handle successful registration (e.g., redirect to login page)
+  
+    try {
+      // alert('test!');
+      const formDataToSend = new FormData();
+      formDataToSend.append('username', formData.username);
+      
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('profile_picture', formData.profile_picture);
+      
     
-    alert('Registration completed!');
-    closeFormReg();
+      await axios.post('/api/users/register', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    
+      alert('Registration successful!');
+      closeFormReg();
+      // Handle redirection or any other logic here after successful registration
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Registration failed!');
+    }
   };
 
   const toggleTooltip = () => {
@@ -137,15 +145,16 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 
   return (
-    <div className={`popup ${modeClass}`} id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>      
-      
+    <div className={`popup ${modeClass}`} id="myFormReg" style={{ display: isVisible ? 'block' : 'none' }}>
       <form className="register-form" onSubmit={handleSubmit} noValidate>
-      <div>
-      <button type="button" id="btn-cancel" onClick={closeFormReg}>X</button>
-      </div>
-      <div className="logo-container">
-        <YoutubeLogo className="youtube-logo" />
-      </div>
+        <div>
+          <button type="button" id="btn-cancel" onClick={closeFormReg}>
+            X
+          </button>
+        </div>
+        <div className="logo-container">
+          <YoutubeLogo className="youtube-logo" />
+        </div>
         <h1>Sign up</h1>
         <label>Username:</label>
         <input
@@ -177,7 +186,8 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
             ?
           </span>
           <div className={`tooltip-text ${tooltipVisible ? 'show' : ''}`}>
-            Password must be between 8-16 characters and combine a-Z letters and numbers. It's also possible to use the characters '!@#$%^&*'.
+            Password must be between 8-16 characters and combine a-Z letters and numbers. It's also possible to use
+            the characters '!@#$%^&*'.
           </div>
         </div>
         {passwordError && (
@@ -200,9 +210,7 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
           onChange={handleChange}
           onBlur={handleConfirmPasswordBlur}
           className={
-            confirmPasswordError || fieldErrors.confirmPassword
-              ? 'error-input'
-              : ''
+            confirmPasswordError || fieldErrors.confirmPassword ? 'error-input' : ''
           }
           required
         />
@@ -236,29 +244,27 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
         <label>Profile Picture:</label>
         <div className="image-preview-container">
           {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="preview-image"
-            />
+            <img src={imagePreview} alt="Preview" className="preview-image" />
           )}
           <input
             type="file"
-            name="picture"
+            name="profile_picture"
             onChange={handleChange}
             accept="image/*"
-            className={fieldErrors.picture ? 'error-input' : ''}
+            className={fieldErrors.profile_picture ? 'error-input' : ''}
             required
           />
         </div>
-        {fieldErrors.picture && (
+        {fieldErrors.profile_picture && (
           <div className="error-message">
             <ErrorSign className="error-icon" />
-            <span>{fieldErrors.picture}</span>
+            <span>{fieldErrors.profile_picture}</span>
           </div>
         )}
         <div className="button-container">
-          <button type="submit" id="regibutton">Register</button>
+          <button type="submit" id="regibutton">
+            Register
+          </button>
         </div>
       </form>
     </div>
@@ -266,12 +272,12 @@ const Register = ({ isDarkMode ,isVisible, closeRegisterPopup }) => {
 };
 
 const openFormReg = () => {
-  document.getElementById("myFormReg").style.display = "block";
+  document.getElementById('myFormReg').style.display = 'block';
 };
 
 const closeFormReg = () => {
-  document.getElementById("myFormReg").style.display = "none";
-}
+  document.getElementById('myFormReg').style.display = 'none';
+};
 
 export { openFormReg };
 

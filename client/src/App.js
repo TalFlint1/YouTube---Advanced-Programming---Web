@@ -78,6 +78,8 @@ const App = () => {
         toggleMenu={toggleMenu}
         toggleDarkMode={toggleDarkMode}
         isDarkMode={isDarkMode}
+        openLoginPopup={openLoginPopup}
+        openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo}
         togglePopupLogin={togglePopupLogin}
       />
