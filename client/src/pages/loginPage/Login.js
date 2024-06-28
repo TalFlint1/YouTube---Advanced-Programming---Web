@@ -6,6 +6,8 @@ import { openFormReg } from '../registerPage/Register';
 import { ReactComponent as YoutubeLogo } from '../../assets/youtube_logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'; // Import the Link component
+import axios from 'axios';
+
 
 const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPopup, openRegisterPopup  }) => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,8 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
   });
 
   const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [showLogoutOption, setShowLogoutOption] = useState(false); // State to show/hide logout option
   const [showRegistration, setShowRegistration] = useState(false); // State to toggle between login and register forms
   const navigate = useNavigate();
 
@@ -26,15 +30,27 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
     e.preventDefault();
     const { username, password } = formData;
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find((user) => user.username === username && user.password === password);
+    if (!username || !password) {
+      setError('Username and password are required');
+      return;
+    }
 
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      closeFormLogin();
-      navigate('/');
-    } else {
-      setError('Username or password are not correct. Please try again.');
+    try {
+      const response = await axios.post('/api/users/login', { username, password });
+      const { data } = response;
+
+      if (data.user) {
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        setIsLoggedIn(true);
+        alert('Login successful!');
+        closeFormLogin();
+        navigate('/');
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Login failed. Please try again later.');
     }
   };
 
@@ -42,6 +58,57 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setIsLoggedIn(false); // Update login state
+    // Additional logout logic if needed
+  };
+
+  const toggleLogoutOption = () => {
+    setShowLogoutOption(!showLogoutOption);
+  };
+
+  const renderLoginButton = () => {
+    if (!isLoggedIn) {
+      return (
+        <div className="button-container">
+          <button type="submit" id="loginbutton">Login</button>
+          <button type="button" id="regbutton" onClick={toggleRegisterForm}>Create a new account</button>
+        </div>
+      );
+    }
+  };
+
+  const renderUserProfile = () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  
+    const handleLogout = () => {
+      localStorage.removeItem('currentUser');
+      setIsLoggedIn(false);
+    };
+  
+    const toggleLogoutOption = () => {
+      setShowLogoutOption(!showLogoutOption);
+    };
+  
+    return (
+      <div className="user-profile">
+        <img
+          src={currentUser.profile_picture}
+          alt="Profile"
+          onClick={toggleLogoutOption}
+          className="profile-picture"
+        />
+        {showLogoutOption && (
+          <div className="logout-option">
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        )}
+      </div>
+    );
+  };
+  
 
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 
@@ -83,8 +150,9 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
           )}
           <div className="button-container">
             <p id="forgot-password">Forgot your password?</p>
-            <button type="submit" id="loginbutton">Login</button>
-            <button type="button" id="regbutton" onClick={toggleRegisterForm}>Create a new account</button>
+            {isLoggedIn ? renderUserProfile() : renderLoginButton()}
+            {/* <button type="submit" id="loginbutton">Login</button>
+            <button type="button" id="regbutton" onClick={toggleRegisterForm}>Create a new account</button> */}
           </div>
         </form>
       ) : (
