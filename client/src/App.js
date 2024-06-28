@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -19,7 +18,7 @@ const App = () => {
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
-  const [isMyVideosView, setIsMyVideosView] = useState(false); // Initialize state for isMyVideosView
+  const [isMyVideosView, setIsMyVideosView] = useState(false);
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -43,6 +42,7 @@ const App = () => {
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
+    console.log('Search Query Updated:', query);
   };
 
   const toggleDarkMode = () => {
@@ -62,12 +62,37 @@ const App = () => {
     setIsPopupLoginOpen(!isPopupLoginOpen);
   };
 
-  const toggleVideoSelection = (videoId) => {
+  const toggleVideoSelection = (video) => {
     setSelectedVideos((prevSelectedVideos) =>
-      prevSelectedVideos.includes(videoId)
-        ? prevSelectedVideos.filter((id) => id !== videoId)
-        : [...prevSelectedVideos, videoId]
+      prevSelectedVideos.includes(video.id)
+        ? prevSelectedVideos.filter((id) => id !== video.id)
+        : [...prevSelectedVideos, video.id]
     );
+    console.log('Selected Videos:', selectedVideos);
+  };
+
+  const deleteSelectedVideos = async () => {
+    try {
+      let url = '/api/videos';
+      if (isMyVideosView) {
+        url = 'http://localhost:3000/api/videos/user/shira/videos/100';
+      }
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedVideos),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch videos');
+      }
+      // Handle deletion response
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+
+    setSelectedVideos([]);
   };
 
   return (
@@ -87,22 +112,24 @@ const App = () => {
         <Menu
           isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
-          isMyVideosView={isMyVideosView} // Pass isMyVideosView as prop to Menu
-          setIsMyVideosView={setIsMyVideosView} // Pass setIsMyVideosView function to Menu
+          setIsMyVideosView={setIsMyVideosView}
+          isMyVideosView={isMyVideosView}
+          deleteSelectedVideos={deleteSelectedVideos} // Pass deleteSelectedVideos function to Menu
         />
       )}
       <main>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <VideoList
                 isDarkMode={isDarkMode}
                 isMyVideosView={isMyVideosView}
                 toggleVideoSelection={toggleVideoSelection}
                 searchQuery={searchQuery}
+                selectedVideos={selectedVideos} // Pass selectedVideos state to VideoList
               />
-            } 
+            }
           />
           <Route path="/video/:id" element={<VideoPage />} />
         </Routes>

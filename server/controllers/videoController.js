@@ -88,10 +88,16 @@ const updateVideo = async (req, res) => {
 };
 
 const deleteVideo = async (req, res) => {
-  const { id, pid } = req.params; // User id and video id
+  console.log("delete is here");
+  const { pid, id } = req.params; 
+
+  console.log( req.params);
+  console.log(pid);
+  console.log(id);
+  // User id and video id
   try {
       // Assuming Video model and deleting based on userId and videoId
-      const deletedVideo = await Video.findOneAndDelete({ userId: id, _id: pid });
+      const deletedVideo = await Video.findOneAndDelete({  id: pid});
 
       if (!deletedVideo) {
           return res.status(404).json({ message: 'Video not found' });

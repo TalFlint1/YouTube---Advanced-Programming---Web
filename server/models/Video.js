@@ -12,6 +12,7 @@ const videoSchema = new mongoose.Schema({
   time_type: { type: String, required: true },
   user_icon: { type: String },
   likes: { type: Number, default: 0 },
+  id: { type: Number, default: 0 },
   comments: [{ type: String }],
 });
 
