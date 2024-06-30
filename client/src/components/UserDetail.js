@@ -29,6 +29,7 @@ const UserDetail = () => {
           throw new Error('Failed to fetch user');
         }
         const data = await response.json();
+        //shira version
         setUser(data)
         console.log('Fetched user:', data);
       } catch (error) {
