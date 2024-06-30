@@ -9,6 +9,7 @@ import Login from './pages/loginPage/Login';
 import VideoPage from './components/VideoPage/VideoPage';
 import VideoList from './components/VideoList';
 import axios from 'axios';
+import UserDetail from './components/UserDetail';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,22 +33,55 @@ const App = () => {
     const token = localStorage.getItem('jwtToken');
     return !!token;
   });
+
+  // useEffect(() => {
+  //   // Example: Clearing localStorage on startup
+  //   localStorage.removeItem('jwtToken');
+  //   localStorage.removeItem('currentUser');
+  //   localStorage.removeItem('isSignedIn');
+  //   setSignedInStatus(false); // Update state to reflect logout
+  // }, []);
   
   useEffect(() => {
     localStorage.setItem('isSignedIn', isSignedIn);
   }, [isSignedIn]);
   
+  // useEffect(() => {
+  //   if (isSignedIn) {
+  //     const fetchUser = async () => {
+  //       try {
+  //         const username = localStorage.getItem('currentUser');
+  //         const response = await axios.get(`/api/users/${username}`);
+  //         setCurrentUser(response.data);
+  //       } catch (error) {
+  //         console.error('Error fetching user:', error);
+  //       }
+  //     };
+  //     fetchUser();
+  //   }
+  // }, [isSignedIn]);
+
   useEffect(() => {
-    if (isSignedIn) {
-      const fetchUser = async () => {
-        try {
-          const username = localStorage.getItem('currentUser');
-          const response = await axios.get(`/api/users/${username}`);
-          setCurrentUser(response.data);
-        } catch (error) {
-          console.error('Error fetching user:', error);
+    const fetchUser = async () => {
+      try {
+        const username = localStorage.getItem('currentUser');
+        const token = localStorage.getItem('jwtToken'); // Ensure token is retrieved
+        if (!token) {
+          console.error('No JWT token found');
+          return;
         }
-      };
+        const response = await axios.get(`/api/users/${username}`, {
+          headers: {
+            Authorization: `Bearer ${token}` // Send JWT token in headers
+          }
+        });
+        setCurrentUser(response.data); // Assuming response.data contains user info
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+  
+    if (isSignedIn) {
       fetchUser();
     }
   }, [isSignedIn]);
@@ -154,6 +188,7 @@ const App = () => {
             } 
           />
           <Route path="/video/:id" element={<VideoPage />} />
+          <Route path="/api/users/:username" element={<UserDetail />} />
         </Routes>
       </main>
       {isPopupVideoOpen && (

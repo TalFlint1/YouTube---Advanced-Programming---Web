@@ -9,6 +9,8 @@ const UserDetail = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem('jwtToken');
@@ -17,22 +19,26 @@ const UserDetail = () => {
         navigate('/login');
         return;
       }
-
       try {
-        const response = await axios.get(`/api/users/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setUser(response.data);
+        console.log('hello');
+        let url = '/api/users/${username}';
+        const response = await fetch(url, {headers: {
+          Authorization: `Bearer ${token}`
+        }});
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+        const data = await response.json();
+        console.log('Fetched user:', data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Error fetching user data');
+        console.error('Error fetching user:', error);
       }
     };
-
+  
     fetchUser();
   }, [username, navigate]);
+
+  
 
   if (error) {
     return <div className="error">{error}</div>;

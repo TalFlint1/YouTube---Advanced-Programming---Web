@@ -29,7 +29,21 @@ router.post('/register', upload.single('profile_picture'), createUser);
 router.post('/', createUser);
 
 // GET /api/users/:id - Get user details by ID
-router.get('/:id', verifyToken, getUserById);
+router.get('/:username', auth.verifyToken, async (req, res) => {
+  try {
+    // Example assuming username is used to find user
+    const user = await User.findOne({ username: req.params.username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // PATCH /api/users/:id - Update user by ID
 router.patch('/:id', verifyToken, updateUserById);

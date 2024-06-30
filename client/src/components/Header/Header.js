@@ -72,6 +72,13 @@ const Header = ({
     setShowDropdown(!showDropdown);
   };
 
+  const logout = () => {
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('isSignedIn');
+    navigate('/');
+  }
+
   return (
     <header className={`App-header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="left-buttons">
@@ -89,7 +96,11 @@ const Header = ({
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               )}
+              <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={logout}>
+              <FontAwesomeIcon icon={faCircleUser} />
+            </button>
             </div>
+            
           ) : (
             <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={openFormLogin}>
               <FontAwesomeIcon icon={faCircleUser} />
@@ -105,6 +116,11 @@ const Header = ({
           <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
             <FontAwesomeIcon icon={faMoon} />
           </button>
+        </div>
+        <div title="log off">
+        <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={logout}>
+              <FontAwesomeIcon icon={faCircleUser} />
+            </button>
         </div>
       </div>
       <Search searchQuery={searchQuery} onSearchChange={onSearchChange} />
