@@ -11,6 +11,13 @@ const UserDetail = () => {
   const [password, setPassword] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const [passwordError, setPasswordError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [imagePreview, setImagePreview] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    password: '',
+    profile_picture: null
+  });
 
   const navigate = useNavigate();
 
@@ -25,7 +32,6 @@ const UserDetail = () => {
         return;
       }
       try {
-        console.log('hello');
         let url = `/api/users/${username}`;
         const response = await fetch(url, {headers: {
           Authorization: `Bearer ${token}`
@@ -141,6 +147,46 @@ const UserDetail = () => {
       setError('Failed to update user');
     }
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const confirmDelete = () => {
+    closeModal();
+    handleDeleteUser();
+  };
+
+  const previewImage = (file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === 'profile_picture') {
+      const file = files[0];
+      setProfilePicture(file);
+      previewImage(file);
+    }
+
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
   
 
   if (error) {
@@ -153,12 +199,21 @@ const UserDetail = () => {
 
   return (
     <div className="user-detail">
-      <h1>User Details</h1>
+      <h1>Profile</h1>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Name:</strong> {user.name}</p>
-      <img src={`http://localhost:your_port${user.profile_picture}`} alt="Profile" />
+      <img src={user.profile_picture} alt="picture" />
       <p></p>
-      <button id="delete-acc" onClick={handleDeleteUser}>Delete Account</button>
+      <button id="delete-acc" onClick={openModal}>Delete Account</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Are you sure you want to delete your account?</p>
+            <button onClick={confirmDelete}>Yes</button>
+            <button onClick={closeModal}>Cancel</button>
+          </div>
+        </div>
+      )}
 
       <h2>Update Information</h2>
       <form onSubmit={handleUpdateUser}>
@@ -169,6 +224,7 @@ const UserDetail = () => {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -183,14 +239,21 @@ const UserDetail = () => {
         </div>
         <div>
           <label htmlFor="profilePicture">Profile Picture:</label>
+          {imagePreview && (
+            <img src={imagePreview} alt="Preview" className="preview-image" />
+          )}
           <input
             type="file"
             id="profilePicture"
-            onChange={(e) => setProfilePicture(e.target.files[0])}
+            name="profile_picture"
+            // onChange={(e) => setProfilePicture(e.target.files[0])}
+            onChange={handleChange}
           />
         </div>
         <button type="submit">Update</button>
       </form>
+
+      
     </div>
   );
 };
