@@ -67,25 +67,37 @@ const getVideo = async (req, res) => {
 
 const updateVideo = async (req, res) => {
   const { id, pid } = req.params; // User id and video id
-  const { title, description, videoUrl, thumbnailUrl } = req.body;
-
+  const { title, description, videoUrl, thumbnailUrl, likes, comments, liked } = req.body;
+  console.log(pid)
+  console.log(id)
   try {
-      // Assuming Video model and updating based on userId and videoId
-      const updatedVideo = await Video.findOneAndUpdate(
-          { userId: id, _id: pid },
-          { title, description, videoUrl, thumbnailUrl },
-          { new: true } // Return updated video object
-      );
+     const updatedVideo = await Video.findOne({id: pid }); // Example MongoDB query
+     updatedVideo.comments = comments;
+     console.log("comments:");
+     console.log(comments);
+     console.log(comments[0]);
+    //  console.log(comments[3]);
+          console.log("updatedVideo:");
+     console.log(updatedVideo);
+     await updatedVideo.save();
+     // Assuming Video model and updating based on userId and videoId
+    // const updatedVideo = await Video.findOneAndUpdate(
+    //   { id: pid },
+    //   { pid,title, description, videoUrl, thumbnailUrl, likes, comments, liked },
+    //   { new: true ,useFindAndModify: false} // Return updated video object
+    // );
 
-      if (!updatedVideo) {
-          return res.status(404).json({ message: 'Video not found' });
-      }
-      res.json(updatedVideo);
+    if (!updatedVideo) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.json(updatedVideo);
   } catch (err) {
-      console.error('Error updating video:', err);
-      res.status(500).json({ message: 'Failed to update video' });
+    console.error('Error updating video:', err);
+    res.status(500).json({ message: 'Failed to update video' });
   }
 };
+
+
 
 const deleteVideo = async (req, res) => {
   console.log("delete is here");

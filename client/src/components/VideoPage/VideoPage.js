@@ -19,7 +19,6 @@ const VideoPage = () => {
   useEffect(() => {
     const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
     const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
-    console.log(storedVideos)
 
     // Combine the two arrays into one list
     const combinedList = [...storedVideos, ...storedUploads];
@@ -55,10 +54,31 @@ const VideoPage = () => {
       
       // Combine the two arrays into one list
       const combinedList = [...storedVideos, ...storedUploads];
-            const updatedVideos = combinedList.map(v => (v.id === parseInt(id) ? updatedVideo : v));
+      const updatedVideos = combinedList.map(v => (v.id === parseInt(id) ? updatedVideo : v));
       localStorage.setItem('videos', JSON.stringify(updatedVideos));
+      
+      // Update the video object in the backend
+      updateVideoBackend(updatedVideo);
     }
   }, [likes, comments, liked, video, id]);
+
+  const updateVideoBackend = async (updatedVideo) => {
+    const url = `http://localhost:3000/api/videos/user/${updatedVideo.owner}/videos/${updatedVideo.id}`;
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedVideo),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update video');
+      }
+    } catch (error) {
+      console.error('Error updating video:', error);
+    }
+  };
 
   const handleLike = () => {
     if (!isUserLoggedIn()) {
@@ -240,7 +260,8 @@ const Comment = ({ comment, videoId }) => {
   return (
     <div className="comment">
       <p>{comment.text}</p>
-      <button onClick={handleLike}>        {isLiked ? 'Unlike' : 'Like'} ({likes})
+      <button onClick={handleLike}>
+        {isLiked ? 'Unlike' : 'Like'} ({likes})
       </button>
       <div className="replies">
         {replies.map((reply, index) => (
