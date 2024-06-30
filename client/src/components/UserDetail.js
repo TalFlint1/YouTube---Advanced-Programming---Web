@@ -40,6 +40,42 @@ const UserDetail = () => {
     fetchUser();
   }, [username, navigate]);
 
+  const handleDeleteUser = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        setError('User is not authenticated');
+        navigate('/login');
+        return;
+      }
+  
+      const url = `/api/users/${username}`;
+      const response = await fetch(url, {
+        method: 'DELETE', // Specify the DELETE method
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+  
+      if (response.status === 204) {
+        console.log('User deleted successfully');
+        navigate('/'); // Redirect to homepage or another appropriate route after deletion
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      setError('Failed to delete user');
+    }
+  };
+  
+
+  // const handleUpdateUser = () => {
+  //   // Redirect or navigate to update user page
+  //   navigate(`/update-user/${username}`);
+  // };
   
 
   if (error) {
@@ -55,7 +91,9 @@ const UserDetail = () => {
       <h1>User Details</h1>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Name:</strong> {user.name}</p>
-      {user.profilePic && <img src={user.profilePic} alt="Profile" />}
+      <img src={`http://localhost:your_port${user.profile_picture}`} alt="Profile" />
+      <p>hi</p>
+      <button onClick={handleDeleteUser}>Delete</button>
     </div>
   );
 };

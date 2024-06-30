@@ -49,7 +49,19 @@ router.get('/:username', auth.verifyToken, async (req, res) => {
 router.patch('/:id', verifyToken, updateUserById);
 
 // DELETE /api/users/:id - Delete user by ID
-router.delete('/:id', verifyToken, deleteUser);
+router.delete('/:username', verifyToken, async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOneAndDelete({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(204).send(); // No Content
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 // Login route
 router.post('/login', async (req, res) => {
