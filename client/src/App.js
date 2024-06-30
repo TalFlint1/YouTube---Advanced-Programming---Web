@@ -8,6 +8,7 @@ import Register from './pages/registerPage/Register';
 import Login from './pages/loginPage/Login';
 import VideoPage from './components/VideoPage/VideoPage';
 import VideoList from './components/VideoList';
+import axios from 'axios';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,19 +20,41 @@ const App = () => {
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('jwtToken');
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
-
-  const toggleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
+  const [isSignedIn, setSignedInStatus] = useState(() => {
+    const savedStatus = localStorage.getItem('isSignedIn');
+    return savedStatus ? JSON.parse(savedStatus) : false;
+  });
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = localStorage.getItem('jwtToken');
+    return !!token;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('isSignedIn', isSignedIn);
+  }, [isSignedIn]);
+  
+  useEffect(() => {
+    if (isSignedIn) {
+      const fetchUser = async () => {
+        try {
+          const username = localStorage.getItem('currentUser');
+          const response = await axios.get(`/api/users/${username}`);
+          setCurrentUser(response.data);
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
+      };
+      fetchUser();
+    }
+  }, [isSignedIn]);
+  
+  const toggleLogin = (status) => {
+    setSignedInStatus(status);
+    setIsLoggedIn(status);
   };
 
   const openLoginPopup = () => {
@@ -88,6 +111,10 @@ const App = () => {
     setIsLoggedIn(false);
     navigate('/');
   };
+  const [currentUser, setCurrentUser] = useState(() => {
+    return localStorage.getItem('currentUser'); // Get the username as a plain string
+  });
+  
 
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
