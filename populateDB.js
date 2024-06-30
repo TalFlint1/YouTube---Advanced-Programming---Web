@@ -15,6 +15,7 @@ const videoSchema = new mongoose.Schema({
   duration: String,
   owner: String,
   views: Number,
+  id: Number,
   time_publish: Number,
   time_type: String,
   user_icon: String,
@@ -26,7 +27,7 @@ const Video = mongoose.model('Video', videoSchema);
 
 const videos = [
     {
-        id: '1',
+        id: 1,
         title: 'Video 1',
         description: 'Description 1',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -41,7 +42,7 @@ const videos = [
         comments: []
       },
       {
-        id: '2',
+        id: 2,
         title: 'Video 2',
         description: 'Description 2',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -56,7 +57,7 @@ const videos = [
         comments: []
       },
       {
-        id: '3',
+        id: 3,
         title: 'Video 3',
         description: 'Description 3',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -71,7 +72,7 @@ const videos = [
         comments: []
       },
       {
-        id: '4',
+        id: 4,
         title: 'Video 4',
         description: 'Description 4',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -86,7 +87,7 @@ const videos = [
         comments: []
       },
       {
-        id: '5',
+        id: 5,
         title: 'Video 5',
         description: 'Description 5',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -101,7 +102,7 @@ const videos = [
         comments: []
       },
       {
-        id: '6',
+        id: 6,
         title: 'Video 6',
         description: 'Description 6',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -116,7 +117,7 @@ const videos = [
         comments: []
       },
       {
-        id: '7',
+        id: 7,
         title: 'Video 7',
         description: 'Description 7',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -131,7 +132,7 @@ const videos = [
         comments: []
       },
       {
-        id: '8',
+        id: 8,
         title: 'Video 8',
         description: 'Description 8',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -146,7 +147,7 @@ const videos = [
         comments: []
       },
       {
-        id: '9',
+        id: 9,
         title: 'Video 9',
         description: 'Description 9',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -161,7 +162,7 @@ const videos = [
         comments: []
       },
       {
-        id: '10',
+        id: 10,
         title: 'Video 10',
         description: 'Description 10',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -176,7 +177,7 @@ const videos = [
         comments: []
       },
       {
-        id: '11',
+        id: 11,
         title: 'Climbing Mount Everest',
         description: 'Join us on an epic journey to climb the tallest mountain on Earth.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -191,7 +192,7 @@ const videos = [
         comments: []
       },
       {
-        id: '12',
+        id: 12,
         title: 'Cooking Masterclass: Pasta Carbonara',
         description: 'Learn how to make the perfect Pasta Carbonara from an Italian chef.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -206,7 +207,7 @@ const videos = [
         comments: []
       },
       {
-        id: '13',
+        id: 13,
         title: 'Exploring Ancient Ruins in Greece',
         description: 'Discover the mysteries of ancient Greek civilizations as we explore their ruins.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -221,7 +222,7 @@ const videos = [
         comments: []
       },
       {
-        id: '14',
+        id: 14,
         title: 'Painting a Starry Night',
         description: 'Watch an artist recreate Vincent van Gogh\'s masterpiece in real time.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -236,7 +237,7 @@ const videos = [
         comments: []
       },
       {
-        id: '15',
+        id: 15,
         title: 'Cross-Country Road Trip',
         description: 'Embark on a road trip across the country, exploring hidden gems and local culture.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -251,7 +252,7 @@ const videos = [
         comments: []
       },
       {
-        id: '16',
+        id: 16,
         title: 'Gardening Tips for Beginners',
         description: 'Learn essential gardening tips and tricks to start your own garden at home.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -266,7 +267,7 @@ const videos = [
         comments: []
       },
       {
-        id: '17',
+        id: 17,
         title: 'Photography Masterclass: Capturing the Northern Lights',
         description: 'Join a professional photographer as they capture the mesmerizing Northern Lights.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -281,7 +282,7 @@ const videos = [
         comments: []
       },
       {
-        id: '18',
+        id: 18,
         title: 'Cooking Challenge: 5-Minute Desserts',
         description: 'Take on the challenge of making delicious desserts in just 5 minutes.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -296,7 +297,7 @@ const videos = [
         comments: []
       },
       {
-        id: '19',
+        id: 19,
         title: 'Virtual Tour: Tokyo, Japan',
         description: 'Explore the vibrant streets of Tokyo and its unique blend of tradition and modernity.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -311,7 +312,7 @@ const videos = [
         comments: []
       },
       {
-        id: '20',
+        id: 20,
         title: 'Fitness Challenge: 30-Day Yoga Journey',
         description: 'Embark on a transformative 30-day yoga journey to improve flexibility and inner peace.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -326,7 +327,7 @@ const videos = [
         comments: []
       },
       {
-        id: '21',
+        id: 21,
         title: 'Hiking the Grand Canyon',
         description: 'Experience the breathtaking views and challenges of hiking the Grand Canyon.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -341,7 +342,7 @@ const videos = [
         comments: []
       },
       {
-        id: '22',
+        id: 22,
         title: 'Baking Artisan Bread from Scratch',
         description: 'Learn the art of baking delicious artisan bread right in your own kitchen.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -356,7 +357,7 @@ const videos = [
         comments: []
       },
       {
-        id: '23',
+        id: 23,
         title: 'Discovering Underwater Worlds',
         description: 'Dive into the mysteries of underwater ecosystems and marine life around the world.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -371,7 +372,7 @@ const videos = [
         comments: []
       },
       {
-        id: '24',
+        id: 24,
         title: 'Sketching Landscapes with Charcoal',
         description: 'Join an artist as they demonstrate techniques for sketching landscapes using charcoal.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -386,7 +387,7 @@ const videos = [
         comments: []
       },
       {
-        id: '25',
+        id: 25,
         title: 'Road Cycling through the Alps',
         description: 'Embark on a thrilling road cycling adventure through the stunning Alps mountains.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -401,7 +402,7 @@ const videos = [
         comments: []
       },
       {
-        id: '26',
+        id: 26,
         title: 'Urban Gardening in Small Spaces',
         description: 'Learn innovative techniques for gardening in small urban spaces and apartments.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -416,8 +417,8 @@ const videos = [
         comments: []
       },
       {
-        id: '27',
-        title: 'Photography Masterclass: Capturing Wildlife',
+        id: 27,
+                title: 'Photography Masterclass: Capturing Wildlife',
         description: 'Join a wildlife photographer as they capture stunning images of animals in their natural habitat.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail27.jpg',
@@ -431,7 +432,7 @@ const videos = [
         comments: []
       },
       {
-        id: '28',
+        id: 28,
         title: 'Gourmet Cooking: French Cuisine',
         description: 'Explore the art of French cuisine and learn to cook gourmet dishes like a professional chef.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -446,7 +447,7 @@ const videos = [
         comments: []
       },
       {
-        id: '29',
+        id: 29,
         title: 'Virtual Tour: Paris, France',
         description: 'Take a virtual tour of the romantic city of Paris, exploring its iconic landmarks and rich history.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
@@ -461,7 +462,7 @@ const videos = [
         comments: []
       },
       {
-        id: '30',
+        id: 30,
         title: 'Strength Training: Full Body Workout',
         description: 'Get stronger with this full-body strength training workout designed to build muscle and endurance.',
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
