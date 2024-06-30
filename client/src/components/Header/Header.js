@@ -23,24 +23,24 @@ const Header = ({
   const [userData, setUserData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (isLoggedIn) {
-        try {
-          const token = localStorage.getItem('jwtToken');
-          const response = await axios.get('/api/users/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setUserData(response.data);
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-          toggleLogin(false);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     if (isLoggedIn) {
+  //       try {
+  //         const token = localStorage.getItem('jwtToken');
+  //         const response = await axios.get('/api/users/profile', {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         });
+  //         setUserData(response.data);
+  //       } catch (error) {
+  //         console.error('Error fetching user data:', error);
+  //         toggleLogin(false);
+  //       }
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
   const handleAddVideoClick = () => {
     if (!isLoggedIn) {

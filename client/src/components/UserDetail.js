@@ -21,7 +21,7 @@ const UserDetail = () => {
       }
       try {
         console.log('hello');
-        let url = '/api/users/${username}';
+        let url = `/api/users/${username}`;
         const response = await fetch(url, {headers: {
           Authorization: `Bearer ${token}`
         }});
@@ -29,6 +29,7 @@ const UserDetail = () => {
           throw new Error('Failed to fetch user');
         }
         const data = await response.json();
+        setUser(data)
         console.log('Fetched user:', data);
       } catch (error) {
         console.error('Error fetching user:', error);
