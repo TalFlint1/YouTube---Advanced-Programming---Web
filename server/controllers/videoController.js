@@ -49,7 +49,21 @@ const createVideo = async (req, res) => {
       res.status(500).json({ message: 'Failed to create video' });
   }
 };
-
+const getVideoById = async (req, res) => {
+  const { pid } = req.params; // User id and video id
+  try {
+    console.log("here!!!")
+      // Assuming Video model and fetching based on userId and videoId
+      const video = await Video.findOne({  id: pid }); // Example MongoDB query
+      if (!video) {
+          return res.status(404).json({ message: 'Video not found' });
+      }
+      res.json(video);
+  } catch (err) {
+      console.error('Error fetching video:', err);
+      res.status(500).json({ message: 'Failed to fetch video' });
+  }
+};
 const getVideo = async (req, res) => {
   const { id, pid } = req.params; // User id and video id
   try {
@@ -123,6 +137,7 @@ const deleteVideo = async (req, res) => {
 
 module.exports = {
   getVideos,
+  getVideoById,
   getUserVideos,
   createVideo,
   getVideo,

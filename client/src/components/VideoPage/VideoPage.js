@@ -23,7 +23,7 @@ const VideoPage = () => {
     // Combine the two arrays into one list
     const combinedList = [...storedVideos, ...storedUploads];
     const storedVideo = combinedList.find((v) => v.id === parseInt(id));
-
+    console.log(storedVideos)
     let initialVideo;
 
     if (storedVideo) {
@@ -38,7 +38,7 @@ const VideoPage = () => {
 
     if (initialVideo) {
       setVideo(initialVideo);
-      setLikes(initialVideo.likes || 0);
+      setLikes(initialVideo.likes );
       setComments(initialVideo.comments || []);
       setLiked(initialVideo.liked); // Set liked state based on stored data
     }
@@ -63,7 +63,7 @@ const VideoPage = () => {
   }, [likes, comments, liked, video, id]);
 
   const updateVideoBackend = async (updatedVideo) => {
-    const url = `http://localhost:3000/api/videos/user/${updatedVideo.owner}/videos/${updatedVideo.id}`;
+    const url = `/api/videos/user/${updatedVideo.owner}/videos/${updatedVideo.id}`;
     try {
       const response = await fetch(url, {
         method: 'PUT',
@@ -81,11 +81,11 @@ const VideoPage = () => {
   };
 
   const handleLike = () => {
-    if (!isUserLoggedIn()) {
-      alert('Sign in to make your opinion count.');
-      navigate('/login');
-      return;
-    }
+    // if (!isUserLoggedIn()) {
+    //   alert('Sign in to make your opinion count.');
+    //   navigate('/login');
+    //   return;
+    // }
 
     if (liked === true) {
       setLikes(likes - 1);
@@ -97,11 +97,11 @@ const VideoPage = () => {
   };
 
   const handleDislike = () => {
-    if (!isUserLoggedIn()) {
-      alert('Sign in to make your opinion count.');
-      navigate('/login');
-      return;
-    }
+    // if (!isUserLoggedIn()) {
+    //   alert('Sign in to make your opinion count.');
+    //   navigate('/login');
+    //   return;
+    // }
 
     if (liked === false) {
       setLikes(likes + 1);
@@ -113,11 +113,11 @@ const VideoPage = () => {
   };
 
   const handleComment = (newComment) => {
-    if (!isUserLoggedIn()) {
-      alert('Sign in to make your opinion count.');
-      navigate('/login');
-      return;
-    }
+    // if (!isUserLoggedIn()) {
+    //   alert('Sign in to make your opinion count.');
+    //   navigate('/login');
+    //   return;
+    // }
 
     const updatedComments = [...comments, newComment];
     setComments(updatedComments);
@@ -221,7 +221,8 @@ const Comment = ({ comment, videoId }) => {
       const updatedLikes = likes - 1;
       setLikes(updatedLikes);
     }
-    setIsLiked(!isLiked); // Toggle the isLiked state
+    setIsLiked(!isLiked);
+     // Toggle the isLiked state
     // Handle updating the comment's likes in the parent component (VideoPage)
   };
 

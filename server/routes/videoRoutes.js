@@ -3,6 +3,7 @@ const router = express.Router();
 const videoController = require('../controllers/videoController');
 
 // Routes
+router.get('/user/:id/video/:pid', videoController.getVideoById);
 router.get('/', videoController.getVideos);
 router.get('/user/:id/videos', videoController.getUserVideos);
 router.post('/user/:id/videos', videoController.createVideo);
