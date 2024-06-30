@@ -114,24 +114,28 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
     }
   
     try {
-      // alert('test!');
       const formDataToSend = new FormData();
       formDataToSend.append('username', formData.username);
-      
       formDataToSend.append('password', formData.password);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('profile_picture', formData.profile_picture);
-      
-    
-      await axios.post('/api/users/register', formDataToSend, {
+  
+      const response = await axios.post('/api/users/register', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-    
-      alert('Registration successful!');
-      closeFormReg();
-      // Handle redirection or any other logic here after successful registration
+
+      const { token } = response.data;
+  
+      if (token) {
+        localStorage.setItem('jwtToken', token);
+        alert('Registration successful!');
+        closeFormReg();
+        navigate('/');
+      } else {
+        alert('Registration failed!');
+      }
     } catch (error) {
       console.error('Registration failed:', error);
       alert('Registration failed!');
@@ -280,5 +284,4 @@ const closeFormReg = () => {
 };
 
 export { openFormReg };
-
 export default Register;

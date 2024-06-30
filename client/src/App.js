@@ -1,6 +1,5 @@
-// App.js
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup';
@@ -19,7 +18,21 @@ const App = () => {
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
-  const [isMyVideosView, setIsMyVideosView] = useState(false); // Initialize state for isMyVideosView
+  const [isMyVideosView, setIsMyVideosView] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('jwtToken');
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, []);
+
+  const toggleLogin = () => {
+    setIsLoggedIn(!isLoggedIn);
+  };
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -70,6 +83,12 @@ const App = () => {
     );
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
       <Header
@@ -82,13 +101,16 @@ const App = () => {
         openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo}
         togglePopupLogin={togglePopupLogin}
+        toggleLogin={toggleLogin}
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
       />
       {isMenuOpen && (
         <Menu
           isDarkMode={isDarkMode}
           toggleMenu={toggleMenu}
-          isMyVideosView={isMyVideosView} // Pass isMyVideosView as prop to Menu
-          setIsMyVideosView={setIsMyVideosView} // Pass setIsMyVideosView function to Menu
+          isMyVideosView={isMyVideosView}
+          setIsMyVideosView={setIsMyVideosView}
         />
       )}
       <main>
@@ -123,6 +145,8 @@ const App = () => {
         isVisible={isLoginPopupVisible}
         closeLoginPopup={closeLoginPopup}
         openLoginPopup={openRegisterPopup}
+        toggleLogin={toggleLogin}
+        isLoggedIn={isLoggedIn}
       />
     </div>
   );

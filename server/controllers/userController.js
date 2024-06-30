@@ -1,70 +1,83 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const { generateToken } = require('../middlewares/auth');
 
 const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching user', error: err.message });
   }
 };
 
+// POST /api/users - Create a new user
 const createUser = async (req, res) => {
-  const { username, password, name } = req.body;
-  const profile_picture = req.file ? req.file.path : null; // Correctly assign profile_picture
-
-  console.log('Received data:', { username, password, name, profile_picture });
+  const { username, password, name, profile_picture } = req.body;
 
   try {
     // Check if username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ error: 'Username already exists' });
+      return res.status(409).json({ message: 'Username already exists' });
     }
 
     // Create new user
-    const newUser = new User({
-      username,
-      password, // Ensure password hashing in production
-      name,
-      profile_picture, // Correctly reference profile_picture here
-    });
-
-    // Save user to database
+    const newUser = new User({ username, password, name, profile_picture });
     await newUser.save();
 
-    // Respond with success message
-    res.status(201).json({ message: 'User registered successfully', user: newUser });
+    // Generate JWT
+    const token = generateToken(newUser._id);
+
+    // Respond with success message and token
+    res.status(201).json({ message: 'User registered successfully', token });
   } catch (error) {
     console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Registration failed. Please try again later.' });
+    res.status(500).json({ message: 'Registration failed. Please try again later.' });
   }
 };
 
+// PATCH /api/users/:id - Update user by ID
 const updateUserById = async (req, res) => {
-  const { id } = req.params; // Get user ID from parameters
-  const { username, name, profile_picture } = req.body; // Get updated data from request body
+  const { id } = req.params;
+  const { username, name, profile_picture } = req.body;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { username, name, profile_picture },
-      { new: true } // Return the updated user object
+      { new: true }
     );
 
-    res.json(updatedUser); // Respond with updated user object
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
   } catch (err) {
     console.error('Error updating user:', err);
     res.status(500).json({ message: 'Failed to update user' });
   }
 };
 
+// DELETE /api/users/:id - Delete user by ID
 const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Error deleting user', error: err.message });
+    console.error('Error deleting user:', err);
+    res.status(500).json({ message: 'Failed to delete user' });
   }
 };
 

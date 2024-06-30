@@ -8,15 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'; // Import the Link component
 import axios from 'axios';
 
-
-const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPopup, openRegisterPopup  }) => {
+const Login = ({ closePopup, toggleRegister, isDarkMode, isVisible, toggleLogin,isLoggedIn}) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
   const [error, setError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [showLogoutOption, setShowLogoutOption] = useState(false); // State to show/hide logout option
   const [showRegistration, setShowRegistration] = useState(false); // State to toggle between login and register forms
   const navigate = useNavigate();
@@ -37,11 +35,11 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
 
     try {
       const response = await axios.post('/api/users/login', { username, password });
-      const { data } = response;
+      const { token } = response.data;
 
-      if (data.user) {
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
-        setIsLoggedIn(true);
+      if (token) {
+        localStorage.setItem('jwtToken', token);
+        toggleLogin(false);
         alert('Login successful!');
         closeFormLogin();
         navigate('/');
@@ -60,8 +58,8 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser');
-    setIsLoggedIn(false); // Update login state
+    localStorage.removeItem('jwtToken');
+    toggleLogin(false); // Update login state
     // Additional logout logic if needed
   };
 
@@ -83,15 +81,6 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
   const renderUserProfile = () => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   
-    const handleLogout = () => {
-      localStorage.removeItem('currentUser');
-      setIsLoggedIn(false);
-    };
-  
-    const toggleLogoutOption = () => {
-      setShowLogoutOption(!showLogoutOption);
-    };
-  
     return (
       <div className="user-profile">
         <img
@@ -108,12 +97,11 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
       </div>
     );
   };
-  
 
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 
   return (
-    <div className= {`form-popup ${modeClass}`} id="myFormLogin" style={{ display: isVisible ? 'block' : 'none' }}>
+    <div className={`form-popup ${modeClass}`} id="myFormLogin" style={{ display: isVisible ? 'block' : 'none' }}>
       {!showRegistration ? (
         <form className="login-form" onSubmit={handleSubmit} noValidate>
           <div>
@@ -151,8 +139,6 @@ const Login = ({ closePopup, toggleRegister, isDarkMode ,isVisible, closeLoginPo
           <div className="button-container">
             <p id="forgot-password">Forgot your password?</p>
             {isLoggedIn ? renderUserProfile() : renderLoginButton()}
-            {/* <button type="submit" id="loginbutton">Login</button>
-            <button type="button" id="regbutton" onClick={toggleRegisterForm}>Create a new account</button> */}
           </div>
         </form>
       ) : (

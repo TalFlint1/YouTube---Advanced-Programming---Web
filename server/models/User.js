@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
-  profile_picture: { type: String, required: true }, // Store path to profile picture
+  profile_picture: { type: String }, // Store path to profile picture
 });
 
 const User = mongoose.model('User', userSchema);
