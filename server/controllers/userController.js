@@ -42,16 +42,16 @@ const createUser = async (req, res) => {
 
 // PATCH /api/users/:id - Update user by ID
 const updateUserById = async (req, res) => {
-  const { id } = req.params;
-  const { username, name, profile_picture } = req.body;
+  const { username } = req.params;
+  const { name, password } = req.body;
+  const profilePicture = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { username, name, profile_picture },
-      { new: true }
-    );
+    const updateData = { name };
+    if (password) updateData.password = password;
+    if (profilePicture) updateData.profile_picture = profilePicture;
 
+    const updatedUser = await User.findOneAndUpdate({ username }, updateData, { new: true });
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }

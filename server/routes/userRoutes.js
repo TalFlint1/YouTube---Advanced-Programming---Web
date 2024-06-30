@@ -46,7 +46,8 @@ router.get('/:username', auth.verifyToken, async (req, res) => {
 });
 
 // PATCH /api/users/:id - Update user by ID
-router.patch('/:id', verifyToken, updateUserById);
+// router.patch('/:id', verifyToken, updateUserById);
+router.patch('/:username', verifyToken, upload.single('profile_picture'), updateUserById);
 
 // DELETE /api/users/:id - Delete user by ID
 router.delete('/:username', verifyToken, async (req, res) => {
