@@ -74,8 +74,10 @@ const App = () => {
   const deleteSelectedVideos = async () => {
     try {
       let url = '/api/videos';
+      let user = "shira"
+      let id = 11
       if (isMyVideosView) {
-        url = 'http://localhost:3000/api/videos/user/shira/videos/100';
+        url = `http://localhost:3000/api/videos/user/${user}/videos/${id}`;
       }
       const response = await fetch(url, {
         method: 'DELETE',
