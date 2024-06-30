@@ -13,7 +13,7 @@
   margin-bottom: 20px;
 }
 
-.user-detail h2 {
+.user-detail h3 {
   font-size: 20px;
   margin-top: 30px;
 }
@@ -47,11 +47,12 @@
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: 0.75rem;
 }
 
 .user-detail form input[type="text"],
 .user-detail form input[type="password"] {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -62,16 +63,17 @@
 }
 
 .user-detail form button {
-  background-color: #007bff;
+  background-color: #ff0000;
   color: #fff;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin: 0 10px; /* Adjust margin as needed */
 }
 
 .user-detail form button:hover {
-  background-color: #0056b3;
+  background-color: #cc0000;
 }
 
 #delete-acc {
@@ -108,4 +110,57 @@
   height: auto;
   display: block;
   margin: 10px auto;
+}
+
+.user-detail label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.93rem;
+  margin-left: 40px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Adjust margin as needed */
+}
+
+
+.user-detail h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center; /* Center align the h1 */
+}
+
+.user-detail h3 {
+  font-size: 20px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.user-detail p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.user-detail .profile-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-detail .profile-section span {
+  /* Adjust styles as needed */
+  display: inline-block; /* Ensures each span is treated as a block */
+  vertical-align: middle; /* Aligns vertically with labels */
+  margin-bottom: 5px;
+}
+
+.user-detail .profile-section label {
+  font-weight: bold;
+  margin-right: 10px;
+  display: inline-block; /* Ensures each label is treated as a block */
+  vertical-align: middle; /* Aligns vertically with spans */
 }

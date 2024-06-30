@@ -200,22 +200,18 @@ const UserDetail = () => {
   return (
     <div className="user-detail">
       <h1>Profile</h1>
-      <p><strong>Username:</strong> {user.username}</p>
-      <p><strong>Name:</strong> {user.name}</p>
-      <img src={user.profile_picture} alt="picture" />
+      <div className="profile-section">
+      <label>Username:</label>
+      <span>{user.username}</span>
+    </div>
+    <div className="profile-section">
+      <label>Name:</label>
+      <span>{user.name}</span>
+    </div>
+      <label>Profile Picture:</label>
+      <img src={user.profile_picture} alt="Profile Picture" className="preview-image"/>
       <p></p>
-      <button id="delete-acc" onClick={openModal}>Delete Account</button>
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Are you sure you want to delete your account?</p>
-            <button onClick={confirmDelete}>Yes</button>
-            <button onClick={closeModal}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      <h2>Update Information</h2>
+      <h3>Update Information</h3>
       <form onSubmit={handleUpdateUser}>
         <div>
           <label htmlFor="name">Name:</label>
@@ -250,10 +246,23 @@ const UserDetail = () => {
             onChange={handleChange}
           />
         </div>
+        <div className="button-container">
         <button type="submit">Update</button>
+        </div>
       </form>
 
-      
+      <div className="button-container">
+      <button id="delete-acc" onClick={openModal}>Delete Account</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Are you sure you want to delete your account?</p>
+            <button onClick={confirmDelete}>Yes</button>
+            <button onClick={closeModal}>Cancel</button>
+          </div>
+        </div>
+      )}
+      </div>
     </div>
   );
 };
