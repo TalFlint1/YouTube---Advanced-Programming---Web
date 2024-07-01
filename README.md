@@ -49,11 +49,12 @@ This project involves creating a web application inspired by YouTube using JavaS
 
 1. Open your terminal in Visual Studio (or any other IDE). Move to the desired directory in which you want to clone the project using the cd command, then write:
 2.  git clone https://github.com/TalFlint1/YouTube---Advanced-Programming---Web.git
-3.  the branch is main_ex2 so check you are on this branch where you run the app
-4. run the script populateDB.js in server folder to set data and tables of mongoDB database.
+3.  the branch is main_ex2 so check you are on this branch where you run the app - ( run in terminal -git checkout main_ex2)
+4. run the script populateDB.js to set data and tables of mongoDB database.(run node populateDB.js) 
 5. run the server by cmd:
 cd server
 node server.js
-6. run the client by cmd:
-npm start
+6. run the client by :
+A. open new terminal
+B. npm start
    
