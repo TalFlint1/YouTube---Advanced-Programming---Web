@@ -12,6 +12,19 @@ import axios from 'axios';
 import UserDetail from './components/UserDetail';
 
 const App = () => {
+  useEffect(() => {
+    // Check if user is logged in when application starts
+    const isSignedIn = localStorage.getItem('isSignedIn');
+
+    if (isSignedIn) {
+      // Clear the stored user login state
+      localStorage.removeItem('jwtToken');
+      localStorage.removeItem('currentUser');
+      localStorage.setItem('isSignedIn', false);
+      toggleLogin(false);
+      navigate('/');
+    }
+  }, []);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -33,33 +46,10 @@ const App = () => {
     const token = localStorage.getItem('jwtToken');
     return !!token;
   });
-
-  // useEffect(() => {
-  //   // Example: Clearing localStorage on startup
-  //   localStorage.removeItem('jwtToken');
-  //   localStorage.removeItem('currentUser');
-  //   localStorage.removeItem('isSignedIn');
-  //   setSignedInStatus(false); // Update state to reflect logout
-  // }, []);
   
   useEffect(() => {
     localStorage.setItem('isSignedIn', isSignedIn);
   }, [isSignedIn]);
-  
-  // useEffect(() => {
-  //   if (isSignedIn) {
-  //     const fetchUser = async () => {
-  //       try {
-  //         const username = localStorage.getItem('currentUser');
-  //         const response = await axios.get(`/api/users/${username}`);
-  //         setCurrentUser(response.data);
-  //       } catch (error) {
-  //         console.error('Error fetching user:', error);
-  //       }
-  //     };
-  //     fetchUser();
-  //   }
-  // }, [isSignedIn]);
 
   useEffect(() => {
     const fetchUser = async () => {

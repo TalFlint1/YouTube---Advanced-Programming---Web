@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faPlus, faMoon, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faPlus, faMoon, faCircleUser, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import './Header.css';
 import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom';
@@ -75,7 +75,8 @@ const Header = ({
   const logout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('isSignedIn');
+    localStorage.setItem('isSignedIn', false);
+    toggleLogin(false);
     navigate('/');
   }
 
@@ -83,28 +84,20 @@ const Header = ({
     <header className={`App-header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="left-buttons">
         <div className="user-profile-container" title="User Profile">
-          {isLoggedIn && userData ? (
-            <div className="profile-picture-container" onClick={toggleDropdown}>
-              <img
-                // src={`${API_BASE_URL}/uploads/${userData.profile_picture}`}
-                src={userData.profile_picture}
-                alt="Profile"
-                className="profile-picture"
-              />
-              {showDropdown && (
-                <div className="dropdown-menu">
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              )}
-              <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={logout}>
-              <FontAwesomeIcon icon={faCircleUser} />
-            </button>
+          {isLoggedIn ? (
+            
+            <div title="log off">
+            <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={logout}>
+                  <FontAwesomeIcon icon={faSignOut} />
+                </button>
             </div>
             
           ) : (
-            <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={openFormLogin}>
+            <div className="profile-picture-container" onClick={toggleDropdown}>
+              <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={openFormLogin}>
               <FontAwesomeIcon icon={faCircleUser} />
             </button>
+            </div>
           )}
         </div>
         <div title="add video">
@@ -117,11 +110,11 @@ const Header = ({
             <FontAwesomeIcon icon={faMoon} />
           </button>
         </div>
-        <div title="log off">
+        {/* <div title="log off">
         <button className={`icon-button ${isDarkMode ? 'dark-mode' : ''}`} onClick={logout}>
               <FontAwesomeIcon icon={faCircleUser} />
             </button>
-        </div>
+        </div> */}
       </div>
       <Search searchQuery={searchQuery} onSearchChange={onSearchChange} />
       <div className="icon-container" title="YouTube Home Page">
