@@ -56,10 +56,9 @@ This project involves creating a web application inspired by YouTube using JavaS
 4. run the script populateDB.js to set data and tables of mongoDB database.(run node populateDB.js) 
 
 5. run the server by cmd:
-A. cd server
-B. node server.js
+- cd server
+-  node server.js
 
 6. run the client by :
-A. open new terminal
-B. npm start
+- open new terminal- npm start
    
