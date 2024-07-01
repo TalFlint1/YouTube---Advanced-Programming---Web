@@ -10,7 +10,7 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQue
       try {
         let url = '/api/videos';
         if (isMyVideosView) {
-          const username = JSON.parse(localStorage.getItem('currentUser')).username;
+          const username =localStorage.getItem('currentUser');
           url = `/api/videos/user/:${username}/videos`; // Adjust URL to fetch user-specific videos
         
         }

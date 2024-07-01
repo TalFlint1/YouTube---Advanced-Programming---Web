@@ -121,7 +121,7 @@ const App = () => {
     console.log("here add video f", newVideo);
     addVideoInBack(newVideo);
     refetchVideos();
-     window.location.reload();
+      window.location.reload();
 
   };
 
@@ -129,7 +129,7 @@ const App = () => {
     try {
       let url = '/api/videos';
       if (isMyVideosView) {
-        const username = JSON.parse(localStorage.getItem('currentUser')).username;
+        const username =localStorage.getItem('currentUser');
         url = `/api/videos/user/${username}/videos`;
       
       console.log(url)}
@@ -146,7 +146,16 @@ const App = () => {
   };
   const addVideoInBack = async (newVideo) => {
     console.log("here add video");
-    const url = `/api/videos/user/${newVideo.owner}/videos`;
+    console.log("newVideo",newVideo);
+    console.log("thumbnailUrl",newVideo.thumbnailUrl);
+    const username = localStorage.getItem('currentUser');
+
+    console.log("username",username);
+
+
+    const url = `/api/videos/user/${username}/videos`;
+    console.log("url",url);
+
     try {
       const response = await fetch(url, {
         method: 'post',
@@ -181,8 +190,8 @@ const App = () => {
 
   const deleteSelectedVideos = async () => {
     try {
-      const username = JSON.parse(localStorage.getItem('currentUser')).username;
-            let id = 0;
+      const username = localStorage.getItem('currentUser');
+      let id = 0;
       let baseUrl = `http://localhost:3000/api/videos/user/${username}/videos/${id}`;
 
       const deleteVideo = async (video) => {
@@ -203,7 +212,7 @@ const App = () => {
       const deletePromises = selectedVideos.map(videoID => {
         const fetchVideo = async () => {
           try {
-            const username = JSON.parse(localStorage.getItem('currentUser')).username;
+            const username = localStorage.getItem('currentUser');
             let url = `/api/videos/user/:${username}/video/${videoID}`;
 
             const response = await fetch(url);

@@ -37,11 +37,13 @@ const Login = ({ closePopup, toggleRegister, isDarkMode, isVisible, toggleLogin,
 
     try {
       const response = await axios.post('/api/users/login', { username, password });
-      const { token } = response.data;
-
+      const { token ,profile_picture} = response.data;
+      // console.log("user",user    )
+      console.log("profile_picture",profile_picture    )
       if (token) {
         localStorage.setItem('jwtToken', token);
         localStorage.setItem('currentUser', username); // Save the username as a plain string
+        localStorage.setItem('profile_picture',profile_picture); // Save the username as a plain string
         localStorage.setItem('isSignedIn', true); // Save signed-in status
         toggleLogin(true);
         alert('Login successful!');

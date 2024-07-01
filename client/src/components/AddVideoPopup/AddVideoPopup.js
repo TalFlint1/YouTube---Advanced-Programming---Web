@@ -17,10 +17,10 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
     if (videoFile) {
       console.log('Uploaded video file:', videoFile);
     }
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const currentUser =localStorage.getItem("currentUser");
     const owner = currentUser ? currentUser.name : null;
-    const thumbnailUrl =currentUser ? currentUser.profile_picture : null;
-    const user_icon =currentUser ? currentUser.profile_picture : null;
+    const user_icon =localStorage.getItem('profile_picture');
+    const thumbnailUrl =localStorage.getItem('profile_picture');
     const liked =0
     const comments= []
     const likes =0

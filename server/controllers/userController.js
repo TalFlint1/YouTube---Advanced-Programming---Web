@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
     const token = generateToken(newUser._id);
 
     // Respond with success message and token
-    res.status(200).json({ message: 'User registered successfully', token });
+    res.status(200).json({ message: 'User registered successfully', token ,profile_picture });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Registration failed. Please try again later.' });
