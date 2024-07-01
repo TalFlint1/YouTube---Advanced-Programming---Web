@@ -19,6 +19,7 @@ const App = () => {
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
+  const [video, setVideo] = useState([]);
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -65,37 +66,70 @@ const App = () => {
   const toggleVideoSelection = (video) => {
     setSelectedVideos((prevSelectedVideos) =>
       prevSelectedVideos.includes(video.id)
-        ? prevSelectedVideos.filter((id) => id !== video.id)
+        ?  prevSelectedVideos.filter((id) => id !== video.id)
         : [...prevSelectedVideos, video.id]
     );
-    console.log('Selected Videos:', selectedVideos);
+    
   };
 
   const deleteSelectedVideos = async () => {
-    try {
-      let url = '/api/videos';
-      let user = "shira"
-      let id = 11
-      if (isMyVideosView) {
-        url = `http://localhost:3000/api/videos/user/${user}/videos/${id}`;
-      }
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedVideos),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch videos');
-      }
-      // Handle deletion response
-    } catch (error) {
-      console.error('Error fetching videos:', error);
-    }
+    try {  
+      const user = localStorage.getItem('currentUser');
+      let id = 0;
+      let baseUrl =  
+        `http://localhost:3000/api/videos/user/${user}/videos/${id}` ;
+  
+      const deleteVideo = async (video) => {
+        const url = localStorage.getItem("delete_url")
+        const response = await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(video),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to delete video');
+        }
+      };
+  
+      // Send DELETE requests for each video
+      const deletePromises = selectedVideos.map(videoID =>{
+        const fetchVideo = async () => {
+          try {
+            const user = localStorage.getItem('currentUser');
+            let url = `/api/videos/user/:${user}/video/${videoID}`;
+        
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error('Failed to fetch videos');
+            }
+            const data = await response.json();
+            setVideo(data); // Update state with the fetched videos array
+            baseUrl =  `http://localhost:3000/api/videos/user/${data.owner}/videos/${data.id}` ;
 
+             localStorage.setItem("delete_url",baseUrl)
+          } catch (error) {
+            console.error('Error fetching video:', error);
+          }
+        };
+    
+        fetchVideo();
+         baseUrl =  `http://localhost:3000/api/videos/user/${video.owner}/videos/${video.id}` ;
+  
+         deleteVideo(video)});
+      await Promise.all(deletePromises);
+  
+      // Handle successful deletion
+    } catch (error) {
+      console.error('Error deleting videos:', error);
+    }
+  
     setSelectedVideos([]);
   };
+  
+  
 
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
