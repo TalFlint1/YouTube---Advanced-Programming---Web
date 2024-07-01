@@ -12,19 +12,19 @@ import axios from 'axios';
 import UserDetail from './components/UserDetail';
 
 const App = () => {
-  useEffect(() => {
-    // Check if user is logged in when application starts
-    const isSignedIn = localStorage.getItem('isSignedIn');
+  // useEffect(() => {
+  //   // Check if user is logged in when application starts
+  //   const isSignedIn = localStorage.getItem('isSignedIn');
 
-    if (isSignedIn) {
-      // Clear the stored user login state
-      localStorage.removeItem('jwtToken');
-      localStorage.removeItem('currentUser');
-      localStorage.setItem('isSignedIn', false);
-      toggleLogin(false);
-      navigate('/');
-    }
-  }, []);
+  //   if (isSignedIn) {
+  //     // Clear the stored user login state
+  //     localStorage.removeItem('jwtToken');
+  //     localStorage.removeItem('currentUser');
+  //     localStorage.setItem('isSignedIn', false);
+  //     toggleLogin(false);
+  //     navigate('/');
+  //   }
+  // }, []);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);

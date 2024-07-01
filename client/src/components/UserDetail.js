@@ -209,7 +209,11 @@ const UserDetail = () => {
       <span>{user.name}</span>
     </div>
       <label>Profile Picture:</label>
-      <img src={user.profile_picture} alt="Profile Picture" className="preview-image"/>
+      {/* <img src={user.profile_picture} alt="Profile Picture" className="preview-image"/> */}
+      {/* <img src={`../../..${user.profile_picture}`} alt="Profile" className="preview-image" /> */}
+      <img src={user.profile_picture} alt="Profile" className="preview-image" />
+      
+      {/* {user.profile_picture} */}
       <p></p>
       <h3>Update Information</h3>
       <form onSubmit={handleUpdateUser}>

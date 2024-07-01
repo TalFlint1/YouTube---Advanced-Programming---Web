@@ -105,10 +105,8 @@
 }
 
 .preview-image {
-  width: 100%;
-  max-width: 120px;
-  height: auto;
-  display: block;
+  width: 30px;
+  height: 30px;
   margin: 10px auto;
 }
 

@@ -30,7 +30,7 @@ router.get('/api/users', (req, res) => {
 });
 
 // POST /api/users - Create a new user
-router.post('/', createUser);
+router.post('/', upload.single('profile_picture'), createUser);
 
 // GET /api/users/:id - Get user details by ID
 router.get('/:username', auth.verifyToken, async (req, res) => {
@@ -87,6 +87,30 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed. Please try again later.' });
+  }
+});
+
+// POST route to generate JWT
+router.post('/tokens', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Replace with your logic to find user in database
+    const user = await User.findOne({ username });
+
+    // Check if user exists and validate password
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Generate JWT
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Respond with the token
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error('Error generating token:', error);
+    res.status(500).json({ error: 'Failed to generate token' });
   }
 });
 
