@@ -21,6 +21,7 @@ const videoSchema = new Schema({
   user_icon: { type: String, required: true },
   likes: { type: Number, default: 0 },
   id: { type: Number, default: 0 },
+  liked: { type: Number, default: 0 },
   comments: { type: [commentSchema], default: [] }, // Array of comment subdocuments
   liked: { type: Boolean, default: null },
  // userId: { type: mongoose.Types.ObjectId, required: true },

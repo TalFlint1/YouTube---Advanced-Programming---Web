@@ -16,6 +16,7 @@ const videoSchema = new mongoose.Schema({
   owner: String,
   views: Number,
   id: Number,
+  liked: Number,
   time_publish: Number,
   time_type: String,
   user_icon: String,
@@ -33,12 +34,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail1.jpg',
         duration: '8:15',
-        owner: 'HAIFA MAN',
+        owner: 'roni',
         views: 721,
         time_publish: 4,
         time_type: 'years',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
-        likes: 0,
+        likes: 20,
+        liked: 1,
         comments: []
       },
       {
@@ -48,12 +50,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail2.jpg',
         duration: '5:45',
-        owner: 'TEL AVIV MAN',
+        owner: '12news',
         views: 1050,
         time_publish: 1,
         time_type: 'month',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -63,13 +66,14 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail3.jpg',
         duration: '12:30',
-        owner: 'JERUSALEM MAN',
+        owner: '12news',
         views: 302,
         time_publish: 2,
         time_type: 'weeks',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
-        comments: []
+        comments: [],
+        liked: 0
       },
       {
         id: 4,
@@ -78,12 +82,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail4.jpg',
         duration: '3:58',
-        owner: 'HAIFA MAN',
+        owner: '12news',
         views: 430,
         time_publish: 5,
         time_type: 'days',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
-        likes: 0,
+        likes: 2,
+        liked: 1,
         comments: []
       },
       {
@@ -93,12 +98,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail5.jpg',
         duration: '6:02',
-        owner: 'TEL AVIV MAN',
+        owner: '12news',
         views: 892,
         time_publish: 3,
         time_type: 'days',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -108,12 +114,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail6.jpg',
         duration: '9:20',
-        owner: 'JERUSALEM MAN',
+        owner: 'Kan',
         views: 125,
         time_publish: 1,
         time_type: 'week',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -123,12 +130,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail7.jpg',
         duration: '4:45',
-        owner: 'HAIFA MAN',
+        owner: 'Kan',
         views: 510,
         time_publish: 3,
         time_type: 'months',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -138,12 +146,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail8.jpg',
         duration: '7:10',
-        owner: 'TEL AVIV MAN',
+        owner: '12news',
         views: 392,
         time_publish: 2,
         time_type: 'days',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -153,12 +162,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail9.jpg',
         duration: '5:55',
-        owner: 'JERUSALEM MAN',
+        owner: '12news',
         views: 842,
         time_publish: 1,
         time_type: 'day',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 0,
+        liked: 0,
         comments: []
       },
       {
@@ -168,12 +178,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail10.jpg',
         duration: '2:45',
-        owner: 'JERUSALEM MAN',
+        owner: '12news',
         views: 242,
         time_publish: 3,
         time_type: 'years',
         user_icon: 'https://yt3.ggpht.com/xqpDLeDfVG5K9w3VDXzQsg_0tvwqKp9Rg1QSc5d1XUfFTgXeHlQuqJ45ErN9qOCkLB2QwE2MnmE=s68-c-k-c0x00ffffff-no-rj',
         likes: 10,
+        liked: 0,
         comments: []
       },
       {
@@ -183,12 +194,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail11.jpg',
         duration: '12:45',
-        owner: 'Adventure Seeker',
+        owner: '12news',
         views: 1200,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user11.jpg',
         likes: 350,
+        liked: 0,
         comments: []
       },
       {
@@ -198,12 +210,14 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail12.jpg',
         duration: '6:30',
-        owner: 'Chef Giovanni',
+        owner: '12news',
         views: 580,
         time_publish: 6,
         time_type: 'months',
         user_icon: 'https://example.com/user12.jpg',
         likes: 150,
+        liked: 0,
+
         comments: []
       },
       {
@@ -213,12 +227,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail13.jpg',
         duration: '9:20',
-        owner: 'History Buff',
+        owner: 'kan',
         views: 920,
         time_publish: 2,
         time_type: 'years',
         user_icon: 'https://example.com/user13.jpg',
         likes: 280,
+        liked: 0,
         comments: []
       },
       {
@@ -228,12 +243,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail14.jpg',
         duration: '15:00',
-        owner: 'Art Enthusiast',
+        owner: 'galgalatz',
         views: 1450,
         time_publish: 3,
         time_type: 'years',
         user_icon: 'https://example.com/user14.jpg',
         likes: 480,
+        liked: 0,
         comments: []
       },
       {
@@ -243,12 +259,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail15.jpg',
         duration: '18:30',
-        owner: 'Wanderlust Traveler',
+        owner: 'galgalatz',
         views: 2300,
         time_publish: 4,
         time_type: 'years',
         user_icon: 'https://example.com/user15.jpg',
         likes: 600,
+        liked: 0,
         comments: []
       },
       {
@@ -258,12 +275,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail16.jpg',
         duration: '7:55',
-        owner: 'Green Thumb',
+        owner: 'galgalatz',
         views: 780,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user16.jpg',
         likes: 200,
+        liked: 0,
         comments: []
       },
       {
@@ -273,12 +291,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail17.jpg',
         duration: '11:10',
-        owner: 'Nature Photographer',
+        owner: 'galgalatz',
         views: 980,
         time_publish: 8,
         time_type: 'months',
         user_icon: 'https://example.com/user17.jpg',
         likes: 380,
+        liked: 0,
         comments: []
       },
       {
@@ -288,12 +307,14 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail18.jpg',
         duration: '5:00',
-        owner: 'Dessert Lover',
+        owner: 'yoav',
         views: 510,
         time_publish: 10,
         time_type: 'months',
         user_icon: 'https://example.com/user18.jpg',
         likes: 120,
+        liked: 0,
+
         comments: []
       },
       {
@@ -303,12 +324,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail19.jpg',
         duration: '14:20',
-        owner: 'Travel Enthusiast',
+        owner: 'shira',
         views: 1750,
         time_publish: 2,
         time_type: 'years',
         user_icon: 'https://example.com/user19.jpg',
         likes: 420,
+        liked: 0,
         comments: []
       },
       {
@@ -318,12 +340,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail20.jpg',
         duration: '30:00',
-        owner: 'Yoga Instructor',
+        owner: 'shira',
         views: 3100,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user20.jpg',
         likes: 900,
+        liked: 0,
         comments: []
       },
       {
@@ -333,12 +356,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail21.jpg',
         duration: '10:25',
-        owner: 'Nature Explorer',
+        owner: '103FM',
         views: 1100,
         time_publish: 2,
         time_type: 'years',
         user_icon: 'https://example.com/user21.jpg',
         likes: 300,
+        liked: 0,
         comments: []
       },
       {
@@ -348,12 +372,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail22.jpg',
         duration: '8:45',
-        owner: 'Bread Enthusiast',
+        owner: '103FM',
         views: 890,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user22.jpg',
         likes: 250,
+        liked: 0,
         comments: []
       },
       {
@@ -363,12 +388,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail23.jpg',
         duration: '15:30',
-        owner: 'Ocean Explorer',
+        owner: '103FM',
         views: 1550,
         time_publish: 3,
         time_type: 'years',
         user_icon: 'https://example.com/user23.jpg',
         likes: 400,
+        liked: 0,
         comments: []
       },
       {
@@ -378,12 +404,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail24.jpg',
         duration: '12:15',
-        owner: 'Art Sketcher',
+        owner: 'kan',
         views: 1250,
         time_publish: 2,
         time_type: 'years',
         user_icon: 'https://example.com/user24.jpg',
         likes: 350,
+        liked: 0,
         comments: []
       },
       {
@@ -393,12 +420,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail25.jpg',
         duration: '20:00',
-        owner: 'Cycling Enthusiast',
+        owner: 'kan',
         views: 2100,
         time_publish: 4,
         time_type: 'years',
         user_icon: 'https://example.com/user25.jpg',
         likes: 600,
+        liked: 0,
         comments: []
       },
       {
@@ -408,12 +436,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail26.jpg',
         duration: '9:10',
-        owner: 'Urban Gardener',
+        owner: 'kan',
         views: 980,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user26.jpg',
         likes: 280,
+        liked: 0,
         comments: []
       },
       {
@@ -423,12 +452,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail27.jpg',
         duration: '13:20',
-        owner: 'Wildlife Photographer',
+        owner: 'roni',
         views: 1350,
         time_publish: 3,
         time_type: 'years',
         user_icon: 'https://example.com/user27.jpg',
         likes: 420,
+        liked: 0,
         comments: []
       },
       {
@@ -438,12 +468,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail28.jpg',
         duration: '11:45',
-        owner: 'Chef Pierre',
+        owner: 'yoav',
         views: 1150,
         time_publish: 2,
         time_type: 'years',
         user_icon: 'https://example.com/user28.jpg',
         likes: 380,
+        liked: 0,
         comments: []
       },
       {
@@ -453,12 +484,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail29.jpg',
         duration: '16:30',
-        owner: 'Travel Enthusiast',
+        owner: 'yoav',
         views: 1650,
         time_publish: 4,
         time_type: 'years',
         user_icon: 'https://example.com/user29.jpg',
         likes: 480,
+        liked: 0,
         comments: []
       },
       {
@@ -468,12 +500,13 @@ const videos = [
         videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
         thumbnailUrl: 'thumbnail30.jpg',
         duration: '25:00',
-        owner: 'Fitness Trainer',
+        owner: 'shira',
         views: 2800,
         time_publish: 1,
         time_type: 'year',
         user_icon: 'https://example.com/user30.jpg',
         likes: 750,
+        liked: 0,
         comments: []
       }
 

@@ -19,6 +19,7 @@ const VideoList = ({ isDarkMode, isMyVideosView, toggleVideoSelection, searchQue
         }
         const data = await response.json();
         setVideos(data); // Update state with the fetched videos array
+        localStorage.setItem('videos', JSON.stringify(data));
         console.log('Fetched videos:', data);
       } catch (error) {
         console.error('Error fetching videos:', error);

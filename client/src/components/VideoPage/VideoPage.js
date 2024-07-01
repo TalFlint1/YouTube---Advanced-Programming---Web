@@ -22,6 +22,7 @@ const VideoPage = () => {
 
     // Combine the two arrays into one list
     const combinedList = [...storedVideos, ...storedUploads];
+    console.log("combinedList",combinedList)
     const storedVideo = combinedList.find((v) => v.id === parseInt(id));
     console.log(storedVideos)
     let initialVideo;
@@ -37,6 +38,7 @@ const VideoPage = () => {
     }
 
     if (initialVideo) {
+      console.log("initialVideo:",initialVideo)
       setVideo(initialVideo);
       setLikes(initialVideo.likes );
       setComments(initialVideo.comments || []);
@@ -48,7 +50,7 @@ const VideoPage = () => {
 
   useEffect(() => {
     if (video) {
-      const updatedVideo = { ...video, likes, comments, liked };
+      const updatedVideo = { ...video, likes, comments };
       const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
       const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
       
