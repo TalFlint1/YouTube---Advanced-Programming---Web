@@ -20,7 +20,8 @@ const videoSchema = new Schema({
   time_type: { type: String },
   user_icon: { type: String },
   likes: { type: Number, default: 0 },
-  id: { type: Number, default: 0 },
+  id: { type: Number, required: true },
+  //id: { type: Number },
   liked: { type: Number, default: 0 },
   comments: { type: [commentSchema], default: [] }, // Array of comment subdocuments
   liked: { type: Boolean, default: null },

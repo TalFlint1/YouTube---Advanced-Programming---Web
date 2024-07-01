@@ -10,5 +10,7 @@ router.post('/user/:id/videos', videoController.createVideo);
 router.get('/user/:id/videos/:pid', videoController.getVideo);
 router.put('/user/:id/videos/:pid', videoController.updateVideo);
 router.delete('/user/:id/videos/:pid', videoController.deleteVideo);
+router.get('/all', videoController.getAllVideos);
+
 
 module.exports = router;

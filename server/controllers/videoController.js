@@ -2,7 +2,15 @@ const Video = require('../models/Video');
 
 // Fetch all videos
 
-
+const getAllVideos = async (req, res) => {
+  try {
+    const videos = await Video.find(); // Fetch all videos from the database
+    res.json(videos); // Send JSON response containing videos array
+  } catch (err) {
+    console.error('Error fetching videos:', err);
+    res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
+  }
+};
 const getVideos = async (req, res) => {
   try {
     // Step 1: Fetch 10 most viewed videos
@@ -66,16 +74,26 @@ const getUserVideos = async (req, res) => {
 const createVideo = async (req, res) => {
   const userId = req.params.id;
   const { pid } = req.params; // Optional, if you need to handle video id in URL
-  const { title, description, videoUrl, thumbnailUrl } = req.body;
+  const {id, title,owner, description, videoUrl, thumbnailUrl,views,likes,liked,comments,user_icon,time_type,time_publish,duration } = req.body;
 
   try {
       // Assuming you have a Video model to create a new video entry
       const newVideo = await Video.create({
+        owner,
           userId,
           title,
           description,
           videoUrl,
-          thumbnailUrl
+          thumbnailUrl,
+          id,
+          views,
+          likes,
+          liked,
+          comments,
+          duration,
+          user_icon,
+          time_type,
+          time_publish
       });
 
       res.status(201).json(newVideo);
@@ -178,4 +196,5 @@ module.exports = {
   getVideo,
   updateVideo,
   deleteVideo,
+  getAllVideos
 };

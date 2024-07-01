@@ -59,7 +59,7 @@ const App = () => {
     console.log("here add video f", newVideo);
     addVideoInBack(newVideo);
     refetchVideos();
-    window.location.reload();
+     window.location.reload();
 
   };
 

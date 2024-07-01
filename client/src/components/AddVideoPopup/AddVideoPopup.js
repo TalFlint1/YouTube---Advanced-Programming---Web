@@ -27,13 +27,13 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
     const description='description'
     const duration='duration'
    const time_type = 'hours';
-  const time_publish = 0;
+  const time_publish = "0";
   const views = 0;
-  const id = 0;
+  const id = Math.floor(Math.random() * (1000- 100+ 1)) + 100;
 
     // Check if username is available
         // Call the addVideo function with the required parameters
-        addVideo({liked,likes,user_icon,comments, description,duration, title, videoUrl, videoFile, views, time_type, time_publish, owner, thumbnailUrl ,description});
+        addVideo({liked,likes,user_icon,comments, description,duration,id, title, videoUrl, videoFile, views, time_type, time_publish, owner, thumbnailUrl ,description});
       
      
         // Close the popup   addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, username, user_icon });

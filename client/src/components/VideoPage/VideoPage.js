@@ -80,11 +80,11 @@ const VideoPage = () => {
   };
 
   const handleLike = () => {
-    // if (!isUserLoggedIn()) {
-    //   alert('Sign in to make your opinion count.');
-    //   navigate('/login');
-    //   return;
-    // }
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
 
     const updatedLikes = liked === true ? likes - 1 : likes + 1;
     const updatedLiked = liked === true ? null : true;
@@ -100,11 +100,11 @@ const VideoPage = () => {
   };
 
   const handleDislike = () => {
-    // if (!isUserLoggedIn()) {
-    //   alert('Sign in to make your opinion count.');
-    //   navigate('/login');
-    //   return;
-    // }
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
 
     const updatedLikes = liked === false ? likes + 1 : likes - 1;
     const updatedLiked = liked === false ? null : false;
@@ -120,11 +120,11 @@ const VideoPage = () => {
   };
 
   const handleComment = (newComment) => {
-    // if (!isUserLoggedIn()) {
-    //   alert('Sign in to make your opinion count.');
-    //   navigate('/login');
-    //   return;
-    // }
+    if (!isUserLoggedIn()) {
+      alert('Sign in to make your opinion count.');
+      navigate('/login');
+      return;
+    }
 
     const updatedComments = [...comments, newComment];
     setComments(updatedComments);
@@ -234,6 +234,7 @@ const Comment = ({ comment, videoId }) => {
     setIsLiked(!isLiked);
     updateLocalStorage();
 
+
     // Toggle the isLiked state
     // Handle updating the comment's likes in the parent component (VideoPage)
   };
@@ -248,6 +249,7 @@ const Comment = ({ comment, videoId }) => {
   const submitReply = () => {
     handleReply({ text: newReply, likes: 0, replies: [], videoId });
     setNewReply('');
+    updateLocalStorage();
   };
 
   const updateLocalStorage = () => {
