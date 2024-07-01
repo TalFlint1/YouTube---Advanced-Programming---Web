@@ -11,7 +11,7 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
     password: '',
     confirmPassword: '',
     name: '',
-    profile_picture: null,
+    profile_picture: null, // Store Base64 string here
   });
 
   const [passwordError, setPasswordError] = useState('');
@@ -90,10 +90,10 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const newFieldErrors = {};
     let hasErrors = false;
-  
+
     // Check if all required fields are filled
     Object.keys(formData).forEach((key) => {
       if (formData[key] === '' || formData[key] === null) {
@@ -101,25 +101,26 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
         hasErrors = true;
       }
     });
-  
+
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       newFieldErrors.confirmPassword = "The passwords don't match. Try again.";
       hasErrors = true;
     }
-  
+
     if (hasErrors) {
       setFieldErrors(newFieldErrors);
       return;
     }
-  
+
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('username', formData.username);
-      formDataToSend.append('password', formData.password);
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('profile_picture', formData.profile_picture);
-  
+      const formDataToSend = {
+        username: formData.username,
+        password: formData.password,
+        name: formData.name,
+        profile_picture: formData.profile_picture ? await convertToBase64(formData.profile_picture) : null,
+      };
+
       const response = await axios.post('/api/users/register', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -127,14 +128,16 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
       });
 
       const { token } = response.data;
-  
+
       if (token) {
         localStorage.setItem('jwtToken', token);
+        localStorage.setItem('currentUser', formData.username); // Save the username as a plain string
+        localStorage.setItem('isSignedIn', true); // Save signed-in status
         alert('Registration successful!');
         closeFormReg();
         navigate('/');
       } else {
-        alert('Registration failed!');
+        alert('Registration hola!');
       }
     } catch (error) {
       console.error('Registration failed:', error);
@@ -145,6 +148,13 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
   const toggleTooltip = () => {
     setTooltipVisible(!tooltipVisible);
   };
+
+  const convertToBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
 
   const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
 

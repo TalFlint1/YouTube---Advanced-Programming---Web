@@ -23,7 +23,33 @@ const upload = multer({ storage });
 
 // Routes
 // Register a new user
-router.post('/register', upload.single('profile_picture'), createUser);
+// router.post('/register', upload.single('profile_picture'), createUser);
+router.post('/register', upload.single('profile_picture'), async (req, res) => {
+  try {
+    const { username, password, name } = req.body;
+    let { profile_picture } = req.body;
+
+    if (req.file) {
+      const buffer = req.file.buffer.toString('base64');
+      profile_picture = `data:${req.file.mimetype};base64,${buffer}`;
+    }
+
+    const newUser = new User({
+      username,
+      password,
+      name,
+      profile_picture,
+    });
+
+    await newUser.save();
+    const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error('Error saving profile picture:', error);
+    res.status(500).json({ error: 'Failed to save profile picture' });
+  }
+});
 
 router.get('/api/users', (req, res) => {
   res.redirect('/register');
