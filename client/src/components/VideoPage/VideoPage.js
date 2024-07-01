@@ -22,9 +22,7 @@ const VideoPage = () => {
 
     // Combine the two arrays into one list
     const combinedList = [...storedVideos, ...storedUploads];
-    console.log("combinedList",combinedList)
     const storedVideo = combinedList.find((v) => v.id === parseInt(id));
-    console.log(storedVideos)
     let initialVideo;
 
     if (storedVideo) {
@@ -38,9 +36,8 @@ const VideoPage = () => {
     }
 
     if (initialVideo) {
-      console.log("initialVideo:",initialVideo)
       setVideo(initialVideo);
-      setLikes(initialVideo.likes );
+      setLikes(initialVideo.likes);
       setComments(initialVideo.comments || []);
       setLiked(initialVideo.liked); // Set liked state based on stored data
     }
@@ -50,15 +47,15 @@ const VideoPage = () => {
 
   useEffect(() => {
     if (video) {
-      const updatedVideo = { ...video, likes, comments };
+      const updatedVideo = { ...video, likes, comments, liked };
       const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
       const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
-      
+
       // Combine the two arrays into one list
       const combinedList = [...storedVideos, ...storedUploads];
       const updatedVideos = combinedList.map(v => (v.id === parseInt(id) ? updatedVideo : v));
       localStorage.setItem('videos', JSON.stringify(updatedVideos));
-      
+
       // Update the video object in the backend
       updateVideoBackend(updatedVideo);
     }
@@ -89,12 +86,16 @@ const VideoPage = () => {
     //   return;
     // }
 
-    if (liked === true) {
-      setLikes(likes - 1);
-      setLiked(null); // Remove like
-    } else {
-      setLikes(likes + 1);
-      setLiked(true); // Like the video
+    const updatedLikes = liked === true ? likes - 1 : likes + 1;
+    const updatedLiked = liked === true ? null : true;
+
+    setLikes(updatedLikes);
+    setLiked(updatedLiked);
+
+    if (video) {
+      const updatedVideo = { ...video, likes: updatedLikes, liked: updatedLiked };
+      setVideo(updatedVideo);
+      updateVideoBackend(updatedVideo);
     }
   };
 
@@ -105,16 +106,16 @@ const VideoPage = () => {
     //   return;
     // }
 
-    if (liked === false) {
-      setLikes(likes + 1);
-      setLiked(null); // Remove dislike
-    } else {
-      setLikes(likes - 1);
-      setLiked(false); // Dislike the video
-    }
+    const updatedLikes = liked === false ? likes + 1 : likes - 1;
+    const updatedLiked = liked === false ? null : false;
+
+    setLikes(updatedLikes);
+    setLiked(updatedLiked);
+
     if (video) {
-      video.liked = liked;
-      video.likes = likes;
+      const updatedVideo = { ...video, likes: updatedLikes, liked: updatedLiked };
+      setVideo(updatedVideo);
+      updateVideoBackend(updatedVideo);
     }
   };
 
@@ -127,8 +128,11 @@ const VideoPage = () => {
 
     const updatedComments = [...comments, newComment];
     setComments(updatedComments);
+
     if (video) {
-      video.comments = updatedComments;
+      const updatedVideo = { ...video, comments: updatedComments };
+      setVideo(updatedVideo);
+      updateVideoBackend(updatedVideo);
     }
   };
 
@@ -228,7 +232,8 @@ const Comment = ({ comment, videoId }) => {
       setLikes(updatedLikes);
     }
     setIsLiked(!isLiked);
-     // Toggle the isLiked state
+ 
+    // Toggle the isLiked state
     // Handle updating the comment's likes in the parent component (VideoPage)
   };
 
