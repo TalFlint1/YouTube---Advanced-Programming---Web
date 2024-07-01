@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project involves creating a web application inspired by YouTube JavaScript, CSS, and React. The application includes registration, login, video listing, video viewing, and adding new videos functionalities.
+This project involves creating a web application inspired by YouTube using JavaScript, CSS, React, Node.js, Express, and MongoDB. The application includes registration, login, video listing, video viewing, and adding new videos functionalities. Additionally, it features a server exposing a RESTful API with data stored in a MongoDB database.
 
 ## Features
 
@@ -13,27 +13,41 @@ This project involves creating a web application inspired by YouTube JavaScript,
 - *Add New Video Screen*: Allows users to add new videos.
 - *Dark/Light Mode Toggle*: Switch between dark and light themes.
 
+## API Endpoints
+
+### Videos
+- GET /api/videos
+  - Returns a list of 20 videos, including the 10 most viewed and 10 randomly selected videos, all displayed in a random order.
+- GET /api/videos/all
+  - Returns a list of all videos in db.
+- GET /api/users/:id/videos
+  - Returns the list of videos for the user with the identifier id.
+- POST /api/users/:id/videos
+  - Creates a new video post.
+- GET /api/users/:id/videos/:pid
+  - Returns the details of the video with the identifier pid.
+- PUT /api/users/:id/videos/:pid
+  - Updates an existing video post with the identifier pid.
+- DELETE /api/users/:id/videos/:pid
+  - Deletes an existing video post with the identifier pid.
+  
+### Users
+- GET /api/users/:id
+  - Returns the details of the user with the identifier id (name, picture, etc.).
+- PATCH/PUT /api/users/:id
+  - Updates an existing user with the identifier id.
+- DELETE /api/users/:id
+  - Deletes an existing user with the identifier id.
+- POST /api/users
+  - Creates a new user.
+- POST /api/tokens
+  - Generates a JWT for a registered user.
+
 ## Running the Code
 
-1. *Clone the Repository*
-   Open your terminal in Visual Studio (or any other IDE) 
-   Move to the desired directory in which you want to clone the project using cd command, then write:
-   git clone https://github.com/TalFlint1/YouTube---Advanced-Programming---Web.git
+### Clone the Repository
 
-2. *Install dependencies :*
-    npm install
+Open your terminal in Visual Studio (or any other IDE). Move to the desired directory in which you want to clone the project using the cd command, then write:
 
-3. *Start the app :*
-    npm start
-    this should open your browser with the app running, alternatively you can also open your browser and navigate to http://localhost:3000.
-
-*Development Process*
-Task Management: Used Jira to plan and manage tasks, and assign tasks to divide the project between us.
-https://shiradeu-1716831762980.atlassian.net/jira/software/projects/YADW/boards/2
-
-Version Control: Used Git with feature branches and pull requests for code review.
-Component-Based Architecture: Used React components(useState).
-Routing: Implemented React Router for navigation.
-to connect our ex1 version yous hould connect main_ex1 branch that cocnludes all relevant features
-
-This web application is our first step towards a fully functional YouTube platform.
+```bash
+git clone https://github.com/TalFlint1/YouTube---Advanced-Programming---Web.git 
