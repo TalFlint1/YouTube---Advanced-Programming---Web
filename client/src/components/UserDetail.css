@@ -105,9 +105,11 @@
 }
 
 .preview-image {
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
   margin: 10px auto;
+  display: block;
+
 }
 
 .user-detail label {

@@ -180,7 +180,7 @@ const App = () => {
           <Route path="/video/:id" element={<VideoPage />} />
           <Route path="/api/users/:username" element={<UserDetail />} />
           <Route path="/register" element={<Register isVisible={true} closeRegisterPopup={closeRegisterPopup} />} />
-          <Route path="/api/users" element={<Navigate to="/register" replace />} />
+          {/* <Route path="/api/users" element={<Navigate to="/register" replace />} /> */}
         </Routes>
       </main>
       {isPopupVideoOpen && (

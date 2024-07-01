@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './UserDetail.css';
 
 const UserDetail = () => {
@@ -33,8 +32,10 @@ const UserDetail = () => {
       }
       try {
         let url = `/api/users/${username}`;
-        const response = await fetch(url, {headers: {
-          Authorization: `Bearer ${token}`
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
         }});
         if (!response.ok) {
           throw new Error('Failed to fetch user');
@@ -61,12 +62,15 @@ const UserDetail = () => {
       }
   
       const url = `/api/users/${username}`;
+      console.log(url);
+      console.log(`Bearer ${token}`);
       const response = await fetch(url, {
         method: 'DELETE', // Specify the DELETE method
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      
   
       if (!response.ok) {
         throw new Error('Failed to delete user');
@@ -159,6 +163,9 @@ const UserDetail = () => {
   const confirmDelete = () => {
     closeModal();
     handleDeleteUser();
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('currentUser');
+    localStorage.setItem('isSignedIn', false);
   };
 
   const previewImage = (file) => {
@@ -209,16 +216,12 @@ const UserDetail = () => {
       <span>{user.name}</span>
     </div>
       <label>Profile Picture:</label>
-      {/* <img src={user.profile_picture} alt="Profile Picture" className="preview-image"/> */}
-      {/* <img src={`../../..${user.profile_picture}`} alt="Profile" className="preview-image" /> */}
-      <img src={user.profile_picture} alt="Profile" className="preview-image" />
-      
-      {/* {user.profile_picture} */}
+      <img src={`data:image/jpeg;base64,${user.profile_picture}`} alt="Profile" className="preview-image" />
       <p></p>
       <h3>Update Information</h3>
       <form onSubmit={handleUpdateUser}>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">New Name:</label>
           <input
             type="text"
             id="name"
@@ -228,7 +231,7 @@ const UserDetail = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">New Password:</label>
           <input
             type="password"
             id="password"
@@ -238,7 +241,7 @@ const UserDetail = () => {
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div>
-          <label htmlFor="profilePicture">Profile Picture:</label>
+          <label htmlFor="profilePicture">New Profile Picture:</label>
           {imagePreview && (
             <img src={imagePreview} alt="Preview" className="preview-image" />
           )}
