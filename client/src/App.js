@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup';
@@ -189,6 +189,8 @@ const App = () => {
           />
           <Route path="/video/:id" element={<VideoPage />} />
           <Route path="/api/users/:username" element={<UserDetail />} />
+          <Route path="/register" element={<Register isVisible={true} closeRegisterPopup={closeRegisterPopup} />} />
+          <Route path="/api/users" element={<Navigate to="/register" replace />} />
         </Routes>
       </main>
       {isPopupVideoOpen && (

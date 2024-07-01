@@ -25,6 +25,10 @@ const upload = multer({ storage });
 // Register a new user
 router.post('/register', upload.single('profile_picture'), createUser);
 
+router.get('/api/users', (req, res) => {
+  res.redirect('/register');
+});
+
 // POST /api/users - Create a new user
 router.post('/', createUser);
 
