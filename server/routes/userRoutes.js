@@ -86,16 +86,15 @@ router.post('/login', async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
-
     if (!user || user.password !== password) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
     // Generate JWT
     const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
+    const profile_picture = user["profile_picture"] 
     // Login successful
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ message: 'Login successful', token, profile_picture });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed. Please try again later.' });

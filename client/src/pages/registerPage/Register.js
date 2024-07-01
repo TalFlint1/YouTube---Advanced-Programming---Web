@@ -131,7 +131,10 @@ const Register = ({ isDarkMode, isVisible, closeRegisterPopup }) => {
 
       if (token) {
         localStorage.setItem('jwtToken', token);
-        localStorage.setItem('currentUser', formData.username); // Save the username as a plain string
+        localStorage.setItem('currentUser', formData.username);
+        console.log("formData",formData      )
+        // Save the username as a plain string
+        localStorage.setItem('profile_picture', formData.profile_picture); // Save the username as a plain string
         localStorage.setItem('isSignedIn', true); // Save signed-in status
         alert('Registration successful!');
         closeFormReg();
