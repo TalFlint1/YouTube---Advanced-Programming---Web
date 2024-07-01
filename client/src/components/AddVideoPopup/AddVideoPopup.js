@@ -10,6 +10,7 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
   const time_type = 'hours';
   const time_publish = '0';
   const views = '0';
+  const description = 'base description';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,11 +19,21 @@ const AddVideoPopup = ({ closePopup, addVideo, isDarkMode }) => {
     }
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const owner = currentUser ? currentUser.name : null;
-    const user_icon =currentUser ? currentUser.picture : null;
+    const thumbnailUrl =currentUser ? currentUser.profile_picture : null;
+    const user_icon =currentUser ? currentUser.profile_picture : null;
+    const liked =0
+    const comments= []
+    const likes =0
+    const description='description'
+    const duration='duration'
+   const time_type = 'hours';
+  const time_publish = 0;
+  const views = 0;
+  const id = 0;
 
     // Check if username is available
         // Call the addVideo function with the required parameters
-        addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, owner, user_icon });
+        addVideo({liked,likes,user_icon,comments, description,duration, title, videoUrl, videoFile, views, time_type, time_publish, owner, thumbnailUrl ,description});
       
      
         // Close the popup   addVideo({ title, videoUrl, videoFile, views, time_type, time_publish, username, user_icon });

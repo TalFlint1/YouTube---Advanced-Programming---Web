@@ -232,7 +232,8 @@ const Comment = ({ comment, videoId }) => {
       setLikes(updatedLikes);
     }
     setIsLiked(!isLiked);
- 
+    updateLocalStorage();
+
     // Toggle the isLiked state
     // Handle updating the comment's likes in the parent component (VideoPage)
   };
@@ -254,7 +255,25 @@ const Comment = ({ comment, videoId }) => {
     const video = storedVideos.find(v => v.id === videoId);
     if (video) {
       video.comments = updateComments(video.comments, comment);
+      updateVideoBackend(video)
       localStorage.setItem('videos', JSON.stringify(storedVideos));
+    }
+  };
+  const updateVideoBackend = async (updatedVideo) => {
+    const url = `/api/videos/user/${updatedVideo.owner}/videos/${updatedVideo.id}`;
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedVideo),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update video');
+      }
+    } catch (error) {
+      console.error('Error updating video:', error);
     }
   };
 
