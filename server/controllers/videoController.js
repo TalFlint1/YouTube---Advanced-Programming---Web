@@ -1,15 +1,50 @@
 const Video = require('../models/Video');
 
 // Fetch all videos
+
+
 const getVideos = async (req, res) => {
-    try {
-      const videos = await Video.find(); // Fetch all videos from the database
-      res.json(videos); // Send JSON response containing videos array
-    } catch (err) {
-      console.error('Error fetching videos:', err);
-      res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
-    }
+  try {
+    // Step 1: Fetch 10 most viewed videos
+    const mostViewedVideos = await Video.find()
+      .sort({ views: -1 }) // Sort by views descending (most viewed first)
+      .limit(10); // Limit to 10 videos
+
+    // Step 2: Fetch remaining videos excluding most viewed
+    const remainingVideos = await Video.find({
+      _id: { $nin: mostViewedVideos.map(video => video._id) }
+    });
+    console.log("remainingVideos:",remainingVideos)
+    // Step 3: Randomly select 10 videos from remainingVideos
+    const randomVideos = getRandomElements(remainingVideos, 10);
+
+    // Step 4: Combine most viewed videos with randomly selected videos
+    const allVideos = [...mostViewedVideos, ...randomVideos];
+
+    // Step 5: Shuffle allVideos
+    const shuffledVideos = shuffle(allVideos);
+
+    res.json(shuffledVideos); // Send JSON response containing shuffled videos array
+  } catch (err) {
+    console.error('Error fetching videos:', err);
+    res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
+  }
 };
+
+// Function to randomly select 'count' elements from an array
+function getRandomElements(array, count) {
+  const shuffled = array.sort(() => 0.5 - Math.random()); // Shuffle array
+  return shuffled.slice(0, count); // Get first 'count' elements
+}
+
+// Function to shuffle array elements
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 const getUserVideos = async (req, res) => {
   const user_str = req.params.id;
