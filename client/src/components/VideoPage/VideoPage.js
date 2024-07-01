@@ -112,6 +112,10 @@ const VideoPage = () => {
       setLikes(likes - 1);
       setLiked(false); // Dislike the video
     }
+    if (video) {
+      video.liked = liked;
+      video.likes = likes;
+    }
   };
 
   const handleComment = (newComment) => {
