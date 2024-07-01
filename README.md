@@ -60,5 +60,6 @@ This project involves creating a web application inspired by YouTube using JavaS
 -  node server.js
 
 6. run the client by :
-- open new terminal- npm start
+- open new terminal
+-  npm start
    
