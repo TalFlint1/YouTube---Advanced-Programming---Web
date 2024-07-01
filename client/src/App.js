@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+// App.js
+import React, { useState, useEffect } from 'react';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import AddVideoPopup from './components/AddVideoPopup/AddVideoPopup';
@@ -8,8 +9,23 @@ import Register from './pages/registerPage/Register';
 import Login from './pages/loginPage/Login';
 import VideoPage from './components/VideoPage/VideoPage';
 import VideoList from './components/VideoList';
+import axios from 'axios';
+import UserDetail from './components/UserDetail';
 
 const App = () => {
+  // useEffect(() => {
+  //   // Check if user is logged in when application starts
+  //   const isSignedIn = localStorage.getItem('isSignedIn');
+
+  //   if (isSignedIn) {
+  //     // Clear the stored user login state
+  //     localStorage.removeItem('jwtToken');
+  //     localStorage.removeItem('currentUser');
+  //     localStorage.setItem('isSignedIn', false);
+  //     toggleLogin(false);
+  //     navigate('/');
+  //   }
+  // }, []);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -20,6 +36,52 @@ const App = () => {
   const [isRegisterPopupVisible, setIsRegisterPopupVisible] = useState(false);
   const [isMyVideosView, setIsMyVideosView] = useState(false);
   const [video, setVideo] = useState([]);
+
+  const navigate = useNavigate();
+
+  const [isSignedIn, setSignedInStatus] = useState(() => {
+    const savedStatus = localStorage.getItem('isSignedIn');
+    return savedStatus ? JSON.parse(savedStatus) : false;
+  });
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = localStorage.getItem('jwtToken');
+    return !!token;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('isSignedIn', isSignedIn);
+  }, [isSignedIn]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const username = localStorage.getItem('currentUser');
+        const token = localStorage.getItem('jwtToken'); // Ensure token is retrieved
+        if (!token) {
+          console.error('No JWT token found');
+          return;
+        }
+        const response = await axios.get(`/api/users/${username}`, {
+          headers: {
+            Authorization: `Bearer ${token}` // Send JWT token in headers
+          }
+        });
+        setCurrentUser(response.data); // Assuming response.data contains user info
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+  
+    if (isSignedIn) {
+      fetchUser();
+    }
+  }, [isSignedIn]);
+  
+  const toggleLogin = (status) => {
+    setSignedInStatus(status);
+    setIsLoggedIn(status);
+  };
 
   const openLoginPopup = () => {
     setIsLoginPopupVisible(true);
@@ -174,6 +236,16 @@ const App = () => {
 
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+  const [currentUser, setCurrentUser] = useState(() => {
+    return localStorage.getItem('currentUser'); // Get the username as a plain string
+  });
+  
+
   return (
     <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
       <Header
@@ -186,6 +258,9 @@ const App = () => {
         openRegisterPopup={openRegisterPopup}
         togglePopupAddVideo={togglePopupAddVideo}
         togglePopupLogin={togglePopupLogin}
+        toggleLogin={toggleLogin}
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
       />
       {isMenuOpen && (
         <Menu
@@ -211,6 +286,9 @@ const App = () => {
             }
           />
           <Route path="/video/:id" element={<VideoPage />} />
+          <Route path="/api/users/:username" element={<UserDetail />} />
+          <Route path="/register" element={<Register isVisible={true} closeRegisterPopup={closeRegisterPopup} />} />
+          {/* <Route path="/api/users" element={<Navigate to="/register" replace />} /> */}
         </Routes>
       </main>
       {isPopupVideoOpen && (
@@ -230,6 +308,8 @@ const App = () => {
         isVisible={isLoginPopupVisible}
         closeLoginPopup={closeLoginPopup}
         openLoginPopup={openRegisterPopup}
+        toggleLogin={toggleLogin}
+        isLoggedIn={isLoggedIn}
       />
     </div>
   );

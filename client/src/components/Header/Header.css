@@ -54,3 +54,31 @@
 .faPlus{
   margin-right: 10px;
 }
+
+
+/* Dropdown menu styles */
+.dropdown-menu {
+  position: absolute;
+  top: 40px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
