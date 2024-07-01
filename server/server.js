@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -7,6 +8,7 @@ const path = require('path');
 const { connectToMongoDB } = require('./db');
 const userRoutes = require('./routes/userRoutes');
 const videoRoutes = require('./routes/videoRoutes');
+const tokenRoutes = require('./routes/tokenRoutes');
 
 dotenv.config();
 
@@ -34,6 +36,7 @@ const upload = multer({ storage });
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api', tokenRoutes);
 
 app.get('/api', (req, res) => {
   res.send('Welcome to the YouTube clone API');
