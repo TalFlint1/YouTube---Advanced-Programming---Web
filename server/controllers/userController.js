@@ -25,6 +25,18 @@ const createUser = async (req, res) => {
       return res.status(409).json({ message: 'Username already exists' });
     }
 
+    if(!name) {
+      return res.status(409).json({ message: 'You must enter a name' });
+    }
+
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,16}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(409).json({ message: 'Password must be between 8-16 characters and combine a-Z letters and numbers.' });
+    }
+
+    if(!profile_picture) {
+      return res.status(409).json({ message: 'You must enter a picture' });
+    }
     // Create new user
     const newUser = new User({ username, password, name, profile_picture });
     await newUser.save();
@@ -33,7 +45,7 @@ const createUser = async (req, res) => {
     const token = generateToken(newUser._id);
 
     // Respond with success message and token
-    res.status(201).json({ message: 'User registered successfully', token });
+    res.status(200).json({ message: 'User registered successfully', token });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Registration failed. Please try again later.' });

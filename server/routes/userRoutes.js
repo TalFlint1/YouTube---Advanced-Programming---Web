@@ -7,8 +7,6 @@ const User = require('../models/User');
 const auth = require('../middlewares/auth');
 const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../middlewares/auth');
-
-
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -18,13 +16,11 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
-
 const upload = multer({ storage });
+// POST /api/users - Create a new user
+router.post('/', createUser);
 
-// Routes
-// Register a new user
-// router.post('/register', upload.single('profile_picture'), createUser);
-router.post('/api/users', upload.single('profile_picture'), async (req, res) => {
+router.post('/register', upload.single('profile_picture'), async (req, res) => {
   try {
     const { username, password, name } = req.body;
     let { profile_picture } = req.body;
@@ -51,9 +47,6 @@ router.post('/api/users', upload.single('profile_picture'), async (req, res) => 
   }
 });
 
-// POST /api/users - Create a new user
-router.post('/', upload.single('profile_picture'), createUser);
-
 // GET /api/users/:id - Get user details by ID
 router.get('/:username', auth.verifyToken, async (req, res) => {
   try {
@@ -71,11 +64,8 @@ router.get('/:username', auth.verifyToken, async (req, res) => {
   }
 });
 
-// PATCH /api/users/:id - Update user by ID
-// router.patch('/:id', verifyToken, updateUserById);
-router.patch('/:username', verifyToken, upload.single('profile_picture'), updateUserById);
+router.patch('/:username', verifyToken, updateUserById);
 
-// DELETE /api/users/:id - Delete user by ID
 router.delete('/:username', verifyToken, async (req, res) => {
   try {
     const { username } = req.params;
@@ -109,30 +99,6 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed. Please try again later.' });
-  }
-});
-
-// POST route to generate JWT
-router.post('/tokens', async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    // Replace with your logic to find user in database
-    const user = await User.findOne({ username });
-
-    // Check if user exists and validate password
-    if (!user || user.password !== password) {
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
-
-    // Generate JWT
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // Respond with the token
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error('Error generating token:', error);
-    res.status(500).json({ error: 'Failed to generate token' });
   }
 });
 
