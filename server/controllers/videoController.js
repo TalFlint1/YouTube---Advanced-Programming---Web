@@ -133,6 +133,8 @@ const getVideo = async (req, res) => {
 };
 
 const updateVideo = async (req, res) => {
+  console.error(' updating video:', req);
+
   const { id, pid } = req.params; // User id and video id
   const { title, description, videoUrl, thumbnailUrl, likes, comments, liked } = req.body;
 
