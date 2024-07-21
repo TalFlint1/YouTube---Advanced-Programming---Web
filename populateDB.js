@@ -175,7 +175,7 @@ const videos = [
         id: 10,
         title: 'Video 10',
         description: 'Description 10',
-        videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
         thumbnailUrl: 'thumbnail10.jpg',
         duration: '2:45',
         owner: '12news',
