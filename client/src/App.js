@@ -186,6 +186,7 @@ const App = () => {
         ? prevSelectedVideos.filter((id) => id !== video.id)
         : [...prevSelectedVideos, video.id]
     );
+
   };
 
   const deleteSelectedVideos = async () => {

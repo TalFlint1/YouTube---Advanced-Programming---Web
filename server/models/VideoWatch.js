@@ -3,9 +3,9 @@ const { Schema } = mongoose;
 
 
 const videoWatchSchema = new Schema({
-  userId: { type: Number, required: true },
+  userId: { type: String, required: true },
   videoId: { type: Number, required: true },
-  date: { type: String},
+  date: { type: Date},
 
 });
 

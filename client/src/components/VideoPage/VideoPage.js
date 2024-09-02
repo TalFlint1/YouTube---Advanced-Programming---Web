@@ -11,6 +11,7 @@ const VideoPage = () => {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isVideoWatchUpdated, SetisVideoWatchUpdated] = useState(false);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(null); // null for no action, true for like, false for dislike
   const [comments, setComments] = useState([]);
@@ -43,6 +44,11 @@ const VideoPage = () => {
     }
 
     setLoading(false);
+    if(!isVideoWatchUpdated){
+      updateVideoWatchBackend(initialVideo);
+    }
+    SetisVideoWatchUpdated(true);
+
   }, [id]);
 
   useEffect(() => {
@@ -58,6 +64,10 @@ const VideoPage = () => {
 
       // Update the video object in the backend
       updateVideoBackend(updatedVideo);
+      // if(!isVideoWatchUpdated){
+      //   updateVideoWatchBackend(initialVideo);
+      // }
+      // SetisVideoWatchUpdated(true);
     }
   }, [likes, comments, liked, video, id]);
 
@@ -70,6 +80,28 @@ const VideoPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedVideo),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update video');
+      }
+    } catch (error) {
+      console.error('Error updating video:', error);
+    }
+  };
+
+  
+  const updateVideoWatchBackend = async (updatedVideo) => {
+    const currentUser =localStorage.getItem("currentUser");
+    const obj ={userId:currentUser,videoId: updatedVideo.id ,date: new Date()}
+    console.log(obj);
+    const url = `/api/videoWatch/user/:${updatedVideo.owner}/videos`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(obj),
       });
       if (!response.ok) {
         throw new Error('Failed to update video');
