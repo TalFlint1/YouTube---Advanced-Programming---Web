@@ -1,141 +1,206 @@
 const VideoWatch = require('../models/VideoWatch');
+const Video = require('../models/Video');
 
-// Fetch all videos
+// Data structures to manage video watches and user history
+const videoPopularityMap = new Map();
+const videoViewersMap = new Map();
+const userWatchHistoryMap = new Map();
 
-const getAllVideos = async (req, res) => {
+// Function to get video recommendations based on user history
+const getVideoRecommendations = async (req, res) => {
   try {
-    const videos = await Video.find(); // Fetch all videos from the database
-    res.json(videos); // Send JSON response containing videos array
-  } catch (err) {
-    console.error('Error fetching videos:', err);
-    res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
-  }
-};
-const getVideos = async (req, res) => {
-  try {
-    // Step 1: Fetch 10 most viewed videos
-    const mostViewedVideos = await Video.find()
-      .sort({ views: -1 }) // Sort by views descending (most viewed first)
-      .limit(10); // Limit to 10 videos
-
-    // Step 2: Fetch remaining videos excluding most viewed
-    const remainingVideos = await Video.find({
-      _id: { $nin: mostViewedVideos.map(video => video._id) }
+    const allVideoWatches = await VideoWatch.find(); // Fetch video watch records
+    allVideoWatches.forEach(record => {
+      updateUserWatchHistory(record.userId, record.videoId);
     });
-    console.log("remainingVideos:",remainingVideos)
-    // Step 3: Randomly select 10 videos from remainingVideos
-    const randomVideos = getRandomElements(remainingVideos, 10);
 
-    // Step 4: Combine most viewed videos with randomly selected videos
-    const allVideos = [...mostViewedVideos, ...randomVideos];
+    const userId = req.params.id;
+    const recommendedVideoIds = generateRecommendations(userId);
 
-    // Step 5: Shuffle allVideos
-    const shuffledVideos = shuffle(allVideos);
+    const allAvailableVideos = await Video.find();
+    const recommendedVideoIdsSet = new Set(recommendedVideoIds);
 
-    res.json(shuffledVideos); // Send JSON response containing shuffled videos array
-  } catch (err) {
-    console.error('Error fetching videos:', err);
-    res.status(500).json({ message: 'Failed to fetch videos' }); // Handle error
+    // Separate recommended and non-recommended videos
+    const recommendedVideosList = [];
+    const otherVideosList = [];
+
+    for (const video of allAvailableVideos) {
+      const videoId = video.id;
+      if (recommendedVideoIdsSet.has(videoId)) {
+        recommendedVideosList.push(video);
+      } else {
+        otherVideosList.push(video);
+      }
+    }
+
+    // Combine recommended videos with additional videos if needed
+    const combinedVideoList = [...recommendedVideosList];
+    if (recommendedVideosList.length < 10) {
+      const additionalVideosNeeded = 10 - recommendedVideosList.length;
+      const additionalVideos = otherVideosList.slice(0, additionalVideosNeeded);
+      combinedVideoList.push(...additionalVideos);
+    }
+
+    // Ensure uniqueness of videos
+    const uniqueVideoList = Array.from(new Set(combinedVideoList.map(video => video._id.toString())))
+      .map(id => combinedVideoList.find(video => video._id.toString() === id));
+
+    res.json(uniqueVideoList);
+  } catch (error) {
+    console.error('Error fetching videos with recommendations:', error);
+    res.status(500).json({ message: 'Failed to fetch videos with recommendations' });
   }
 };
 
-// Function to randomly select 'count' elements from an array
-function getRandomElements(array, count) {
-  const shuffled = array.sort(() => 0.5 - Math.random()); // Shuffle array
-  return shuffled.slice(0, count); // Get first 'count' elements
-}
-
-// Function to shuffle array elements
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-const getUserVideos = async (req, res) => {
-  const user_str = req.params.id;
+// Function to get video recommendations for a specific user
+const fetchRecommendationsForUser = async (req, res) => {
   try {
-    console.log(user_str)
-    let user =user_str.substring(1)
-    console.log(user)
-      // Assuming you have a Video model and you fetch videos based on userId
-      const userVideos = await Video.find({ owner: user });
-      console.log(userVideos)
+    const allVideoWatches = await VideoWatch.find(); // Fetch video watch records
+    allVideoWatches.forEach(record => {
+      updateUserWatchHistory(record.userId, record.videoId);
+    });
 
-      res.json(userVideos);
-  } catch (err) {
-      console.error('Error fetching user videos:', err);
-      res.status(500).json({ message: 'Failed to fetch user videos' });
+    const recommendedVideoIds = generateRecommendations("Shiradeu12");
+    const allAvailableVideos = await Video.find();
+
+    const recommendedVideos = allAvailableVideos.filter(video => recommendedVideoIds.includes(video._id.toString()));
+    const otherVideos = allAvailableVideos.filter(video => !recommendedVideoIds.includes(video._id.toString()));
+
+    const combinedVideos = [...recommendedVideos];
+    if (recommendedVideos.length < 10) {
+      const additionalVideos = otherVideos.slice(0, 10 - recommendedVideos.length);
+      combinedVideos.push(...additionalVideos);
+    }
+
+    res.json(combinedVideos);
+  } catch (error) {
+    console.error('Error fetching recommendations for user:', error);
+    res.status(500).json({ message: 'Failed to fetch recommendations for user' });
   }
 };
 
-const createVideoWatch = async (req, res) => {
-  const userId = req.body.userId;
-  const videoId = req.body.videoId;
-  const date = req.body.date;
-  const { pid } = req.params; // Optional, if you need to handle video id in URL
-  console.log(userId)
-  console.log(videoId)
-  console.log(date)
+// Function to get all video watch records
+const retrieveAllVideoWatches = async (req, res) => {
   try {
-      // Assuming you have a Video model to create a new video entry
-      const newVideoWatch = await VideoWatch.create({
-        videoId,
-        userId,
-        date,
+    const allVideoWatches = await VideoWatch.find(); // Fetch video watch records
+    allVideoWatches.forEach(record => {
+      updateUserWatchHistory(record.userId, record.videoId);
+    });
+
+    const recommendations = generateRecommendations("Shiradeu12");
+    res.json(recommendations);
+  } catch (error) {
+    console.error('Error retrieving video watch records:', error);
+    res.status(500).json({ message: 'Failed to retrieve video watch records' });
+  }
+};
+
+// Function to update the watch history and popularity maps
+function updateUserWatchHistory(userId, videoId) {
+  if (!userWatchHistoryMap.has(userId)) {
+    userWatchHistoryMap.set(userId, []);
+  }
+  if (!videoViewersMap.has(videoId)) {
+    videoViewersMap.set(videoId, []);
+    videoPopularityMap.set(videoId, 0);
+  }
+  userWatchHistoryMap.get(userId).push(videoId);
+  videoViewersMap.get(videoId).push(userId);
+  videoPopularityMap.set(videoId, videoPopularityMap.get(videoId) + 1);
+}
+
+// Function to generate video recommendations based on user watch history
+function generateRecommendations(userId) {
+  const recommendationList = [];
+  const potentialVideos = new Map();
+
+  const watchedVideos = userWatchHistoryMap.get(userId) || [];
+  const watchedVideosSet = new Set(watchedVideos);
+
+  watchedVideos.forEach(videoId => {
+    videoViewersMap.get(videoId).forEach(otherUserId => {
+      if (otherUserId === userId) return;
+      userWatchHistoryMap.get(otherUserId).forEach(otherVideoId => {
+        if (!watchedVideosSet.has(otherVideoId)) {
+          potentialVideos.set(otherVideoId, (potentialVideos.get(otherVideoId) || 0) + 1);
+        }
       });
+    });
+  });
 
-      res.status(201).json(newVideoWatch);
-  } catch (err) {
-      console.error('Error creating video:', err);
-      res.status(500).json({ message: 'Failed to create video' });
-  }
-};
-const getVideoById = async (req, res) => {
-  const { pid } = req.params; // User id and video id
+  const sortedPotentialVideos = Array.from(potentialVideos).sort((a, b) => b[1] - a[1]);
+  sortedPotentialVideos.slice(0, 10).forEach(([videoId, _]) => {
+    recommendationList.push(videoId);
+  });
+
+  return recommendationList;
+}
+
+// Function to get videos owned by a specific user
+const fetchUserVideos = async (req, res) => {
+  const userId = req.params.id;
   try {
-    console.log("here!!!")
-      // Assuming Video model and fetching based on userId and videoId
-      const video = await Video.findOne({  id: pid }); // Example MongoDB query
-      if (!video) {
-          return res.status(404).json({ message: 'Video not found' });
-      }
-      res.json(video);
-  } catch (err) {
-      console.error('Error fetching video:', err);
-      res.status(500).json({ message: 'Failed to fetch video' });
-  }
-};
-const getVideo = async (req, res) => {
-  const { id, pid } = req.params; // User id and video id
-  try {
-      // Assuming Video model and fetching based on userId and videoId
-      const video = await Video.findOne({ userId: id, _id: pid }); // Example MongoDB query
-      if (!video) {
-          return res.status(404).json({ message: 'Video not found' });
-      }
-      res.json(video);
-  } catch (err) {
-      console.error('Error fetching video:', err);
-      res.status(500).json({ message: 'Failed to fetch video' });
+    const userVideos = await Video.find({ owner: userId });
+    res.json(userVideos);
+  } catch (error) {
+    console.error('Error fetching user videos:', error);
+    res.status(500).json({ message: 'Failed to fetch user videos' });
   }
 };
 
-const updateVideo = async (req, res) => {
-  const { id, pid } = req.params; // User id and video id
+// Function to create a new video watch record
+const recordVideoWatch = async (req, res) => {
+  const { userId, videoId, date } = req.body;
+  try {
+    const newVideoWatch = await VideoWatch.create({ videoId, userId, date });
+    res.status(201).json(newVideoWatch);
+  } catch (error) {
+    console.error('Error creating video watch record:', error);
+    res.status(500).json({ message: 'Failed to create video watch record' });
+  }
+};
+
+// Function to get a specific video by its ID
+const fetchVideoById = async (req, res) => {
+  const videoId = req.params.pid;
+  try {
+    const video = await Video.findOne({ id: videoId });
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.json(video);
+  } catch (error) {
+    console.error('Error fetching video by ID:', error);
+    res.status(500).json({ message: 'Failed to fetch video by ID' });
+  }
+};
+
+// Function to get a specific video based on user ID and video ID
+const fetchVideo = async (req, res) => {
+  const { id: userId, pid: videoId } = req.params;
+  try {
+    const video = await Video.findOne({ userId, _id: videoId });
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.json(video);
+  } catch (error) {
+    console.error('Error fetching video:', error);
+    res.status(500).json({ message: 'Failed to fetch video' });
+  }
+};
+
+// Function to update video details
+const modifyVideo = async (req, res) => {
+  const { pid: videoId } = req.params;
   const { title, description, videoUrl, thumbnailUrl, likes, comments, liked } = req.body;
 
   try {
-    // Find the video by id
-    const video = await Video.findOne({ id: pid });
-
+    const video = await Video.findOne({ id: videoId });
     if (!video) {
       return res.status(404).json({ message: 'Video not found' });
     }
 
-    // Update the video properties
     video.title = title;
     video.description = description;
     video.videoUrl = videoUrl;
@@ -144,48 +209,37 @@ const updateVideo = async (req, res) => {
     video.comments = comments;
     video.liked = liked;
 
-    // Save the updated video
     await video.save();
-
     res.json(video);
-  } catch (err) {
-    console.error('Error updating video:', err);
+  } catch (error) {
+    console.error('Error updating video:', error);
     res.status(500).json({ message: 'Failed to update video' });
   }
 };
 
-
-
-
-const deleteVideo = async (req, res) => {
-  console.log("delete is here");
-  const { pid, id } = req.params; 
-
-  console.log( req.params);
-  console.log(pid);
-  console.log(id);
-  // User id and video id
+// Function to delete a specific video
+const removeVideo = async (req, res) => {
+  const videoId = req.params.pid;
   try {
-      // Assuming Video model and deleting based on userId and videoId
-      const deletedVideo = await Video.findOneAndDelete({  id: pid});
-
-      if (!deletedVideo) {
-          return res.status(404).json({ message: 'Video not found' });
-      }
-      res.json({ message: 'Video deleted successfully' });
-  } catch (err) {
-      console.error('Error deleting video:', err);
-      res.status(500).json({ message: 'Failed to delete video' });
+    const deletedVideo = await Video.findOneAndDelete({ id: videoId });
+    if (!deletedVideo) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.json({ message: 'Video deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting video:', error);
+    res.status(500).json({ message: 'Failed to delete video' });
   }
 };
 
 module.exports = {
-  createVideoWatch,
-  getVideos,
-  getVideoById,
-  getUserVideos,
-  getVideo,
-  updateVideo,
-  deleteVideo,
-  getAllVideos
+  recordVideoWatch,
+  fetchVideoById,
+  fetchUserVideos,
+  fetchVideo,
+  modifyVideo,
+  removeVideo,
+  retrieveAllVideoWatches,
+  getVideoRecommendations,
+  fetchRecommendationsForUser
 };
