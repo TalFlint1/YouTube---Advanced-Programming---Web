@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import videoData from '../../videoData.json';
 import './VideoPage.css';
 import VideoDisplay from '../VideoDisplay/VideoDisplay';
 import { isUserLoggedIn } from '../../authCheck';
@@ -11,27 +10,51 @@ const VideoPage = () => {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isVideoWatchUpdated, SetisVideoWatchUpdated] = useState(false);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(null); // null for no action, true for like, false for dislike
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+    const videoData = async () => {
+      try {
+          const username =localStorage.getItem('currentUser');
+          console.log("username")
+          console.log(username)
+         let url = `/api/videoWatch/user/:${username}/reccomendations`; // Adjust URL to fetch user-specific videos
+
+        console.log(url)
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch videos');
+        }
+        const data = await response.json();
+        setVideos(data); // Update state with the fetched videos array
+
+        localStorage.setItem('videos', JSON.stringify(data));
+        console.log('Fetched videos:', data);
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+      }
+    };
+    videoData();
+    const videos = JSON.parse(localStorage.getItem('videos')) || [];
     const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
 
     // Combine the two arrays into one list
-    const combinedList = [...storedVideos, ...storedUploads];
+    const combinedList = [...videos, ...storedUploads];
     const storedVideo = combinedList.find((v) => v.id === parseInt(id));
     let initialVideo;
 
     if (storedVideo) {
       initialVideo = storedVideo;
     } else {
-      initialVideo = videoData.find((v) => v.id === parseInt(id));
+      initialVideo = videos.find((v) => v.id === parseInt(id));
       if (initialVideo) {
-        storedVideos.push(initialVideo);
-        localStorage.setItem('videos', JSON.stringify(storedVideos));
+        videos.push(initialVideo);
+        localStorage.setItem('videos', JSON.stringify(videos));
       }
     }
 
@@ -43,21 +66,30 @@ const VideoPage = () => {
     }
 
     setLoading(false);
+    if(!isVideoWatchUpdated){
+      updateVideoWatchBackend(initialVideo);
+    }
+    SetisVideoWatchUpdated(true);
+
   }, [id]);
 
   useEffect(() => {
     if (video) {
       const updatedVideo = { ...video, likes, comments, liked };
-      const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+      const videos = JSON.parse(localStorage.getItem('videos')) || [];
       const storedUploads = JSON.parse(localStorage.getItem('uploads')) || [];
 
       // Combine the two arrays into one list
-      const combinedList = [...storedVideos, ...storedUploads];
+      const combinedList = [...videos, ...storedUploads];
       const updatedVideos = combinedList.map(v => (v.id === parseInt(id) ? updatedVideo : v));
       localStorage.setItem('videos', JSON.stringify(updatedVideos));
 
       // Update the video object in the backend
       updateVideoBackend(updatedVideo);
+      // if(!isVideoWatchUpdated){
+      //   updateVideoWatchBackend(initialVideo);
+      // }
+      // SetisVideoWatchUpdated(true);
     }
   }, [likes, comments, liked, video, id]);
 
@@ -70,6 +102,28 @@ const VideoPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedVideo),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update video');
+      }
+    } catch (error) {
+      console.error('Error updating video:', error);
+    }
+  };
+
+  
+  const updateVideoWatchBackend = async (updatedVideo) => {
+    const currentUser =localStorage.getItem("currentUser");
+    const obj ={userId:currentUser,videoId: updatedVideo.id ,date: new Date()}
+    console.log(obj);
+    const url = `/api/videoWatch/user/:${updatedVideo.owner}/videos`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(obj),
       });
       if (!response.ok) {
         throw new Error('Failed to update video');
@@ -171,7 +225,7 @@ const VideoPage = () => {
         <CommentSection comments={comments} handleComment={handleComment} videoId={video.id} />
       </div>
       <div className="suggested-videos">
-        {videoData.map((video, index) => (
+        {videos.map((video, index) => (
           <VideoDisplay
             key={index}
             title={video.title}
@@ -253,12 +307,12 @@ const Comment = ({ comment, videoId }) => {
   };
 
   const updateLocalStorage = () => {
-    const storedVideos = JSON.parse(localStorage.getItem('videos')) || [];
-    const video = storedVideos.find(v => v.id === videoId);
+    const videos = JSON.parse(localStorage.getItem('videos')) || [];
+    const video = videos.find(v => v.id === videoId);
     if (video) {
       video.comments = updateComments(video.comments, comment);
       updateVideoBackend(video)
-      localStorage.setItem('videos', JSON.stringify(storedVideos));
+      localStorage.setItem('videos', JSON.stringify(videos));
     }
   };
   const updateVideoBackend = async (updatedVideo) => {
